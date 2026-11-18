@@ -230,8 +230,8 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 
 def _filter(layout, fg_h):
     if layout == "crop":
-        return f"[0:v]fps={config.OUT_FPS},scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1[v0];"
-    return (f"[0:v]fps={config.OUT_FPS},split=2[a][b];"
+        return f"[0:v]setpts=PTS-STARTPTS,fps={config.OUT_FPS},scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1[v0];"
+    return (f"[0:v]setpts=PTS-STARTPTS,fps={config.OUT_FPS},split=2[a][b];"
             f"[a]scale=270:480:force_original_aspect_ratio=increase,crop=270:480,boxblur=6:2,"
             f"scale={W}:{H},eq=brightness=-0.14:saturation=1.15[bg];"
             f"[b]scale={W}:{fg_h}:force_original_aspect_ratio=increase,crop={W}:{fg_h}[fg];"
@@ -273,6 +273,7 @@ def render_clip(src: Path, out_dir: Path, name: str, clip: dict, words: list, sr
 
 def _render_in(work: Path, src: Path, out_dir: Path, name: str, start, end, layout, fg_h, ass: str, watermark: bool = False) -> dict:
     global _qsv_ok, _nvenc_ok, _vt_ok
+    src_path = _safe_path(src)
     (work / f"{name}.ass").write_text(ass, encoding="utf-8")
     (work / "f").mkdir(exist_ok=True)
     for f in config.FONTS_DIR.glob("*.ttf"):
@@ -282,19 +283,20 @@ def _render_in(work: Path, src: Path, out_dir: Path, name: str, start, end, layo
     except AttributeError:
         wm_png = config.ROOT / "web" / "brand" / "watermark.png"
     has_wm = watermark and wm_png.is_file()
-    src_path = _safe_path(src)
     if has_wm:
         try:
             shutil.copyfile(wm_png, work / "wm.png")
             fc = _filter(layout, fg_h) + f"[v0]ass={name}.ass:fontsdir=f[v_sub];[1:v]scale=96:96[wm];[v_sub][wm]overlay=W-w-48:H-h-48:format=auto[v]"
-            inputs = ["ffmpeg", "-y", "-v", "error", "-ss", f"{start:.2f}", "-t", f"{end - start:.2f}", "-i", src_path, "-i", "wm.png"]
+            inputs = ["ffmpeg", "-y", "-v", "error", "-accurate_seek", "-ss", f"{start:.2f}", "-t", f"{end - start:.2f}", "-i", src_path, "-i", "wm.png"]
         except OSError:
             has_wm = False
     if not has_wm:
         fc = _filter(layout, fg_h) + f"[v0]ass={name}.ass:fontsdir=f[v]"
-        inputs = ["ffmpeg", "-y", "-v", "error", "-ss", f"{start:.2f}", "-t", f"{end - start:.2f}", "-i", src_path]
-    base = inputs + ["-filter_complex", fc, "-map", "[v]", "-map", "0:a:0", "-af", "loudnorm=I=-14:TP=-1.5:LRA=11",
-            "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-movflags", "+faststart", "-pix_fmt"]
+        inputs = ["ffmpeg", "-y", "-v", "error", "-accurate_seek", "-ss", f"{start:.2f}", "-t", f"{end - start:.2f}", "-i", src_path]
+    af = "asetpts=PTS-STARTPTS,aresample=async=1000:min_hard_comp=0.100000:first_pts=0,loudnorm=I=-14:TP=-1.5:LRA=11"
+    base = inputs + ["-filter_complex", fc, "-map", "[v]", "-map", "0:a:0", "-af", af,
+            "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-avoid_negative_ts", "make_zero",
+            "-max_muxing_queue_size", "1024", "-movflags", "+faststart", "-pix_fmt"]
     encoders = []
     if _nvenc_ok is not False:
         encoders.append(("nvenc", ["yuv420p", "-c:v", "h264_nvenc", "-cq", "23", "-preset", "p4"]))
