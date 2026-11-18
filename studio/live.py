@@ -403,8 +403,9 @@ class Session:
         must = st["must_clip_min"] > 0 and time.time() - last_clip >= st["must_clip_min"] * 60
         verdict = {"t": round(now), "transcript": None, "reaction": None, "trigger": why}
         if len(win) < 8:
-            self.skipped += 1
-            return self._verdict(verdict, "Skipped: nobody talking")
+            if not (why and "jump" in why.lower()):
+                self.skipped += 1
+                return self._verdict(verdict, "Skipped: nobody talking")
         if len(recent) >= st["live_per_hour"] and not must:
             self.skipped += 1
             return self._verdict(verdict, f"Skipped: {st['live_per_hour']} clips this hour already")
@@ -415,12 +416,28 @@ class Session:
                                                 n=1 if every <= 2 else 2, must=must)  # Auto (0) asks for one
         except Exception as e:  # noqa: BLE001
             self.job["ai"]["last_error"] = str(e)[-200:]
-            return self._verdict(verdict, "AI error: " + str(e)[-80:])
+            if not (why and "jump" in why.lower()):
+                return self._verdict(verdict, "AI error: " + str(e)[-80:])
+            cands, tok = [], 0
         self.checks += 1
         self.tokens += tok
         keep = [c for c in cands if c["score"] >= (40 if must else st["min_score"])]
         verdict["transcript"] = max((c["score"] for c in cands), default=0)
         if not keep:
+            if why and "jump" in why.lower():
+                text = " ".join(w["w"] for w in win)
+                usage.set_context(self.job["creator"], self.job["title"] or "Live stream")
+                try:
+                    c = brain.describe(text, self.job["title"], self.job["uploader"])
+                except Exception:
+                    c = {"hook": "HIGHLIGHT", "title": f"Live {why}", "description": "", "hashtags": [], "highlight_words": [], "reason": why}
+                c.update(start=round(ws, 2), end=round(min(now, self.samples / SR), 2), score=80,
+                         judges={"words": None, "reaction": 80, "why": why},
+                         reason=f"Spike triggered ({why.lower()})")
+                if not any(abs(c["start"] - k["start"]) < st["min_gap_min"] * 60 for k in self.job["clips"]):
+                    self._add_clip(c)
+                    self._verdict(verdict, "Clipped: " + why.lower())
+                return
             return self._verdict(verdict, "Words judge: nothing clip-worthy")
         z = brain.loud_zscore(np.array(self.db, dtype=np.float32))
         lo, hi = int(ws), int(now) + 1
@@ -437,8 +454,8 @@ class Session:
             match = [m for m in sig if m["end"] >= c["start"] - 10 and m["start"] <= c["end"] + 10 and m["score"] >= 50]
             rs = max((m["score"] for m in match), default=0)
             verdict["reaction"] = rs
-            both = bool(match)
-            ok = both or (st["decide_mode"] == "either" and c["score"] >= 90) or (must and added == 0)
+            both = bool(match) or bool(why and "jump" in why.lower())
+            ok = both or (st["decide_mode"] == "either" and c["score"] >= st.get("min_score", 70)) or (must and added == 0)
             if not ok:
                 self.rejected += 1
                 self._verdict(verdict, "Reaction judge said no, not clipped")
@@ -446,12 +463,11 @@ class Session:
             if any(abs(c["start"] - k["start"]) < st["min_gap_min"] * 60 for k in self.job["clips"]):
                 self._verdict(verdict, "Too close to the last clip")
                 continue
-            why = "Both judges agreed" if both else ("Words judge was very sure" if c["score"] >= 90 and
-                                                     st["decide_mode"] == "either" else "Forced: no clip for a while")
-            c["judges"] = {"words": c["score"], "reaction": rs or None, "why": why}
-            c["reason"] = f"{c['reason']} ({why.lower()}.)"
+            why_txt = "Both judges agreed" if bool(match) else ("Chat/loudness jump" if (why and "jump" in why.lower()) else ("Words judge was confident" if st["decide_mode"] == "either" else "Forced: no clip for a while"))
+            c["judges"] = {"words": c["score"], "reaction": rs or (80 if (why and "jump" in why.lower()) else None), "why": why_txt}
+            c["reason"] = f"{c['reason']} ({why_txt.lower()}.)"
             self._add_clip(c)
-            self._verdict(verdict, "Clipped: " + why.lower())
+            self._verdict(verdict, "Clipped: " + why_txt.lower())
             added += 1
             must = False
             if added >= (1 if every <= 2 else 2):
