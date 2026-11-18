@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFA23A"/>
+      <stop offset="1" stop-color="#FF5A00"/>
+    </linearGradient>
+    <clipPath id="top"><polygon points="-688.7,1380.4 1768.7,-340.4 908.4,-1569.1 -1549.1,151.6"/></clipPath>
+    <clipPath id="bot"><polygon points="-688.7,1380.4 1768.7,-340.4 2629.1,888.4 171.6,2609.1"/></clipPath>
+  </defs>
+  <rect width="1024" height="1024" rx="230" fill="url(#bg)"/>
+  <g transform="translate(-7.5,-10.6)"><g clip-path="url(#top)">
+    <path d="M372,318 L372,722 L742,520 Z" fill="#fff" stroke="#fff" stroke-width="56" stroke-linejoin="round"/>
+  </g></g>
+  <g transform="translate(7.5,10.6)"><g clip-path="url(#bot)">
+    <path d="M372,318 L372,722 L742,520 Z" fill="#fff" stroke="#fff" stroke-width="56" stroke-linejoin="round"/>
+  </g></g>
+  <path d="M800,196 Q806,262 872,268 Q806,274 800,340 Q794,274 728,268 Q794,262 800,196 Z" fill="#fff"/>
+</svg>

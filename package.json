@@ -1,0 +1,21 @@
+{
+  "name": "cut-it-by-ai-with-atif",
+  "version": "1.0.0",
+  "description": "Cut it by Ai With Atif - AI clip maker with Remotion animation suite",
+  "scripts": {
+    "brand:export": "node scripts/export-logo.mjs",
+    "preview": "remotion preview remotion/index.ts",
+    "render": "remotion render remotion/index.ts AnimatedClip out/clip.mp4",
+    "build": "remotion bundle remotion/index.ts"
+  },
+  "dependencies": {
+    "@remotion/player": "^4.0.543",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "^4.0.543"
+  },
+  "devDependencies": {
+    "@remotion/cli": "^4.0.543",
+    "sharp": "^0.35.5"
+  }
+}

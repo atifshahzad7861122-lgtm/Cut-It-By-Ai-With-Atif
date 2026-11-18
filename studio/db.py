@@ -21,6 +21,7 @@ if _SQLITE:
         cur.execute("PRAGMA journal_mode=WAL")
         cur.execute("PRAGMA synchronous=NORMAL")
         cur.execute("PRAGMA busy_timeout=30000")
+        cur.execute("PRAGMA foreign_keys = ON")
         cur.close()
 meta = sa.MetaData()
 

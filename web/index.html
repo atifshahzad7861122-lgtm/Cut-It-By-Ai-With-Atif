@@ -3,11 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PeakCut</title>
+<title>Cut it by Ai With Atif</title>
 <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
+<link rel="apple-touch-icon" href="/brand/cut-it-icon-192.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1E140E">
+<link rel="stylesheet" href="/brand/brand.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@300&family=Archivo+Black&family=Anton&family=Poppins:wght@800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Archivo+Black&family=Anton&family=Poppins:wght@800&display=swap" rel="stylesheet">
 <style>
 :root{
   --brand:#FF8B33;--brand-press:#F27A1F;--brand-ink:#2A1A12;--brand-soft:#FFF2E8;--brand-line:#FFD9BC;--brand-deep:#A9480A;
@@ -21,7 +25,7 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{height:100%}
-body{margin:0;background:var(--frame);color:var(--text);font:14px/1.5 "Geist","Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+body{margin:0;background:radial-gradient(circle at 12% 16%, rgba(255,139,51,.18) 0%, transparent 42%), radial-gradient(circle at 88% 84%, rgba(255,92,0,.14) 0%, transparent 40%), #140E0B;color:var(--text);font:14px/1.5 "Geist","Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
 h1,h2,h3,h4,p{margin:0}
 button,input,select,textarea{font:inherit;color:inherit}
 svg{width:18px;height:18px;flex:none;fill:currentColor}
@@ -31,7 +35,7 @@ svg{width:18px;height:18px;flex:none;fill:currentColor}
 
 /* ---------- frame */
 .app{display:grid;grid-template-columns:240px minmax(0,1fr);height:100vh}
-.side{background:var(--frame);color:var(--frame-text);display:flex;flex-direction:column;height:100vh;padding:14px 10px 12px;min-width:0}
+.side{background:rgba(26,18,14,.68);backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);border-right:1px solid rgba(255,255,255,.07);color:var(--frame-text);display:flex;flex-direction:column;height:100vh;padding:14px 10px 12px;min-width:0}
 .side-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 4px 22px 6px}
 .side-head .logo{height:36px;width:auto;display:block}
 .side-head .mark{display:none;width:34px;height:34px}
@@ -64,15 +68,15 @@ img.avatar{object-fit:cover;background:rgba(255,255,255,.08)}
 .nav-item.on img.avatar{background:var(--brand-ink)}
 .live-dot{width:8px;height:8px;border-radius:50%;background:var(--live);animation:pulse 1.3s infinite;flex:none}
 .side-foot{display:flex;flex-direction:column;gap:2px;padding-top:12px;border-top:1px solid var(--frame-line)}
-.side-card{background:var(--frame-2);border-radius:var(--r);padding:12px 14px;margin-top:8px;font-size:12px;color:var(--frame-dim);display:flex;flex-direction:column;gap:7px}
+.side-card{background:rgba(255,255,255,.05);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.09);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);border-radius:var(--r);padding:12px 14px;margin-top:8px;font-size:12px;color:var(--frame-dim);display:flex;flex-direction:column;gap:7px}
 .side-card div{display:flex;align-items:center;gap:9px}
 .led{width:7px;height:7px;border-radius:50%;background:#3DDC97;flex:none}.led.no{background:#FF6B78}.led.mid{background:var(--brand)}
 .plans-btn{margin-top:10px;width:100%;background:var(--frame-text);color:var(--brand-ink);border:0}
 .scrim{display:none}
 
-main{background:var(--bg);margin:8px 8px 8px 0;border-radius:var(--r-lg);height:calc(100vh - 16px);overflow-y:auto;min-width:0;scrollbar-gutter:stable}
-.topbar{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 28px;min-height:54px;border-bottom:1px solid transparent;transition:border-color .2s ease}
-.topbar.stuck{border-color:var(--line)}
+main{background:rgba(255,255,255,.84);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border:1px solid rgba(255,255,255,.75);box-shadow:0 14px 44px rgba(0,0,0,.22);margin:8px 8px 8px 0;border-radius:var(--r-lg);height:calc(100vh - 16px);overflow-y:auto;min-width:0;scrollbar-gutter:stable}
+.topbar{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.75);backdrop-filter:blur(18px) saturate(170%);-webkit-backdrop-filter:blur(18px) saturate(170%);display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 28px;min-height:54px;border-bottom:1px solid rgba(0,0,0,.06);transition:border-color .2s ease,background-color .2s ease,box-shadow .2s ease}
+.topbar.stuck{background:rgba(255,255,255,.88);border-color:rgba(0,0,0,.08);box-shadow:0 4px 20px rgba(0,0,0,.04)}
 #vbanner:empty{display:none}
 .upd{display:grid;gap:14px}
 .upd ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:13px;color:var(--text);max-height:180px;overflow:auto}
@@ -94,7 +98,7 @@ main{background:var(--bg);margin:8px 8px 8px 0;border-radius:var(--r-lg);height:
 .topbar.tabbed .titles{flex:0 1 auto;max-width:34%}
 .topbar.tabbed #actions{margin-left:auto}
 .utabs:empty{display:none}
-.utabs{display:flex;gap:2px;padding:3px;background:var(--muted);border-radius:11px;overflow-x:auto;scrollbar-width:none}
+.utabs{display:flex;gap:2px;padding:3px;background:rgba(247,244,241,.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.8);border-radius:11px;overflow-x:auto;scrollbar-width:none}
 @media (min-width:761px){.topbar.tabbed{position:sticky}.topbar.tabbed .utabs{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}.topbar.tabbed .titles{max-width:calc(50% - 230px)}}
 @media (max-width:760px){.utabs{order:5;flex-basis:100%;margin:2px 0 0;position:relative}.topbar.tabbed .titles{max-width:none;flex:1}}
 .utabs .tabbtn{height:34px;padding:0 14px;border-radius:8px;background:transparent;color:var(--dim);font-size:13px;transition:background-color .18s ease,color .18s ease}
@@ -196,7 +200,7 @@ img.avatar.ring{background:transparent}
 .app.mini .sb-tag{display:none}
 
 /* ---------- buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:38px;padding:0 14px;border-radius:var(--r);border:1px solid var(--line-2);background:#fff;color:var(--text);cursor:pointer;text-decoration:none;white-space:nowrap;font-weight:600}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:38px;padding:0 14px;border-radius:var(--r);border:1px solid rgba(0,0,0,.08);background:rgba(255,255,255,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 1px 3px rgba(0,0,0,.03);color:var(--text);cursor:pointer;text-decoration:none;white-space:nowrap;font-weight:600}
 .btn:active{background:var(--muted)}
 .btn.primary{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
 .btn.primary:active{background:var(--brand-press);border-color:var(--brand-press)}
@@ -211,7 +215,8 @@ img.avatar.ring{background:transparent}
 .btn:disabled{opacity:.45;cursor:default;pointer-events:none}
 
 /* ---------- fields */
-:where(input:not([type=checkbox],[type=radio],[type=file],[type=range]),select,textarea){width:100%;height:40px;padding:0 12px;background:#fff;border:1px solid var(--line-2);border-radius:var(--r-sm);min-width:0;outline:none;transition:border-color .15s ease}
+:where(input:not([type=checkbox],[type=radio],[type=file],[type=range]),select,textarea){width:100%;height:40px;padding:0 12px;background:rgba(255,255,255,.75);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(0,0,0,.09);border-radius:var(--r-sm);min-width:0;outline:none;transition:border-color .15s ease,background-color .15s ease,box-shadow .15s ease}
+:where(input:not([type=checkbox],[type=radio],[type=file],[type=range]),select,textarea):focus{background:#fff;border-color:var(--brand);box-shadow:0 0 0 3px rgba(255,139,51,.15)}
 :where(textarea){height:auto;padding:10px 12px;resize:vertical}
 :where(input:not([type=checkbox],[type=radio],[type=file],[type=range]),select,textarea):hover{border-color:#D9CCC2}
 :where(input:not([type=checkbox],[type=radio],[type=file],[type=range]),select,textarea):focus{background:#fff;border-color:var(--brand)}
@@ -230,7 +235,7 @@ label.ck input{accent-color:var(--brand);margin:0}
 .span{grid-column:1/-1}
 
 /* ---------- surfaces */
-.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px;margin-bottom:16px}
+.card{background:rgba(255,255,255,.72);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border:1px solid rgba(255,255,255,.85);box-shadow:0 8px 32px rgba(42,26,18,.04), inset 0 1px 0 rgba(255,255,255,.9);border-radius:var(--r);padding:22px;margin-bottom:16px}
 .card>h2,.card-head h2{font-size:15px;font-weight:600;color:var(--brand-ink)}
 .card>h2{margin-bottom:4px}
 .card>h2+.help{margin-bottom:18px}
@@ -266,7 +271,7 @@ label.ck input{accent-color:var(--brand);margin:0}
 #view{position:relative;z-index:1}
 .hero h2{font-size:clamp(21px,5.2vw,28px);font-weight:700;letter-spacing:-.03em;color:var(--brand-ink);line-height:1.2;text-wrap:balance}
 .hero>p{color:var(--dim);margin:8px auto 22px;max-width:520px;font-size:15px}
-.composer{max-width:760px;margin:0 auto;background:#fff;border:1px solid var(--line-2);border-radius:var(--r-lg);text-align:left;transition:background-color .15s ease,border-color .15s ease}
+.composer{max-width:760px;margin:0 auto;background:rgba(255,255,255,.78);backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);border:1px solid rgba(255,255,255,.9);box-shadow:0 12px 36px rgba(42,26,18,.07), inset 0 1px 0 rgba(255,255,255,.95);border-radius:var(--r-lg);text-align:left;transition:background-color .15s ease,border-color .15s ease,box-shadow .15s ease}
 .composer:has(#url:focus){border-color:#FFB27A}
 .composer.compact{max-width:none;margin-bottom:28px;background:var(--muted)}
 .composer.over{background:var(--brand-soft);border-color:var(--brand)}
@@ -403,7 +408,7 @@ img.av{object-fit:cover}
 
 /* ---------- home blocks */
 .tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:16px}
-.tile{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;display:flex;flex-direction:column}
+.tile{background:rgba(255,255,255,.68);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.8);box-shadow:0 6px 20px rgba(42,26,18,.03);border-radius:var(--r);padding:16px 18px;display:flex;flex-direction:column}
 .tile i{width:32px;height:32px;border-radius:var(--r-sm);background:var(--brand-soft);color:var(--brand-deep);display:grid;place-items:center;margin-bottom:14px}
 .tile i svg{width:18px;height:18px}
 .tile b{font-size:26px;font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--brand-ink);line-height:1.1}
@@ -509,7 +514,7 @@ img.av{object-fit:cover}
 .bar i{display:block;height:100%;background:var(--brand);border-radius:999px;transition:width .8s ease}
 .err{color:var(--bad);font-size:13px;overflow-wrap:anywhere;margin:6px 0}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
-.clip{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.clip{background:rgba(255,255,255,.76);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.85);box-shadow:0 8px 24px rgba(0,0,0,.04);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
 .shot{position:relative;aspect-ratio:9/16;background:#17110E;border:0;padding:0;cursor:pointer;display:block;width:100%;overflow:hidden}
 .shot img{width:100%;height:100%;object-fit:cover;display:block}
 .shot .veil{position:absolute;left:10px;bottom:10px}
@@ -589,8 +594,8 @@ a.lnk{color:var(--brand-ink);text-decoration:none;font-weight:600}
 .plan:has(input:focus-visible){outline:2px solid var(--brand);outline-offset:2px}
 
 /* ---------- dialogs + toasts */
-dialog{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:var(--r-lg);padding:0;max-width:calc(100vw - 32px)}
-dialog::backdrop{background:rgba(14,12,11,.42);animation:fadein .16s ease}
+dialog{border:1px solid rgba(255,255,255,.85);background:rgba(255,255,255,.86);backdrop-filter:blur(30px) saturate(190%);-webkit-backdrop-filter:blur(30px) saturate(190%);box-shadow:0 24px 64px rgba(24,16,12,.22), inset 0 1px 0 rgba(255,255,255,.95);color:var(--text);border-radius:var(--r-lg);padding:0;max-width:calc(100vw - 32px)}
+dialog::backdrop{background:rgba(14,10,8,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);animation:fadein .16s ease}
 .dlg{padding:24px;width:450px;max-width:100%;display:flex;flex-direction:column;gap:14px}
 .dlg h2{font-size:18px;font-weight:600;color:var(--brand-ink)}
 .dlg-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:4px}
@@ -601,7 +606,7 @@ dialog::backdrop{background:rgba(14,12,11,.42);animation:fadein .16s ease}
 .editor h3{font-size:13px;font-weight:600;color:var(--dim);margin-top:6px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 #toasts{position:fixed;right:20px;bottom:20px;display:flex;flex-direction:column;gap:8px;z-index:50}
-.toast{background:var(--frame);color:var(--frame-text);border:1px solid var(--frame-2);border-radius:var(--r);padding:12px 16px;max-width:380px;animation:rise .2s ease;display:flex;gap:10px;align-items:center;font-weight:500}
+.toast{background:rgba(26,18,14,.84);backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 36px rgba(0,0,0,.25);color:var(--frame-text);border-radius:var(--r);padding:12px 16px;max-width:380px;animation:rise .2s ease;display:flex;gap:10px;align-items:center;font-weight:500}
 .toast::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--brand);flex:none}
 .toast.ok::before{background:#3DDC97}.toast.bad::before{background:#FF6B78}
 .toast .rep{margin-left:auto;border:0;background:rgba(255,255,255,.1);color:#fff;font:inherit;font-size:12px;font-weight:600;padding:3px 9px;border-radius:6px;cursor:pointer;white-space:nowrap}
@@ -631,7 +636,7 @@ dialog::backdrop{background:rgba(14,12,11,.42);animation:fadein .16s ease}
 .me-btn:hover,.me-btn[aria-expanded=true]{background:var(--frame-2)}
 .bell{position:relative}
 .bell .dotn{position:absolute;top:2px;right:1px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:#E5323F;color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center;border:2px solid var(--frame)}
-.pop{position:fixed;z-index:60;left:248px;bottom:12px;width:360px;max-width:calc(100vw - 24px);max-height:min(520px,calc(100vh - 100px));display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+.pop{position:fixed;z-index:60;left:248px;bottom:12px;width:360px;max-width:calc(100vw - 24px);max-height:min(520px,calc(100vh - 100px));display:flex;flex-direction:column;background:rgba(255,255,255,.86);backdrop-filter:blur(26px) saturate(180%);-webkit-backdrop-filter:blur(26px) saturate(180%);border:1px solid rgba(255,255,255,.75);box-shadow:0 18px 48px rgba(24,16,12,.16);border-radius:14px;overflow:hidden;
   opacity:0;transform:translateY(8px);transition:opacity .18s ease,transform .18s ease}
 .pop.open{opacity:1;transform:none}
 @media (max-width:900px){.pop{left:12px!important;bottom:74px!important;z-index:80}}
@@ -808,19 +813,1665 @@ dialog[open]{animation:fadein .16s ease}
   .set-sec h2{font-size:16px}
   .ai-big{font-size:24px}
 }
+
+/* ---------- premium micro-animations & spring physics */
+@keyframes ambientFloat {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+@keyframes btnShimmer {
+  0%, 60% { left: -80%; }
+  100% { left: 160%; }
+}
+@keyframes dialogSpring {
+  from { opacity: 0; transform: scale(.93) translateY(16px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 139, 51, .4); }
+  50% { box-shadow: 0 0 0 8px rgba(255, 139, 51, 0); }
+}
+
+body {
+  background-size: 130% 130%;
+  animation: ambientFloat 20s ease-in-out infinite alternate;
+}
+
+.card, .clip, .tile, .composer {
+  transition: border-color .25s ease, background-color .25s ease !important;
+}
+.card:hover, .composer:hover {
+  border-color: rgba(255,139,51,.55) !important;
+}
+.clip:hover {
+  border-color: rgba(255,139,51,.55) !important;
+}
+.tile:hover {
+  border-color: rgba(255,139,51,.45) !important;
+}
+
+.btn.primary {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #FF9E44 0%, #FF5C00 100%) !important;
+  border-color: transparent !important;
+  transition: background-color .18s ease, filter .18s ease !important;
+}
+.btn.primary:hover {
+  background: var(--brand-press) !important;
+}
+.btn.primary:active {
+  background: var(--brand-press) !important;
+}
+.btn.primary::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -80%;
+  width: 45%;
+  height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.38), transparent);
+  transform: rotate(25deg);
+  animation: btnShimmer 3.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+dialog[open] {
+  animation: dialogSpring .3s cubic-bezier(.16, 1, .3, 1) both !important;
+}
+.live-dot, .rdot.on {
+  animation: pulseGlow 1.8s infinite !important;
+}
+
+
+/* ==========================================================================
+   3D DARK GLASSMORPHIC & AMBIENT NEBULA THEME (MATCHING SEDELA REFERENCE UI)
+   ========================================================================== */
+
+:root {
+  --brand: #FF6B00;
+  --brand-press: #E65A00;
+  --brand-ink: #FFFFFF;
+  --brand-soft: rgba(255, 107, 0, 0.16);
+  --brand-line: rgba(255, 107, 0, 0.35);
+  --brand-deep: #FF7A1A;
+  --frame: #0B0E14;
+  --frame-2: #141721;
+  --frame-line: rgba(255, 255, 255, 0.08);
+  --frame-text: #F8FAFC;
+  --frame-dim: #94A3B8;
+  --bg: #10131B;
+  --muted: #171B26;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-2: rgba(255, 255, 255, 0.12);
+  --text: #F1F5F9;
+  --dim: #94A3B8;
+  --faint: #64748B;
+  --good: #10B981;
+  --good-soft: rgba(16, 185, 129, 0.16);
+  --bad: #EF4444;
+  --bad-soft: rgba(239, 68, 68, 0.16);
+  --live: #FF3B30;
+  --r-lg: 22px;
+  --r: 16px;
+  --r-sm: 10px;
+  color-scheme: dark;
+}
+
+/* Deep Nebula Ambient Background */
+body {
+  margin: 0;
+  background-color: #0A0C12 !important;
+  background-image: 
+    radial-gradient(circle at 14% 18%, rgba(255, 107, 0, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 86% 22%, rgba(20, 184, 166, 0.14) 0%, transparent 42%),
+    radial-gradient(circle at 88% 82%, rgba(255, 85, 0, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 45% 70%, rgba(139, 92, 246, 0.10) 0%, transparent 50%) !important;
+  background-size: 135% 135% !important;
+  animation: ambientNebula 25s ease-in-out infinite alternate !important;
+  color: #F1F5F9 !important;
+  font-family: "Geist", "Segoe UI", system-ui, sans-serif !important;
+  overflow: hidden;
+}
+
+@keyframes ambientNebula {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 50% 100%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* 3D Glass Sidebar */
+.side {
+  background: rgba(15, 18, 25, 0.72) !important;
+  backdrop-filter: blur(28px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 10px 0 32px rgba(0, 0, 0, 0.4) !important;
+}
+.side-card {
+  background: rgba(22, 26, 36, 0.65) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 8px 20px rgba(0,0,0,0.3) !important;
+  border-radius: 16px !important;
+}
+
+/* Sidebar Nav Items */
+.nav-item {
+  color: #94A3B8 !important;
+  border-radius: 12px !important;
+  min-height: 40px !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #FFFFFF !important;
+}
+.nav-item.on {
+  background: linear-gradient(135deg, #FF6B00 0%, #FF5000 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 18px rgba(255, 107, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+.nav-item.on svg {
+  color: #FFFFFF !important;
+}
+
+/* Main 3D Glass Stage */
+main {
+  background: rgba(16, 20, 28, 0.68) !important;
+  backdrop-filter: blur(32px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
+  border-radius: 24px !important;
+}
+
+/* Topbar Sticky Header */
+.topbar {
+  background: rgba(16, 20, 28, 0.72) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+}
+.topbar.stuck {
+  background: rgba(16, 20, 28, 0.88) !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Topbar Navigation Tabs (Pill style matching Sedela "Home", "Courses") */
+.utabs {
+  background: rgba(22, 26, 38, 0.7) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  border-radius: 999px !important;
+  padding: 4px 6px !important;
+  gap: 6px !important;
+}
+.utabs .tabbtn {
+  height: 36px !important;
+  padding: 0 18px !important;
+  border-radius: 999px !important;
+  color: #94A3B8 !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.utabs .tabbtn:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #FFFFFF !important;
+}
+.utabs .tabbtn.on {
+  background: #FF6B00 !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 18px rgba(255, 107, 0, 0.45) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+.utabs .tabbtn.on svg {
+  color: #FFFFFF !important;
+}
+.utabs .ind {
+  display: none !important; /* Rely on direct pill background */
+}
+
+/* 3D Glass Cards (Stepped embossed look) */
+.card {
+  background: rgba(22, 26, 38, 0.65) !important;
+  backdrop-filter: blur(26px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(26px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  border-radius: 22px !important;
+  box-shadow: 
+    0 20px 48px rgba(0, 0, 0, 0.48), 
+    0 4px 14px rgba(0, 0, 0, 0.32), 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.16), 
+    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.4) !important;
+  padding: 24px !important;
+  margin-bottom: 20px !important;
+  transition: border-color 0.25s ease !important;
+}
+.card:hover {
+  border-color: rgba(255, 255, 255, 0.16) !important;
+}
+.card > h2, .card-head h2 {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #FFFFFF !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* 4 Top Metric Cards (.tiles / .tile) matching Sedela Cards */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 22px;
+}
+.tile {
+  position: relative !important;
+  background: rgba(24, 28, 40, 0.68) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.11) !important;
+  border-radius: 20px !important;
+  padding: 22px 20px 20px !important;
+  box-shadow: 
+    0 18px 40px rgba(0, 0, 0, 0.45), 
+    inset 0 1px 1px rgba(255, 255, 255, 0.18), 
+    inset 0 -1px 2px rgba(0, 0, 0, 0.4) !important;
+  overflow: hidden !important;
+  transition: border-color 0.25s ease !important;
+}
+.tile:hover {
+  border-color: rgba(255, 107, 0, 0.45) !important;
+}
+
+/* The signature circular diagonal-arrow button in top-right (from image) */
+.tile::after {
+  content: "↗" !important;
+  position: absolute !important;
+  top: 16px !important;
+  right: 16px !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #94A3B8 !important;
+  transition: all 0.22s ease !important;
+}
+.tile:hover::after {
+  background: #FF6B00 !important;
+  color: #FFFFFF !important;
+  border-color: #FF7A1A !important;
+}
+
+/* Icon squircle inside metric card */
+.tile i {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+  color: #FF7A1A !important;
+  display: grid !important;
+  place-items: center !important;
+  margin-bottom: 12px !important;
+}
+.tile b {
+  display: block !important;
+  font-size: 26px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  color: #FFFFFF !important;
+  line-height: 1.2 !important;
+}
+.tile span {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #94A3B8 !important;
+  margin-top: 4px !important;
+}
+
+/* Inset Dark Glass Capsules (Tables & List Items) */
+.scroll table tr:not(:first-child) {
+  background: rgba(14, 18, 26, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 14px !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35) !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.scroll table tr:not(:first-child):hover {
+  background: rgba(24, 30, 44, 0.75) !important;
+  border-color: rgba(255, 107, 0, 0.35) !important;
+}
+.scroll table th {
+  color: #64748B !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+.scroll table td {
+  color: #F1F5F9 !important;
+}
+
+/* Composer / URL Input Box */
+.composer {
+  background: rgba(22, 26, 38, 0.72) !important;
+  backdrop-filter: blur(30px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 
+    0 22px 52px rgba(0, 0, 0, 0.52), 
+    inset 0 1px 1px rgba(255, 255, 255, 0.18), 
+    inset 0 -1px 2px rgba(0, 0, 0, 0.4) !important;
+  border-radius: 22px !important;
+}
+.composer:hover, .composer:focus-within {
+  border-color: rgba(255, 107, 0, 0.45) !important;
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 107, 0, 0.15) !important;
+}
+.composer input {
+  color: #FFFFFF !important;
+}
+.composer input::placeholder {
+  color: #64748B !important;
+}
+
+/* Form Inputs, Dropdowns, Textareas */
+:where(input:not([type=checkbox],[type=radio],[type=file],[type=range]),select,textarea) {
+  background: rgba(14, 18, 26, 0.65) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #F8FAFC !important;
+  border-radius: 12px !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35) !important;
+  transition: all 0.2s ease !important;
+}
+:where(input:not([type=checkbox],[type=radio],[type=file],[type=range]),select,textarea):focus {
+  background: rgba(20, 25, 36, 0.85) !important;
+  border-color: #FF6B00 !important;
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.22), inset 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Buttons (Orange Primary Pill, Glass Secondary) */
+.btn {
+  border-radius: 999px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #F1F5F9 !important;
+  backdrop-filter: blur(10px) !important;
+}
+.btn:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+.btn.primary {
+  background: linear-gradient(135deg, #FF6B00 0%, #FF5000 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+.btn.primary:hover {
+  background: var(--brand-press) !important;
+}
+
+/* Video Clips Glass Cards */
+.clip {
+  background: rgba(22, 26, 38, 0.68) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 20px !important;
+}
+.clip:hover {
+  border-color: rgba(255, 107, 0, 0.5) !important;
+}
+.hook {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+/* Dialogs & Popovers */
+dialog {
+  background: rgba(18, 22, 32, 0.88) !important;
+  backdrop-filter: blur(36px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), inset 0 1px 1px rgba(255, 255, 255, 0.25) !important;
+  color: #F8FAFC !important;
+}
+dialog::backdrop {
+  background: rgba(8, 10, 15, 0.65) !important;
+  backdrop-filter: blur(12px) !important;
+}
+.pop {
+  background: rgba(20, 24, 34, 0.88) !important;
+  backdrop-filter: blur(30px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6) !important;
+  border-radius: 18px !important;
+}
+
+/* Neon Chart Styles */
+svg.chart line.gl {
+  stroke: rgba(255, 255, 255, 0.06) !important;
+}
+svg.chart text {
+  fill: #64748B !important;
+  font-weight: 600 !important;
+}
+svg.chart rect.b1 {
+  fill: #FF6B00 !important;
+  filter: drop-shadow(0 0 8px rgba(255, 107, 0, 0.6)) !important;
+}
+svg.chart rect.b2 {
+  fill: #00E5FF !important;
+  filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.6)) !important;
+}
+
+/* KPIS in Activity Card */
+.kpi b {
+  color: #FFFFFF !important;
+  font-size: 24px !important;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5) !important;
+}
+.kpi span {
+  color: #94A3B8 !important;
+}
+
+/* Next steps cards */
+.step {
+  background: rgba(14, 18, 26, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 16px !important;
+  padding: 16px !important;
+  color: #F1F5F9 !important;
+  transition: all 0.22s ease !important;
+}
+.step:hover {
+  background: rgba(24, 30, 44, 0.75) !important;
+  border-color: rgba(255, 107, 0, 0.4) !important;
+}
+.step .n {
+  background: rgba(255, 107, 0, 0.15) !important;
+  border-color: #FF6B00 !important;
+  color: #FF7A1A !important;
+}
+
+
+/* ==========================================================================
+   SEDELA 3D DASHBOARD MODULES & ENHANCEMENTS
+   ========================================================================== */
+
+/* Topbar Navigation Horizontal Pills matching Sedela */
+.topbar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 10px 24px !important;
+  min-height: 58px !important;
+  gap: 16px !important;
+}
+.topbar h1#title {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #FFFFFF !important;
+  letter-spacing: -0.01em !important;
+  white-space: nowrap !important;
+}
+
+/* Sedela Top Navigation Pills */
+.utabs {
+  position: static !important;
+  transform: none !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+  overflow-x: auto !important;
+  max-width: 100% !important;
+}
+.utabs .tabbtn {
+  height: 36px !important;
+  padding: 0 16px !important;
+  border-radius: 999px !important;
+  background: rgba(25, 30, 42, 0.7) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #94A3B8 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.utabs .tabbtn:hover {
+  background: rgba(35, 42, 60, 0.85) !important;
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+}
+.utabs .tabbtn.on {
+  background: #FF6B00 !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 18px rgba(255, 107, 0, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+.pill-chev {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 2px;
+  opacity: 0.6;
+}
+.pill-chev svg {
+  width: 11px;
+  height: 11px;
+}
+
+/* Topbar Right Action Icons */
+.topbar-icons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+.head-btn {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #94A3B8 !important;
+  display: grid !important;
+  place-items: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+.head-btn:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+.avatar-head-btn {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  display: block !important;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* 4 Top Metric Cards (.sedela-tiles) */
+.sedela-tiles {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+  margin-bottom: 22px !important;
+}
+@media (max-width: 1024px) {
+  .sedela-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+@media (max-width: 640px) {
+  .sedela-tiles {
+    grid-template-columns: 1fr !important;
+  }
+}
+.tile-stepped {
+  background: rgba(24, 28, 40, 0.72) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.11) !important;
+  border-radius: 22px !important;
+  padding: 22px 20px 18px !important;
+  box-shadow: 
+    0 18px 40px rgba(0, 0, 0, 0.45), 
+    inset 0 1px 1px rgba(255, 255, 255, 0.18), 
+    inset 0 -1px 2px rgba(0, 0, 0, 0.4) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transition: border-color 0.25s ease !important;
+}
+.tile-stepped:hover {
+  border-color: rgba(255, 107, 0, 0.45) !important;
+}
+.tile-top {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 12px !important;
+}
+.tile-top i {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #FF7A1A !important;
+  display: grid !important;
+  place-items: center !important;
+  margin-bottom: 0 !important;
+}
+.tile-top i svg {
+  width: 22px !important;
+  height: 22px !important;
+}
+.tile-arrow {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  display: grid !important;
+  place-items: center !important;
+  color: #94A3B8 !important;
+  cursor: pointer !important;
+  transition: all 0.22s ease !important;
+}
+.tile-stepped:hover .tile-arrow {
+  background: #FF6B00 !important;
+  color: #FFFFFF !important;
+  border-color: #FF7A1A !important;
+}
+.tile-content {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+}
+.tile-title {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #94A3B8 !important;
+}
+.tile-num {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  color: #FFFFFF !important;
+  line-height: 1.2 !important;
+}
+.tile-bottom {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-top: 14px !important;
+  padding-top: 12px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+.tile-sub {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+}
+.tile-sub span {
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  color: #64748B !important;
+  letter-spacing: 0.3px !important;
+  text-transform: none !important;
+}
+.tile-sub b {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #F1F5F9 !important;
+}
+
+/* Sedela 2x2 Grid Layout */
+.sedela-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 20px !important;
+  margin-bottom: 24px !important;
+}
+@media (max-width: 1080px) {
+  .sedela-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+.sedela-card {
+  background: rgba(22, 26, 38, 0.68) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  border-radius: 22px !important;
+  box-shadow: 
+    0 20px 48px rgba(0, 0, 0, 0.48), 
+    0 4px 14px rgba(0, 0, 0, 0.32), 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.16), 
+    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.4) !important;
+  padding: 22px 24px !important;
+  margin-bottom: 0 !important;
+  transition: border-color 0.25s ease !important;
+}
+.sedela-card:hover {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Head Controls (Search, Expand, Equalizer, Dropdown Pill) */
+.head-controls {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+.icon-pill {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #94A3B8 !important;
+  display: grid !important;
+  place-items: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+.icon-pill:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+.icon-pill svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+.select-pill {
+  height: 32px !important;
+  padding: 0 14px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #94A3B8 !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+.select-pill:hover {
+  background: rgba(255, 255, 255, 0.10) !important;
+  color: #FFFFFF !important;
+}
+.select-pill svg {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+/* Stepped Tabs on bottom-left card */
+.tabbed-card-head {
+  padding-bottom: 4px !important;
+}
+.stepped-tabs {
+  display: flex !important;
+  gap: 6px !important;
+}
+.stepped-tab {
+  padding: 8px 18px !important;
+  border-radius: 12px 12px 0 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  color: #64748B !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+.stepped-tab.active {
+  background: rgba(16, 20, 30, 0.85) !important;
+  color: #FFFFFF !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 -2px 8px rgba(0,0,0,0.3) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Inset Dark Glass Capsules (List rows) */
+.capsules-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  margin-top: 14px !important;
+}
+.capsule-row {
+  background: rgba(16, 20, 30, 0.65) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 16px !important;
+  padding: 12px 18px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35) !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+}
+.capsule-row:hover {
+  background: rgba(26, 32, 46, 0.85) !important;
+  border-color: rgba(255, 107, 0, 0.35) !important;
+}
+.capsule-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+}
+.capsule-avatar {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  overflow: hidden !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  flex: none !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  color: #FFA366 !important;
+}
+.capsule-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+.capsule-squircle {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  display: grid !important;
+  place-items: center !important;
+  color: #94A3B8 !important;
+  flex: none !important;
+}
+.capsule-squircle svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+.capsule-meta {
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+}
+.capsule-sub {
+  font-size: 11.5px !important;
+  color: #64748B !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+.capsule-name {
+  font-size: 13.5px !important;
+  color: #F1F5F9 !important;
+  font-weight: 600 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+.capsule-right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  flex: none !important;
+}
+.capsule-stat {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+}
+.stat-lbl {
+  font-size: 11px !important;
+  color: #64748B !important;
+}
+.stat-val {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #F1F5F9 !important;
+}
+.circ-arrow {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  color: #94A3B8 !important;
+  display: grid !important;
+  place-items: center !important;
+  transition: all 0.2s ease !important;
+}
+.circ-arrow.active-orange {
+  background: linear-gradient(135deg, #FF6B00 0%, #FF5000 100%) !important;
+  color: #FFFFFF !important;
+  border-color: #FF7A1A !important;
+  box-shadow: 0 0 16px rgba(255, 107, 0, 0.55) !important;
+}
+.circ-arrow svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+.sales-pill {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #94A3B8 !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 4px 12px !important;
+  border-radius: 999px !important;
+}
+
+/* Course Overview Split Layout */
+.course-ov-layout {
+  display: grid !important;
+  grid-template-columns: 140px 170px 1fr !important;
+  gap: 16px !important;
+  align-items: center !important;
+  margin-top: 14px !important;
+}
+@media (max-width: 600px) {
+  .course-ov-layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+.ov-subcard {
+  background: rgba(14, 18, 26, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  border-radius: 14px !important;
+  padding: 12px 14px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35) !important;
+}
+.subcard-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 12px !important;
+  color: #94A3B8 !important;
+}
+.subcard-row.main-title {
+  font-weight: 700 !important;
+  color: #FFFFFF !important;
+  font-size: 13px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  padding-bottom: 6px !important;
+}
+.subcard-row i {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 6px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  display: grid !important;
+  place-items: center !important;
+  color: #FF7A1A !important;
+  flex: none !important;
+}
+.subcard-row i svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+.subcard-row div {
+  display: flex !important;
+  flex-direction: column !important;
+}
+.subcard-row div span {
+  font-size: 10px !important;
+  color: #64748B !important;
+}
+.subcard-row div b {
+  font-size: 12px !important;
+  color: #F1F5F9 !important;
+  font-weight: 700 !important;
+}
+.ov-donut-wrap {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  position: relative !important;
+}
+.sedela-donut-svg {
+  width: 165px !important;
+  height: 165px !important;
+  transform: rotate(-90deg) !important;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.5)) !important;
+}
+.ov-legend-col {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  height: 100% !important;
+  min-height: 180px !important;
+}
+.legend-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+}
+.legend-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 11.5px !important;
+  color: #94A3B8 !important;
+  font-weight: 500 !important;
+}
+.legend-item i {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  flex: none !important;
+}
+.pending-badge {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  background: rgba(255, 107, 0, 0.12) !important;
+  border: 1px solid rgba(255, 107, 0, 0.28) !important;
+  border-radius: 12px !important;
+  padding: 8px 12px !important;
+  margin-top: 10px !important;
+}
+.pending-icon {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  background: #FF6B00 !important;
+  color: #FFFFFF !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 12px !important;
+}
+.pending-icon svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+.pending-meta {
+  display: flex !important;
+  flex-direction: column !important;
+}
+.pending-meta span {
+  font-size: 10px !important;
+  color: #FFA366 !important;
+  text-transform: uppercase !important;
+  font-weight: 600 !important;
+}
+.pending-meta b {
+  font-size: 14px !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+/* Revenue Wave Chart */
+.revenue-chart-wrap {
+  width: 100% !important;
+  overflow: hidden !important;
+  margin-top: 8px !important;
+}
+.sedela-wave-svg {
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+}
+
+/* ==========================================================================
+   THEME PREVIEWS & SETTINGS CONTROLS
+   ========================================================================== */
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+@media (max-width: 900px) {
+  .theme-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.theme-card {
+  position: relative;
+  background: rgba(20, 24, 34, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.theme-card:hover {
+  border-color: rgba(255, 107, 0, 0.4);
+}
+.theme-card.active {
+  border-color: #FF6B00 !important;
+  background: rgba(255, 107, 0, 0.08) !important;
+  box-shadow: 0 0 0 1px #FF6B00, 0 12px 32px rgba(255, 107, 0, 0.2) !important;
+}
+.theme-preview {
+  height: 110px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.dark-theme-preview {
+  background: #0B0E14;
+}
+.light-theme-preview {
+  background: #F8FAFC;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+.theme-split-preview {
+  background: #0B0E14;
+}
+.split-side {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+}
+.dark-half {
+  left: 0;
+  background: #0B0E14;
+}
+.light-half {
+  right: 0;
+  background: #F8FAFC;
+}
+.preview-center-icon {
+  position: relative;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 107, 0, 0.9);
+  color: #FFF;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+.preview-center-icon svg {
+  width: 24px;
+  height: 24px;
+}
+.preview-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.dark-theme-preview .preview-badge {
+  background: rgba(255, 255, 255, 0.1);
+  color: #FFA23A;
+}
+.light-theme-preview .preview-badge {
+  background: rgba(0, 0, 0, 0.06);
+  color: #FF5A00;
+}
+.preview-mock {
+  width: 80%;
+  height: 60%;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px;
+}
+.dark-theme-preview .preview-mock {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.light-theme-preview .preview-mock {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.dark-theme-preview .mock-nav {
+  height: 8px;
+  width: 50%;
+  background: #FF6B00;
+  border-radius: 4px;
+}
+.light-theme-preview .mock-nav {
+  height: 8px;
+  width: 50%;
+  background: #FF6B00;
+  border-radius: 4px;
+}
+.dark-theme-preview .mock-card {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+}
+.light-theme-preview .mock-card {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 6px;
+}
+.theme-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.theme-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.theme-title-row b {
+  font-size: 15px;
+  font-weight: 700;
+}
+.theme-tag {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #94A3B8;
+}
+.theme-card.active .theme-tag {
+  background: #FF6B00;
+  color: #FFF;
+}
+.theme-meta p {
+  font-size: 12px;
+  line-height: 1.45;
+  color: #94A3B8;
+  margin: 0;
+}
+
+/* ==========================================================================
+   LIGHT THEME (html[data-theme="light"])
+   ========================================================================== */
+html[data-theme="light"] {
+  color-scheme: light !important;
+  --brand: #FF6B00;
+  --brand-press: #E65A00;
+  --brand-ink: #1E140E;
+  --brand-soft: rgba(255, 107, 0, 0.12);
+  --brand-line: rgba(255, 107, 0, 0.28);
+  --frame: #F1F5F9;
+  --frame-2: #E2E8F0;
+  --frame-line: rgba(0, 0, 0, 0.08);
+  --frame-text: #0F172A;
+  --frame-dim: #64748B;
+  --bg: #F8FAFC;
+  --muted: #F1F5F9;
+  --line: rgba(0, 0, 0, 0.08);
+  --line-2: rgba(0, 0, 0, 0.12);
+  --text: #0F172A;
+  --dim: #475569;
+  --faint: #94A3B8;
+  --good: #059669;
+  --good-soft: rgba(16, 185, 129, 0.12);
+  --bad: #DC2626;
+  --bad-soft: rgba(239, 68, 68, 0.12);
+}
+html[data-theme="light"] body {
+  background-color: #F8FAFC !important;
+  background-image: 
+    radial-gradient(circle at 14% 18%, rgba(255, 107, 0, 0.10) 0%, transparent 45%),
+    radial-gradient(circle at 86% 22%, rgba(20, 184, 166, 0.08) 0%, transparent 42%),
+    radial-gradient(circle at 88% 82%, rgba(255, 122, 26, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 45% 70%, rgba(99, 102, 241, 0.06) 0%, transparent 50%) !important;
+  color: #0F172A !important;
+}
+html[data-theme="light"] .side {
+  background: rgba(255, 255, 255, 0.84) !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 10px 0 32px rgba(0, 0, 0, 0.04) !important;
+  color: #0F172A !important;
+}
+html[data-theme="light"] .side-card {
+  background: rgba(241, 245, 249, 0.8) !important;
+  border: 1px solid rgba(0, 0, 0, 0.07) !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9), 0 4px 14px rgba(0, 0, 0, 0.04) !important;
+}
+html[data-theme="light"] .nav-item {
+  color: #475569 !important;
+}
+html[data-theme="light"] .nav-item:hover {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #0F172A !important;
+}
+html[data-theme="light"] .nav-item.on {
+  background: linear-gradient(135deg, #FF6B00 0%, #FF5000 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 18px rgba(255, 107, 0, 0.4) !important;
+}
+html[data-theme="light"] main {
+  background: rgba(255, 255, 255, 0.78) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.95) !important;
+}
+html[data-theme="light"] .topbar {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
+}
+html[data-theme="light"] .topbar.stuck {
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+}
+html[data-theme="light"] .topbar h1#title {
+  color: #0F172A !important;
+}
+html[data-theme="light"] .utabs .tabbtn {
+  background: rgba(241, 245, 249, 0.85) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #475569 !important;
+}
+html[data-theme="light"] .utabs .tabbtn:hover {
+  background: rgba(226, 232, 240, 0.9) !important;
+  color: #0F172A !important;
+}
+html[data-theme="light"] .utabs .tabbtn.on {
+  background: #FF6B00 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 18px rgba(255, 107, 0, 0.45) !important;
+}
+html[data-theme="light"] .head-btn {
+  background: rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #475569 !important;
+}
+html[data-theme="light"] .head-btn:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+  color: #0F172A !important;
+}
+html[data-theme="light"] .card,
+html[data-theme="light"] .sedela-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02), inset 0 1px 1px rgba(255, 255, 255, 0.95) !important;
+}
+html[data-theme="light"] .card > h2,
+html[data-theme="light"] .card-head h2,
+html[data-theme="light"] .sedela-card h2,
+html[data-theme="light"] .sedela-card h3 {
+  color: #0F172A !important;
+}
+html[data-theme="light"] .tile,
+html[data-theme="light"] .tile-stepped {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.95) !important;
+}
+html[data-theme="light"] .tile-title {
+  color: #64748B !important;
+}
+html[data-theme="light"] .tile-num {
+  color: #0F172A !important;
+}
+html[data-theme="light"] .tile-top i {
+  background: rgba(255, 107, 0, 0.1) !important;
+  border: 1px solid rgba(255, 107, 0, 0.2) !important;
+  color: #FF6B00 !important;
+}
+html[data-theme="light"] .tile-arrow,
+html[data-theme="light"] .tile::after {
+  background: rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #64748B !important;
+}
+html[data-theme="light"] .tile-sub b {
+  color: #0F172A !important;
+}
+html[data-theme="light"] .capsule-row {
+  background: rgba(248, 250, 252, 0.95) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+}
+html[data-theme="light"] .capsule-row:hover {
+  background: #FFFFFF !important;
+  border-color: rgba(255, 107, 0, 0.35) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06) !important;
+}
+html[data-theme="light"] .capsule-name {
+  color: #0F172A !important;
+}
+html[data-theme="light"] .capsule-squircle {
+  background: rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  color: #475569 !important;
+}
+html[data-theme="light"] .stat-val {
+  color: #0F172A !important;
+}
+html[data-theme="light"] .ov-subcard {
+  background: rgba(248, 250, 252, 0.95) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow: none !important;
+}
+html[data-theme="light"] .subcard-row.main-title {
+  color: #0F172A !important;
+}
+html[data-theme="light"] .subcard-row div b {
+  color: #0F172A !important;
+}
+html[data-theme="light"] .pending-meta b {
+  color: #0F172A !important;
+}
+html[data-theme="light"] :where(input:not([type=checkbox],[type=radio],[type=file],[type=range]),select,textarea) {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(0, 0, 0, 0.14) !important;
+  color: #0F172A !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+html[data-theme="light"] :where(input:not([type=checkbox],[type=radio],[type=file],[type=range]),select,textarea):focus {
+  background: #FFFFFF !important;
+  border-color: #FF6B00 !important;
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.16) !important;
+}
+html[data-theme="light"] .composer {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.8) !important;
+}
+html[data-theme="light"] .composer input {
+  color: #0F172A !important;
+}
+html[data-theme="light"] .composer input::placeholder {
+  color: #94A3B8 !important;
+}
+html[data-theme="light"] .btn {
+  background: rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(0, 0, 0, 0.09) !important;
+  color: #0F172A !important;
+}
+html[data-theme="light"] .btn:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+}
+html[data-theme="light"] .btn.primary {
+  background: linear-gradient(135deg, #FF6B00 0%, #FF5000 100%) !important;
+  border: 1px solid rgba(255, 107, 0, 0.4) !important;
+  color: #FFFFFF !important;
+}
+html[data-theme="light"] .pop,
+html[data-theme="light"] dialog {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12) !important;
+  color: #0F172A !important;
+}
+html[data-theme="light"] .scroll table tr:not(:first-child) {
+  background: rgba(248, 250, 252, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+html[data-theme="light"] .scroll table td {
+  color: #0F172A !important;
+}
+html[data-theme="light"] .scroll table th {
+  color: #64748B !important;
+}
+html[data-theme="light"] .clip {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.05) !important;
+}
+html[data-theme="light"] .hook {
+  color: #0F172A !important;
+}
+html[data-theme="light"] .icon-pill,
+html[data-theme="light"] .select-pill,
+html[data-theme="light"] .circ-arrow:not(.active-orange) {
+  background: rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #475569 !important;
+}
+html[data-theme="light"] .stepped-tab {
+  color: #64748B !important;
+}
+html[data-theme="light"] .stepped-tab.active {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-left: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+html[data-theme="light"] .sales-pill {
+  background: rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  color: #475569 !important;
+}
+html[data-theme="light"] .set-nav {
+  border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+html[data-theme="light"] .set-link {
+  color: #475569 !important;
+}
+html[data-theme="light"] .set-link:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: #0F172A !important;
+}
+html[data-theme="light"] .set-link.on {
+  background: rgba(255, 107, 0, 0.12) !important;
+  color: #FF6B00 !important;
+  border-color: rgba(255, 107, 0, 0.3) !important;
+}
+html[data-theme="light"] .set-sec h2 {
+  color: #0F172A !important;
+}
+html[data-theme="light"] .help,
+html[data-theme="light"] .sub {
+  color: #64748B !important;
+}
+html[data-theme="light"] .model-chip {
+  background: rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(0, 0, 0, 0.09) !important;
+  color: #334155 !important;
+}
+html[data-theme="light"] .model-chip:hover {
+  background: rgba(255, 107, 0, 0.12) !important;
+  border-color: #FF6B00 !important;
+  color: #FF6B00 !important;
+}
+html[data-theme="light"] .model-chip.active {
+  background: #FF6B00 !important;
+  color: #FFFFFF !important;
+}
+html[data-theme="light"] .toast {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  color: #0F172A !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1) !important;
+}
+html[data-theme="light"] .vb {
+  background: #FFF4EA !important;
+  border: 1px solid #FFD9BC !important;
+  color: #2A1A12 !important;
+}
+html[data-theme="light"] .kpi b {
+  color: #0F172A !important;
+  text-shadow: none !important;
+}
+html[data-theme="light"] .step {
+  background: rgba(248, 250, 252, 0.95) !important;
+  border: 1px solid rgba(0, 0, 0, 0.07) !important;
+  color: #0F172A !important;
+}
+html[data-theme="light"] .theme-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+html[data-theme="light"] .theme-title-row b {
+  color: #0F172A;
+}
+html[data-theme="light"] .theme-meta p {
+  color: #64748B;
+}
+html[data-theme="light"] .theme-tag {
+  background: rgba(0, 0, 0, 0.06);
+  color: #475569;
+}
+html[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #CBD5E1 !important;
+  border: 3px solid #F8FAFC !important;
+}
+
+/* AGENTS.md compliance: no shadows, hover states that change colour only */
+*, *::before, *::after {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+:hover {
+  transform: none !important;
+}
+
 </style>
+<script>
+(function() {
+  try {
+    var p = localStorage.getItem("cutit_theme") || "system";
+    var d = p === "system" ? (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : p;
+    document.documentElement.setAttribute("data-theme", d);
+    document.documentElement.setAttribute("data-theme-pref", p);
+  } catch(e) {}
+})();
+</script>
 </head>
 <body>
 <div class="app" id="app">
   <aside class="side" aria-label="Sidebar">
-    <div class="side-head"><img class="logo" src="/brand/logo-light.svg" alt="PeakCut"><img class="mark" src="/brand/favicon.svg" alt="PeakCut">
+    <div class="side-head"><img class="logo" src="/brand/logo-light.svg" alt="Cut it by Ai With Atif"><img class="mark" src="/brand/logo-mark.svg" alt="Cut it by Ai With Atif">
       <button class="icon-btn collapse" data-act="collapse" id="collapseBtn" aria-label="Collapse sidebar"></button></div>
     <nav class="nav" id="nav" aria-label="Main"></nav>
     <div class="side-foot" id="foot"></div>
   </aside>
   <div class="scrim" data-act="menu"></div>
   <main id="main">
-    <header class="topbar"><button class="icon-btn menu" data-act="menu" id="menuBtn" aria-label="Open menu"></button>
+    <header class="topbar"><div class="topbar-left" style="display:inline-flex;align-items:center;gap:10px;"><button class="icon-btn menu" data-act="menu" id="menuBtn" aria-label="Open menu"></button>
+      <a href="/app" class="topbar-brand" title="Cut it by Ai With Atif" style="display:inline-flex;align-items:center;text-decoration:none;"><img src="/brand/logo-topbar.svg" alt="Cut it by Ai With Atif" style="height:28px;width:auto;display:block;"></a></div>
       <span id="tpic"></span><div class="titles"><h1 id="title"></h1><p id="subtitle"></p></div><nav class="utabs" id="utabs" role="tablist" aria-label="Creator sections"></nav><div class="row" id="actions"></div></header>
     <div id="vbanner"></div>
     <div id="heroSlot"></div>
@@ -894,9 +2545,25 @@ const I = {
  "signout": "<path d=\"M120,216a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V40a8,8,0,0,1,8-8h64a8,8,0,0,1,0,16H56V208h56A8,8,0,0,1,120,216Zm109.66-93.66-40-40a8,8,0,0,0-11.32,11.32L204.69,120H112a8,8,0,0,0,0,16h92.69l-26.35,26.34a8,8,0,0,0,11.32,11.32l40-40A8,8,0,0,0,229.66,122.34Z\"/>",
  "shield": "<path d=\"M208,40H48A16,16,0,0,0,32,56v56c0,52.72,25.52,84.67,46.93,102.19,23.06,18.86,46,25.26,47,25.53a8,8,0,0,0,4.2,0c1-.27,23.91-6.67,47-25.53C198.48,196.67,224,164.72,224,112V56A16,16,0,0,0,208,40Zm0,72c0,37.07-13.66,67.16-40.6,89.42A129.3,129.3,0,0,1,128,223.62a128.25,128.25,0,0,1-38.92-21.81C61.82,179.51,48,149.3,48,112l0-56,160,0ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z\"/>",
  "users": "<path d=\"M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z\"/>",
- "lock": "<path d=\"M128,112a28,28,0,0,0-8,54.83V184a8,8,0,0,0,16,0V166.83A28,28,0,0,0,128,112Zm0,40a12,12,0,1,1,12-12A12,12,0,0,1,128,152Zm80-72H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Z\"/>"
+ "lock": "<path d=\"M128,112a28,28,0,0,0-8,54.83V184a8,8,0,0,0,16,0V166.83A28,28,0,0,0,128,112Zm0,40a12,12,0,1,1,12-12A12,12,0,0,1,128,152Zm80-72H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Z\"/>",
+  "gradcap": "<path d=\"M240,88a8,8,0,0,0-4.86-7.42l-104-48a8,8,0,0,0-6.28,0l-104,48A8,8,0,0,0,16,88v48a8,8,0,0,0,16,0V95.74l32,14.77V168a48,48,0,0,0,48,48h32a48,48,0,0,0,48-48V110.51l43.14-19.91A8,8,0,0,0,240,88ZM176,168a32,32,0,0,1-32,32H112a32,32,0,0,1-32-32V117.89l44.86,20.71a8,8,0,0,0,6.28,0L176,117.89ZM128,41.74,213.26,81,128,120.26,42.74,81Z\"/>",
+  "book": "<path d=\"M224,48H160a40,40,0,0,0-32,16A40,40,0,0,0,96,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H96a24,24,0,0,1,24,24,8,8,0,0,0,16,0,24,24,0,0,1,24-24h64a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM96,192H32V64H96a24,24,0,0,1,24,24V200A39.81,39.81,0,0,0,96,192Zm128-16H160a39.81,39.81,0,0,0-24,8V88a24,24,0,0,1,24-24h64Z\"/>",
+  "expand": "<path d=\"M216,48V88a8,8,0,0,1-16,0V64H168a8,8,0,0,1,0-16h40A8,8,0,0,1,216,48ZM88,48H48a8,8,0,0,0-8,8V96a8,8,0,0,0,16,0V64H88a8,8,0,0,0,0-16ZM48,208H88a8,8,0,0,0,0-16H56V168a8,8,0,0,0-16,0v40A8,8,0,0,0,48,208Zm160-48a8,8,0,0,0-8,8v24H168a8,8,0,0,0,0,16h40a8,8,0,0,0,8-8V168A8,8,0,0,0,208,160Z\"/>",
+  "search": "<path d=\"M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z\"/>",
+  "wave": "<path d=\"M48,88a8,8,0,0,0-8,8v64a8,8,0,0,0,16,0V96A8,8,0,0,0,48,88Zm40-32a8,8,0,0,0-8,8V192a8,8,0,0,0,16,0V64A8,8,0,0,0,88,56Zm40-32a8,8,0,0,0-8,8V224a8,8,0,0,0,16,0V32A8,8,0,0,0,128,24Zm40,32a8,8,0,0,0-8,8V192a8,8,0,0,0,16,0V64A8,8,0,0,0,168,56Zm40,32a8,8,0,0,0-8,8v64a8,8,0,0,0,16,0V96A8,8,0,0,0,208,88Z\"/>",
+  "cube": "<path d=\"M223.68,66.15l-88-48.15a15.89,15.89,0,0,0-15.36,0l-88,48.15a16,16,0,0,0-8.32,14v95.7a16,16,0,0,0,8.32,14l88,48.15a15.89,15.89,0,0,0,15.36,0l88-48.15a16,16,0,0,0,8.32-14V80.15A16,16,0,0,0,223.68,66.15ZM128,32l80,43.78L171.18,96,91.24,52.26ZM120,221.78,40,178V90.35l80,43.74Zm16,0V134.09l32-17.5V152a8,8,0,0,0,16,0V107.86l32-17.51v87.65Z\"/>",
+  "grid9": "<path d=\"M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48Zm-96,48H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V168A16,16,0,0,0,104,152Zm0,64H56V168h48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V168A16,16,0,0,0,200,152Zm0,64H152V168h48Z\"/>",
+  "trendup": "<path d=\"M240,56v64a8,8,0,0,1-16,0V75.31l-82.34,82.35a8,8,0,0,1-11.32,0L96,123.31,29.66,189.66a8,8,0,0,1-11.32-11.32l72-72a8,8,0,0,1,11.32,0L136,140.69l76.69-76.69H176a8,8,0,0,1,0-16h56A8,8,0,0,1,240,56Z\"/>",
+  "cart": "<path d=\"M230.14,58.87A8,8,0,0,0,224,56H62.68L56.6,22.57A8,8,0,0,0,48.73,16H24a8,8,0,0,0,0,16h18l25.56,140.6a24,24,0,0,0,23.6,19.4H200a8,8,0,0,0,0-16H91.17a8,8,0,0,1-7.87-6.57L80.11,152H200a16,16,0,0,0,15.65-12.57l16-72A8,8,0,0,0,230.14,58.87ZM200,136H77.22L65.59,72H214.24ZM96,200a16,16,0,1,0,16,16A16,16,0,0,0,96,200Zm80,0a16,16,0,1,0,16,16A16,16,0,0,0,176,200Z\"/>",
+  "sparkle": "<path d=\"M224,128a8,8,0,0,1-8,8,72.08,72.08,0,0,0-72,72,8,8,0,0,1-16,0,72.08,72.08,0,0,0-72-72,8,8,0,0,1,0-16,72.08,72.08,0,0,0,72-72,8,8,0,0,1,16,0,72.08,72.08,0,0,0,72,72A8,8,0,0,1,224,128Z\"/>",
+  "globe": "<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,16c14.26,0,28,27.16,33.15,64H94.85C100,67.16,113.74,40,128,40ZM80,128a139.75,139.75,0,0,1,2.82-28h86.36A139.75,139.75,0,0,1,176,128a139.75,139.75,0,0,1-2.82,28H82.82A139.75,139.75,0,0,1,80,128Zm14.85,44h78.3C156,208.84,142.26,236,128,236S100,208.84,94.85,172ZM40,128a88.16,88.16,0,0,1,26.54-62.81A123.63,123.63,0,0,0,78.29,100H66.86A88.82,88.82,0,0,0,40,128Zm26.86,28h11.43a123.63,123.63,0,0,0,11.75,34.81A88.16,88.16,0,0,1,66.86,156ZM177.14,190.81A123.63,123.63,0,0,0,188.89,156h11.43A88.16,88.16,0,0,1,177.14,190.81Zm11.75-34.81a123.63,123.63,0,0,0-11.75-34.81A88.16,88.16,0,0,1,216,128,88.82,88.82,0,0,0,188.89,156Z\"/>",
+  "help": "<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a16,16,0,1,1-16-16A16,16,0,0,1,144,176Zm-16-40a8,8,0,0,1-8-8,24,24,0,1,1,34.87-21.36,8,8,0,0,1-7.74,13.91A8,8,0,0,0,128,128a8,8,0,0,1-8,8Z\"/>",
+  "sun": "<path d=\"M128,40a8,8,0,0,1,8-8V16a8,8,0,0,0-16,0V32A8,8,0,0,1,128,40Zm0,176a8,8,0,0,1-8,8v16a8,8,0,0,0,16,0V224A8,8,0,0,1,128,216ZM40,128a8,8,0,0,1-8-8H16a8,8,0,0,0,0,16H32A8,8,0,0,1,40,128Zm184,0a8,8,0,0,1,8-8h16a8,8,0,0,0,0,16H232A8,8,0,0,1,224,128ZM65.66,65.66a8,8,0,0,1,0-11.31L54.34,43A8,8,0,0,0,43,54.34L54.34,65.66A8,8,0,0,1,65.66,65.66ZM190.34,190.34a8,8,0,0,1,0,11.32L201.66,213a8,8,0,0,0,11.32-11.32L201.66,190.34A8,8,0,0,1,190.34,190.34ZM65.66,190.34a8,8,0,0,1-11.32,0L43,201.66A8,8,0,0,0,54.34,213l11.32-11.32A8,8,0,0,1,65.66,190.34ZM190.34,65.66a8,8,0,0,1,11.32,0L213,54.34A8,8,0,0,0,201.66,43L190.34,54.34A8,8,0,0,1,190.34,65.66ZM128,72a56,56,0,1,0,56,56A56.06,56.06,0,0,0,128,72Zm0,96a40,40,0,1,1,40-40A40,40,0,0,1,128,168Z\"/>",
+  "moon": "<path d=\"M216.73,153.64A96,96,0,0,1,102.36,39.27a8,8,0,0,0-9.61-9.61A112.12,112.12,0,1,0,226.34,163.25,8,8,0,0,0,216.73,153.64ZM128,224a96,96,0,0,1-82.68-144.5A112.06,112.06,0,0,0,172.5,206.68,95.53,95.53,0,0,1,128,224Z\"/>",
+  "laptop": "<path d=\"M232,176H216V64a16,16,0,0,0-16-16H56A16,16,0,0,0,40,64V176H24a8,8,0,0,0,0,16H232a8,8,0,0,0,0-16ZM56,64H200V176H56ZM128,196a8,8,0,0,1,8,8,8,8,0,0,1-16,0A8,8,0,0,1,128,196Z\"/>"
+
 };
-const ic = n => `<svg viewBox="0 0 256 256" aria-hidden="true">${I[n]}</svg>`;
+const ic = n => `<svg viewBox="0 0 256 256" aria-hidden="true">${I[n] || ""}</svg>`;
 const navIc = (n, v) => ic(S.view === v && I[n + "_f"] ? n + "_f" : n);
 const fmt = s => { s = Math.max(0, Math.round(s)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60); return (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(s % 60).padStart(2, "0"); };
 const clock = t => new Date(t * 1000).toLocaleString([], {weekday:"short", hour:"2-digit", minute:"2-digit"});
@@ -916,6 +2583,76 @@ function toast(msg, kind = "") {
   if (kind === "bad") { const r = document.createElement("button"); r.className = "rep"; r.textContent = "Report"; r.onclick = () => { t.remove(); openFeedback("bug", msg); }; t.append(r); }
   $("#toasts").append(t); setTimeout(() => t.remove(), kind === "bad" ? 7000 : 3200);
 }
+
+/* ============================================================ Theme System */
+const ThemeManager = {
+  KEY: "cutit_theme",
+  getPreference() {
+    try { return localStorage.getItem(this.KEY) || "system"; } catch { return "system"; }
+  },
+  getSystemTheme() {
+    return (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+  },
+  getResolvedTheme() {
+    const p = this.getPreference();
+    return p === "system" ? this.getSystemTheme() : (p === "light" ? "light" : "dark");
+  },
+  getIcon() {
+    const p = this.getPreference();
+    if (p === "system") return "laptop";
+    return this.getResolvedTheme() === "dark" ? "moon" : "sun";
+  },
+  getLabel() {
+    const p = this.getPreference();
+    if (p === "system") return `System (${this.getResolvedTheme() === "dark" ? "Dark" : "Light"})`;
+    return p === "light" ? "Light" : "Dark";
+  },
+  setTheme(pref) {
+    if (!["system", "dark", "light"].includes(pref)) pref = "system";
+    try { localStorage.setItem(this.KEY, pref); } catch {}
+    this.apply();
+  },
+  cycle() {
+    const p = this.getPreference();
+    const next = p === "system" ? "light" : p === "light" ? "dark" : "system";
+    this.setTheme(next);
+    toast(`Theme: ${this.getLabel()}`);
+    return next;
+  },
+  apply() {
+    const pref = this.getPreference();
+    const resolved = this.getResolvedTheme();
+    document.documentElement.setAttribute("data-theme", resolved);
+    document.documentElement.setAttribute("data-theme-pref", pref);
+    
+    // Switch brand logos depending on theme
+    const sideLogo = $(".side-head .logo");
+    if (sideLogo) sideLogo.src = resolved === "light" ? "/brand/logo.svg" : "/brand/logo-light.svg";
+    const topLogo = $(".topbar-brand img");
+    if (topLogo) topLogo.src = resolved === "light" ? "/brand/logo-topbar-dark.svg" : "/brand/logo-topbar.svg";
+    const setNavLogo = $(".set-nav img");
+    if (setNavLogo) setNavLogo.src = resolved === "light" ? "/brand/logo.svg" : "/brand/logo-light.svg";
+
+    // Update theme toggle buttons on page
+    $$('[data-act="themetoggle"]').forEach(btn => {
+      btn.innerHTML = ic(this.getIcon());
+      btn.title = `Theme: ${this.getLabel()} (Click to change)`;
+    });
+    // Update theme cards if on Appearance settings page
+    $$(".theme-card").forEach(c => {
+      c.classList.toggle("active", c.getAttribute("data-pref") === pref);
+    });
+  },
+  init() {
+    this.apply();
+    if (window.matchMedia) {
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+        if (this.getPreference() === "system") this.apply();
+      });
+    }
+  }
+};
+ThemeManager.apply();
 const cache = new WeakMap();
 function put(el, html) { if (el && cache.get(el) !== html) { cache.set(el, html); el.innerHTML = html; } }
 function ask(title, text, okLabel = "Confirm", danger = false) {
@@ -934,15 +2671,15 @@ function startTour() {
   if (S.view !== "overview") go("overview");
   // sel: what the step points at.  side: it lives in the sidebar (opened for the step on phones).  dock: where the card sits on phones.
   const steps = [
-    {t: "Welcome to PeakCut", x: "Long videos and live streams go in, captioned vertical clips come out. Here is a quick look around.",
+    {t: "Welcome to Cut it by Ai With Atif", x: "Long videos and live streams go in, captioned vertical clips come out. Here is a quick look around.",
      chips: [["link", "Paste a link"], ["scissors", "Get clips", 1], ["radio", "Live streams"], ["send", "Post them"]]},
-    {t: "Start with any video", x: "Paste a YouTube, Twitch or Kick link here, or upload a file. PeakCut finds the best moments and makes each one a short with captions.",
+    {t: "Start with any video", x: "Paste a YouTube, Twitch or Kick link here, or upload a file. Cut it by Ai With Atif finds the best moments and makes each one a short with captions.",
      sel: "#addform", dock: "bottom", chips: [["link", "YouTube"], ["link", "Twitch"], ["link", "Kick"], ["up", "Upload", 1]]},
     {t: "Your day at a glance", x: "Home shows what is recording, how many clips were made and posted today, and what is waiting to go out.",
      sel: "#ov .tiles", dock: "bottom", chips: [["radio", "Recording"], ["scissors", "Clips today", 1], ["send", "Posted"], ["clock", "Waiting"]]},
     {t: "Every video in one place", x: "All videos lists everything you have processed. Open a video to see its clips, trim them, change the captions or download them.",
      sel: '#nav [data-v="library"]', side: 1, dock: "bottom", chips: [["film", "All videos", 1], ["play", "Preview"], ["sliders", "Edit"], ["down", "Download"]]},
-    {t: "Add the creators you clip", x: "Give each creator a workspace with their channels. PeakCut can record them when they go live and clip the highlights as they happen.",
+    {t: "Add the creators you clip", x: "Give each creator a workspace with their channels. Cut it by Ai With Atif can record them when they go live and clip the highlights as they happen.",
      sel: '#nav [data-act="newcreator"]', side: 1, dock: "bottom", chips: [["plusc", "New creator", 1], ["radio", "Record live"], ["bolt", "Clip highlights"]]},
     {t: "The AI picks the moments", x: "This shows which AI this server uses and how much it has worked today. Open it to see what the AI was used for.",
      sel: "#foot .ai-card", side: 1, dock: "top", chips: [["bolt", "AI", 1], ["chart", "See usage"]]},
@@ -1098,7 +2835,7 @@ function drawStream() {
     pl.dataset.src = src;
     const ipHost = /^[\d.]+$|^\[/.test(location.hostname);
     pl.innerHTML = k === "twitch" && ipHost
-      ? `<div class="noembed">${platLogo(k)}<b>Twitch only plays inside sites with a web address</b><span>It will play here once PeakCut is on its domain, or open PeakCut at localhost instead of ${esc(location.hostname)}.</span><a class="btn sm" href="${esc(p.channel)}" target="_blank" rel="noopener">Watch on Twitch ${ic("upright")}</a></div>`
+      ? `<div class="noembed">${platLogo(k)}<b>Twitch only plays inside sites with a web address</b><span>It will play here once Cut it by Ai With Atif is on its domain, or open Cut it by Ai With Atif at localhost instead of ${esc(location.hostname)}.</span><a class="btn sm" href="${esc(p.channel)}" target="_blank" rel="noopener">Watch on Twitch ${ic("upright")}</a></div>`
       : src ? `<iframe src="${src}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="${PLAT[k].name} live stream"></iframe>` : "";
   }
   const stats = [p.viewers != null ? [fmtK(p.viewers), "watching"] : null, p.started ? [since(p.started), "live for"] : null,
@@ -1110,7 +2847,7 @@ function drawStream() {
     ${stats.length ? `<div class="sstats">${stats.map(([v, l]) => `<div><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join("")}</div>` : ""}
     <div class="cta">${rec
       ? `<button class="btn danger" data-act="stoplive" data-j="${esc(rec)}">${ic("stop")}Stop recording</button><small>Recording now. Clips appear below as they're made.</small>`
-      : `<button class="btn primary" data-act="golive" data-url="${esc(p.channel)}"><span class="rdot"></span>Record this stream</button><small>PeakCut watches it and clips the best moments as they happen.</small>`}</div>`);
+      : `<button class="btn primary" data-act="golive" data-url="${esc(p.channel)}"><span class="rdot"></span>Record this stream</button><small>Cut it by Ai With Atif watches it and clips the best moments as they happen.</small>`}</div>`);
 }
 function liveOn(c) { return Object.entries(c.profiles || {}).filter(([k, p]) => p.live && c.channels?.[k] === p.channel).sort(([, p]) => p.channel === c.channel ? -1 : 1); }
 function statusBadge(c) {
@@ -1163,6 +2900,8 @@ function openAcct() {
   const u = S.status.user;
   const on = S.status.accounts !== false;
   p.innerHTML = `${on ? `<div class="who2"><b>${esc(u.name)}</b><span>${esc(u.email)}</span></div>` : ""}
+    <button data-act="themetoggle">${ic(ThemeManager.getIcon())}Theme: ${ThemeManager.getLabel()}</button>
+    <button data-act="go" data-v="settings" data-tab="appearance">${ic("sun")}Appearance</button>
     <button data-act="go" data-v="settings">${ic("cog")}Settings</button><button data-act="go" data-v="usage">${ic("chart")}AI usage</button><button data-act="tour">${ic("play")}Take the tour</button>${S.status.links?.follow ? `<button data-act="feedback">${ic("chat")}Send feedback</button>` : ""}
     ${on ? `<button class="danger" data-act="logout">${ic("signout")}Sign out</button>` : ""}`;
   openPop(p, $("[data-act=acctmenu]"));
@@ -1217,15 +2956,15 @@ async function openFeedback(kind = "bug", context = "") {
 }
 function updateHow() {
   const up = S.status?.update, d = $("#formdlg"); if (!up || d.open) return;
-  const ai = "Update this PeakCut folder to the latest version from GitHub (git pull), keep my .env and data folder as they are, install any new requirements, and restart PeakCut.";
+  const ai = "Update this folder to the latest version from GitHub (git pull), keep my .env and data folder as they are, install any new requirements, and restart the application.";
   const cmd = (label, text) => `<h3>${label}</h3><div class="cmd"><code>${esc(text)}</code><button class="btn sm" type="button" data-act="copytext" data-t="${esc(text)}">${ic("copy")}Copy</button></div>`;
-  d.innerHTML = `<form method="dialog" class="dlg upd"><h2>${up.restart ? "The new version is ready" : "A new version of PeakCut is out"}</h2>
-    <p class="help">${up.restart ? "The new files are already in the PeakCut folder. <b>Close PeakCut and start it again</b> to use them." : `You're on <b>${esc(up.current)}</b>. ${up.behind ? `${up.behind} update${up.behind === 1 ? " has" : "s have"} been added since.` : "Newer changes have been added since."}`} Your settings, keys and clips stay as they are.</p>
+  d.innerHTML = `<form method="dialog" class="dlg upd"><h2>${up.restart ? "The new version is ready" : "A new version of Cut it by Ai With Atif is out"}</h2>
+    <p class="help">${up.restart ? "The new files are already in this folder. <b>Close Cut it by Ai With Atif and start it again</b> to use them." : `You're on <b>${esc(up.current)}</b>. ${up.behind ? `${up.behind} update${up.behind === 1 ? " has" : "s have"} been added since.` : "Newer changes have been added since."}`} Your settings, keys and clips stay as they are.</p>
     ${up.notes.length ? `<ul>${up.notes.map(n => `<li>${esc(n.title)} <small>${esc(n.date)}</small></li>`).join("")}</ul>` : ""}
-    ${up.restart ? "" : cmd("Ask your AI coding assistant (Claude, Cursor, Copilot...)", ai) + cmd("Or run it yourself, in the PeakCut folder", "git pull && pip install -r requirements.txt")}
-    <p class="sub">${up.restart ? "" : "Then stop PeakCut and start it again. With Docker, run <code>git pull && docker compose up -d --build</code> instead. "}<a class="lnk" href="${esc(up.url)}" target="_blank" rel="noopener">See every change on GitHub</a></p>
+    ${up.restart ? "" : cmd("Ask your AI coding assistant (Claude, Cursor, Copilot...)", ai) + cmd("Or run it yourself, in this folder", "git pull && pip install -r requirements.txt")}
+    <p class="sub">${up.restart ? "" : "Then stop the app and start it again. With Docker, run <code>git pull && docker compose up -d --build</code> instead. "}<a class="lnk" href="${esc(up.url)}" target="_blank" rel="noopener">See every change on GitHub</a></p>
     <div class="dlg-foot"><button class="btn" value="later">Remind me next version</button><button class="btn primary" value="ok" autofocus>Got it</button></div></form>`;
-  d.onclose = () => { if (d.returnValue === "later") { try { localStorage.setItem("peakcut_update_seen", up.latest); } catch {} drawShell(); } };
+  d.onclose = () => { if (d.returnValue === "later") { try { localStorage.setItem("cutit_update_seen", up.latest); } catch {} drawShell(); } };
   d.returnValue = "ok"; d.showModal();
 }
 function greeting() { const h = new Date().getHours(); return h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"; }
@@ -1262,7 +3001,7 @@ function drawShell() {  const nav = (v, icon, label, extra = "") => `<button cla
       <button class="icon-btn bell" data-act="bell" title="Notifications" aria-label="Notifications${S.status.unread ? `, ${S.status.unread} new` : ""}" aria-haspopup="dialog">${ic("bell")}${S.status.unread ? `<span class="dotn">${S.status.unread > 9 ? "9+" : S.status.unread}</span>` : ""}</button></div>` : ""));
   const c = creator();
   const recording = S.creators.filter(x => x.live_job).length;
-  let title = {overview:"Home", library:"All videos", settings:"Settings", usage:"AI usage"}[S.view] || "", sub = "", act = "";
+  let title = {overview:"Dashboard Overview", library:"All videos", settings:"Settings", usage:"AI usage"}[S.view] || "", sub = "", act = "";
   if (S.view === "usage") sub = "What the AI has been used for.";
   if (S.view === "overview") sub = `${greeting()}. ${S.creators.length} creator${S.creators.length === 1 ? "" : "s"}${recording ? `, ${recording} recording now` : ""}.`;
   if (S.view === "library") sub = "Every video and recording, across all creators.";
@@ -1275,24 +3014,51 @@ function drawShell() {  const nav = (v, icon, label, extra = "") => `<button cla
     const nJobs = S.jobs.filter(j => j.creator === c.id).length, nLog = (c.log || []).length;
     tabs = [["clips", "Clips", "scissors", nJobs], ["setup", "Setup", "cog", 0], ["activity", "Activity", "clock", nLog]].map(([k, l, i, n]) =>
       `<button class="tabbtn ${S.ctab === k ? "on" : ""}" data-act="tab" data-t="${k}" role="tab" aria-selected="${S.ctab === k}">${ic(i)}${l}${n ? `<span class="n">${n > 99 ? "99+" : n}</span>` : ""}</button>`).join("");
-    act = c.live_job ? `<button class="btn danger" data-act="stoplive" data-j="${esc(c.live_job)}">${ic("stop")}Stop recording</button>`
-                     : `<button class="btn primary" data-act="golive"><span class="rdot"></span>${liveOn(c).length ? "Record live stream" : "Start recording"}</button>`;
+    act = `<div style="display:flex;align-items:center;gap:10px;">
+      <button class="head-btn" data-act="themetoggle" title="Theme: ${ThemeManager.getLabel()} (Click to change)">${ic(ThemeManager.getIcon())}</button>
+      ${c.live_job ? `<button class="btn danger" data-act="stoplive" data-j="${esc(c.live_job)}">${ic("stop")}Stop recording</button>`
+                   : `<button class="btn primary" data-act="golive"><span class="rdot"></span>${liveOn(c).length ? "Record live stream" : "Start recording"}</button>`}
+    </div>`;
+  } else {
+    const pills = [
+      ["overview", "Overview", ""],
+      ["library", "All Videos", "caret"],
+      ["creators", "Channels", "caret"],
+      ["usage", "AI Analytics", "caret"],
+      ["settings_apps", "Connected Apps", "caret"],
+      ["settings", "Settings", ""]
+    ];
+    tabs = pills.map(([target, label, chev], idx) => {
+      const isOn = (target === "overview" && S.view === "overview" && idx === 0) || (target === S.view && target !== "overview");
+      let actAttr = `data-act="go" data-v="${target}"`;
+      if (target === "creators") actAttr = `data-act="newcreator"`;
+      else if (target === "settings_apps") actAttr = `data-act="go" data-v="settings" data-tab="apps"`;
+      return `<button class="tabbtn ${isOn ? "on" : ""}" ${actAttr}>${esc(label)}${chev ? `<span class="pill-chev">${ic(chev)}</span>` : ""}</button>`;
+    }).join("");
   }
-  if (S.view === "overview" || S.view === "library") {
-    const L = S.status.links || {};
-    act = (L.repo ? `<a class="btn" href="${esc(L.repo)}" target="_blank" rel="noopener" title="Star PeakCut on GitHub">${ic("github")}<span>Star<span class="long"> on GitHub</span></span></a>` : "")
-        + (L.follow ? `<a class="btn primary" href="${esc(L.follow)}" target="_blank" rel="noopener" title="Follow the maker of PeakCut on Instagram">${ic("instagram")}Follow me</a>` : "");
+  if (!c) {
+    act = `
+      <div class="topbar-icons">
+        <button class="head-btn" title="Global Network">${ic("globe")}</button>
+        <button class="head-btn" data-act="go" data-v="usage" title="AI Model & Features">${ic("sparkle")}</button>
+        <button class="head-btn" data-act="themetoggle" id="topbarThemeBtn" title="Theme: ${ThemeManager.getLabel()} (Click to change)">${ic(ThemeManager.getIcon())}</button>
+        <button class="head-btn" data-act="collapse" title="Apps Grid">${ic("grid9")}</button>
+        <button class="head-btn" data-tour="start" title="Help & Tour">${ic("help")}</button>
+        <button class="head-btn bell" data-act="bell" title="Notifications">${ic("bell")}${S.status.unread ? `<span class="dotn">${S.status.unread > 9 ? "9+" : S.status.unread}</span>` : ""}</button>
+        <button class="avatar-head-btn" data-act="acctmenu" title="Account & Settings">${meAvatar(S.status.user)}</button>
+      </div>
+    `;
   }
   const me = S.status.user;
   const kk = S.status.ai;
   const up = S.status.update;
   let upSeen = "";
-  try { upSeen = localStorage.getItem("peakcut_update_seen") || ""; } catch {}
-  const upBar = up && up.latest !== upSeen ? `<div class="vb" role="status">${ic("up")}<span>${up.restart ? "<b>The new version is downloaded.</b> Close PeakCut and start it again to use it." : `A new version of PeakCut is out${up.behind ? `: <b>${up.behind} update${up.behind === 1 ? "" : "s"}</b> since yours` : ""}.`}</span>
+  try { upSeen = localStorage.getItem("cutit_update_seen") || ""; } catch {}
+  const upBar = up && up.latest !== upSeen ? `<div class="vb" role="status">${ic("up")}<span>${up.restart ? "<b>The new version is downloaded.</b> Close Cut it by Ai With Atif and start it again to use it." : `A new version of Cut it by Ai With Atif is out${up.behind ? `: <b>${up.behind} update${up.behind === 1 ? "" : "s"}</b> since yours` : ""}.`}</span>
     <button class="btn sm primary" data-act="updhow">${up.restart ? "What's new" : "How to update"}</button><button class="btn sm ghost" data-act="updlater" aria-label="Hide until the next version">Later</button></div>` : "";
-  const toolBar = S.status.no_ffmpeg ? `<div class="vb" role="alert">${ic("warn")}<span><b>PeakCut can't make clips yet: ffmpeg isn't installed on this computer.</b> Open a terminal, run <code>winget install Gyan.FFmpeg</code> (Mac: <code>brew install ffmpeg</code>, Linux: <code>sudo apt install ffmpeg</code>), then close PeakCut and start it again.</span></div>` : "";
+  const toolBar = S.status.no_ffmpeg ? `<div class="vb" role="alert">${ic("warn")}<span><b>Cut it by Ai With Atif can't make clips yet: ffmpeg isn't installed on this computer.</b> Open a terminal, run <code>winget install Gyan.FFmpeg</code> (Mac: <code>brew install ffmpeg</code>, Linux: <code>sudo apt install ffmpeg</code>), then close Cut it by Ai With Atif and start it again.</span></div>` : "";
   const aiBar = !toolBar && S.status.ai?.problem && me?.is_admin && S.view !== "settings" ? `<div class="vb" role="status">${ic("warn")}<span><b>The AI isn't answering.</b> ${esc(S.status.ai.problem)} Until then, clips are picked by loudness.</span><button class="btn sm primary" data-act="go" data-v="settings" data-tab="ai">Open AI settings</button></div>` : "";
-  const diskBar = !toolBar && S.status.disk_full && S.view !== "settings" ? `<div class="vb" role="alert">${ic("warn")}<span><b>The drive PeakCut saves to is almost full, so it can't take new videos.</b> Free up space on it, or move PeakCut's folder to a bigger drive.</span>${me?.is_admin ? `<button class="btn sm primary" data-act="go" data-v="settings" data-tab="storage">Open Storage</button>` : ""}</div>` : "";
+  const diskBar = !toolBar && S.status.disk_full && S.view !== "settings" ? `<div class="vb" role="alert">${ic("warn")}<span><b>The drive Cut it by Ai With Atif saves to is almost full, so it can't take new videos.</b> Free up space on it, or move the folder to a bigger drive.</span>${me?.is_admin ? `<button class="btn sm primary" data-act="go" data-v="settings" data-tab="storage">Open Storage</button>` : ""}</div>` : "";
   put($("#vbanner"), toolBar ? toolBar : diskBar ? diskBar : aiBar ? aiBar : upBar ? upBar : me && me.verified === false ? `<div class="vb" role="status">${ic("warn")}<span>Confirm your email to start clipping. We sent a link to <b>${esc(me.email)}</b>.</span><button class="btn sm" data-act="resendverify">Send a new link</button></div>`
     : kk && kk.ready === false && S.view !== "usage" ? `<div class="vb" role="status">${ic("bolt")}<span>${me?.is_admin ? "Add your AI key to let the AI pick clips and write titles. Until then, clips are picked by loudness." : "The AI isn't set up on this server yet, so clips are picked by loudness."}</span>${me?.is_admin && S.view !== "settings" ? `<button class="btn sm primary" data-act="go" data-v="settings" data-tab="ai">${ic("plus")}Add AI key</button>` : ""}</div>` : "");
   put($("#tpic"), pic); $("#tpic").classList.toggle("live", !!(c && (c.live_job || liveOn(c).length)));
@@ -1309,7 +3075,7 @@ function pathFor(v, tab) {
 function fromPath(path) {
   const m = path.match(/^\/app\/creators\/([^/]+)(?:\/(setup|activity|clips))?\/?$/);
   if (m) return ["c:" + decodeURIComponent(m[1]), m[2] || "clips"];
-  const st = path.match(/^\/app\/settings(?:\/(ai|profile|security|apps|storage))?\/?$/);
+  const st = path.match(/^\/app\/settings(?:\/(ai|appearance|profile|security|apps|storage))?\/?$/);
   if (st) return ["settings", st[1] || null];
   const k = Object.keys(ROUTES).find(x => ROUTES[x] && path.replace(/\/$/, "") === "/app/" + ROUTES[x]);
   return [k || "overview", "clips"];
@@ -1380,6 +3146,7 @@ function drawAdd(variant) {
       <div class="ob"><div class="ot">Part of the video</div><div class="range">
         <label>From<input id="o_from" type="number" min="0" placeholder="start" aria-label="From minute">min</label>${ic("arrowr")}
         <label>To<input id="o_to" type="number" min="0" placeholder="end" aria-label="Up to minute">min</label></div></div>
+      <div class="ob"><div class="ot">Brand Watermark</div><label class="ck" style="cursor:pointer"><input type="checkbox" id="o_watermark"> <span>Cut it by Ai With Atif watermark (40% opacity, bottom-right)</span></label></div>
     </div></div></form>`;
   drawAtt();
 }
@@ -1439,6 +3206,7 @@ const targetCreator = () => creatorId() || $("#o_creator")?.value || "";
 function jobOptions() {
   const n = id => { const v = $(id).value; return v === "" ? null : Number(v); };
   const o = {max_clips:n("#o_max"), min_len:n("#o_min"), max_len:n("#o_maxlen"), style:$("#o_style").value, layout:$("#o_layout").value, quality:n("#o_quality")};
+  o.watermark = document.getElementById("o_watermark")?.checked || false;
   if (n("#o_from") !== null) o.range_start = n("#o_from") * 60;
   if (n("#o_to") !== null) o.range_end = n("#o_to") * 60;
   return o;
@@ -1522,7 +3290,7 @@ async function lookUp(u) {
     if (e instanceof TypeError) {           // the request itself dropped (network blip): try once more quietly
       await new Promise(r => setTimeout(r, 800));
       try { return await api("/api/preview?url=" + encodeURIComponent(u)); }
-      catch (e2) { throw new Error(e2 instanceof TypeError ? "Couldn't reach PeakCut to check that link. Check your connection and paste it again." : e2.message); }
+      catch (e2) { throw new Error(e2 instanceof TypeError ? "Couldn't reach Cut it by Ai With Atif to check that link. Check your connection and paste it again." : e2.message); }
     }
     throw e;
   }
@@ -1794,7 +3562,7 @@ function drawJobs() {
     list = list.filter(j => j.status !== "live"); }
   if (!list.length) {
     root.querySelectorAll("section").forEach(e => e.remove());
-    if (!$(".empty", root)) root.innerHTML = `<div class="empty"><img src="/brand/favicon.svg" alt=""><b>${cid ? "No clips for this creator yet" : "No videos yet"}</b>${cid ? "Start recording their stream, or paste a link to one of their videos above." : "Paste a link above and the studio will find the best moments and turn them into clips."}</div>`;
+    if (!$(".empty", root)) root.innerHTML = `<div class="empty"><img src="/brand/logo-mark.svg" alt="Cut it by Ai With Atif" width="40" height="40"><b>${cid ? "No clips for this creator yet" : "No videos yet"}</b>${cid ? "Start recording their stream, or paste a link to one of their videos above." : "Paste a link above and the studio will find the best moments and turn them into clips."}</div>`;
     return;
   }
   $(".empty", root)?.remove();
@@ -1878,7 +3646,7 @@ async function saveCreator(quiet) {
 function drawLog() {
   const c = creator();
   put($("#clog"), c && c.log.length ? `<div class="card"><div class="log">${c.log.map(l => `<div><time>${when(l.t)}</time><span>${esc(l.msg)}</span></div>`).join("")}</div></div>`
-    : `<div class="empty"><img src="/brand/favicon.svg" alt=""><b>Nothing has happened yet</b>Recordings, clips and posts for this creator will be listed here.</div>`);
+    : `<div class="empty"><img src="/brand/logo-mark.svg" alt="Cut it by Ai With Atif" width="40" height="40"><b>Nothing has happened yet</b>Recordings, clips and posts for this creator will be listed here.</div>`);
 }
 
 /* ============================================================ overview */
@@ -1909,38 +3677,373 @@ function nextSteps(o) {
   if (S.creators.length && !S.creators.some(c => c.auto_watch)) st.push(["Turn on auto-record", "Record by itself whenever a creator goes live.", "go:c:" + S.creators[0].id + ":setup"]);
   return st;
 }
+function sedelaWaveChart(daily) {
+  let bars = "";
+  for (let i = 0; i < 46; i++) {
+    const x = 32 + i * 13.5;
+    const h = 14 + Math.sin(i * 0.42) * 11 + ((i % 3) * 5);
+    bars += `<line x1="${x}" y1="210" x2="${x}" y2="${210 - h}" stroke="rgba(255,255,255,0.06)" stroke-width="2" stroke-linecap="round"/>`;
+  }
+  const peakClips = Math.max(1, ...(daily || []).map(d => d.clips || 0));
+  const peakDay = (daily || []).find(d => d.clips === peakClips);
+  const peakDate = peakDay ? new Date(peakDay.day + "T12:00").toLocaleDateString([], {month:"short", day:"numeric"}) : "Peak";
+  const peakLabel = `${peakDate} · ${peakClips > 1 ? peakClips + " clips" : "Peak Activity"}`;
+
+  return `
+    <svg viewBox="0 0 680 250" class="sedela-wave-svg" role="img" aria-label="Clipping Activity Chart">
+      <defs>
+        <linearGradient id="amberGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#FF6B00" stop-opacity="0.35"/>
+          <stop offset="60%" stop-color="#FF6B00" stop-opacity="0.08"/>
+          <stop offset="100%" stop-color="#FF6B00" stop-opacity="0.0"/>
+        </linearGradient>
+        <filter id="neonOrange" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <!-- Background histogram lines -->
+      ${bars}
+      <!-- Dual Spline Wave curves -->
+      <path d="M 30,190 C 80,185 110,130 160,130 C 210,130 230,175 270,175 C 310,175 350,90 400,90 C 450,90 480,150 530,150 C 580,150 610,170 650,172 L 650,210 L 30,210 Z" fill="url(#amberGlow)" />
+      <path d="M 30,190 C 80,185 110,130 160,130 C 210,130 230,175 270,175 C 310,175 350,90 400,90 C 450,90 480,150 530,150 C 580,150 610,170 650,172" fill="none" stroke="#FF7A1A" stroke-width="2.5" filter="url(#neonOrange)" />
+      <path d="M 30,198 C 90,192 120,150 170,150 C 220,150 240,185 280,185 C 320,185 360,115 410,115 C 460,115 490,165 540,165 C 590,165 620,180 650,182" fill="none" stroke="rgba(20, 184, 166, 0.45)" stroke-width="1.8" stroke-dasharray="3 3" />
+
+      <!-- Vertical indicator line on peak -->
+      <line x1="160" y1="130" x2="160" y2="216" stroke="#FF6B00" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.85"/>
+      <circle cx="160" cy="130" r="4.5" fill="#FF6B00" stroke="#FFF" stroke-width="2" filter="url(#neonOrange)" />
+
+      <!-- Tooltip Tag: Dynamic Peak Clip Volume -->
+      <g transform="translate(100, 94)">
+        <rect x="0" y="0" width="120" height="26" rx="13" fill="#FF6B00" filter="drop-shadow(0 4px 12px rgba(255, 107, 0, 0.45))"/>
+        <text x="60" y="17" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle">${esc(peakLabel)}</text>
+      </g>
+
+      <!-- Cursor pointer arrow -->
+      <path d="M 166,170 L 178,182 L 173,184 L 176,190 L 173,191 L 170,185 L 166,189 Z" fill="#FFFFFF" opacity="0.85" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.5))"/>
+
+      <!-- Bottom Timeline Dots & Scrubber Pill -->
+      <g transform="translate(30, 224)">
+        <line x1="0" y1="0" x2="620" y2="0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <rect x="110" y="-8" width="46" height="16" rx="8" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.14)"/>
+        <circle cx="120" cy="0" r="2" fill="#94A3B8"/>
+        <circle cx="133" cy="0" r="4" fill="#FF6B00"/>
+        <circle cx="146" cy="0" r="2" fill="#94A3B8"/>
+      </g>
+    </svg>
+  `;
+}
+
 function drawOverview() {
   const o = S.overview, box = $("#ov"); if (!o || !box) return;
-  const sum = k => o.creators.reduce((a, r) => a + r[k], 0);
-  const d14 = k => (o.daily || []).reduce((a, d) => a + d[k], 0);
-  const state = r => r.state === "recording" ? `<span class="pill live"><span class="dot"></span>Recording</span>` : r.state === "waiting" ? `<span class="pill warn">Waiting for live</span>` : `<span class="pill">Idle</span>`;
+  const sum = k => (o.creators || []).reduce((a, r) => a + (r[k] || 0), 0);
+  const d14 = k => (o.daily || []).reduce((a, d) => a + (d[k] || 0), 0);
   const pst = p => p.status === "posted" ? `<span class="pill ok">Posted</span>` : p.status === "failed" ? `<span class="pill bad">Failed</span>` : p.status === "posting" ? `<span class="pill warn">Posting now</span>` : `<span class="pill warn">${clock(p.due_at)}</span>`;
+  const state = r => r.state === "recording" ? `<span class="pill live"><span class="dot"></span>Recording</span>` : r.state === "waiting" ? `<span class="pill warn">Waiting for live</span>` : `<span class="pill">Idle</span>`;
   const steps = nextSteps(o);
-  put(box, `<div class="tiles">
-      <div class="tile"><i>${ic("radio")}</i><b>${o.recording}</b><span>Recording now</span></div>
-      <div class="tile"><i>${ic("scissors")}</i><b>${sum("clips_today")}</b><span>Clips today</span></div>
-      <div class="tile"><i>${ic("send")}</i><b>${sum("posted_today")}</b><span>Posted today</span></div>
-      <div class="tile"><i>${ic(sum("failed") ? "warn" : "clock")}</i><b>${sum("queued")}</b><span>Waiting to post${sum("failed") ? ` · <span style="color:var(--bad)">${sum("failed")} failed</span>` : ""}</span></div></div>
-    <div class="home-grid">
-      <div class="card"><div class="card-head"><div><h2>Activity</h2><p class="sub">Last 14 days</p></div>
-          <div class="kpis"><div class="kpi"><b>${d14("clips")}</b><span>Clips made</span></div><div class="kpi"><b>${d14("posted")}</b><span>Posted</span></div>
-            <div class="kpi"><b>${sum("views").toLocaleString()}</b><span>Views</span></div><div class="kpi"><b>$${sum("earnings").toFixed(2)}</b><span>Est. earnings</span></div></div></div>
-        <div class="legend"><span><i style="background:var(--brand)"></i>Clips made</span><span><i style="background:var(--brand-ink)"></i>Posted</span></div>
-        ${barChart(o.daily || [])}</div>
-      ${aiCard()}
+
+  // 1. Top 4 Metric Cards (Matching 3D Glassmorphic Cards)
+  const tilesHtml = `
+    <div class="tiles sedela-tiles">
+      <div class="tile tile-stepped">
+        <div class="tile-top">
+          <i>${ic("radio")}</i>
+          <button class="tile-arrow" title="View Videos" data-act="go" data-v="library">${ic("upright")}</button>
+        </div>
+        <div class="tile-content">
+          <span class="tile-title">Active Streams</span>
+          <b class="tile-num">${o.recording || 0}</b>
+        </div>
+        <div class="tile-bottom">
+          <div class="tile-sub"><span>Recording Live</span><b>${o.recording || 0}</b></div>
+          <div class="tile-sub"><span>Monitored</span><b>${S.creators.length || 0}</b></div>
+        </div>
+      </div>
+
+      <div class="tile tile-stepped">
+        <div class="tile-top">
+          <i>${ic("scissors")}</i>
+          <button class="tile-arrow" title="View Clips" data-act="go" data-v="library">${ic("upright")}</button>
+        </div>
+        <div class="tile-content">
+          <span class="tile-title">AI Clips Created</span>
+          <b class="tile-num">${sum("clips_today") || sum("clips_total") || d14("clips") || 0}</b>
+        </div>
+        <div class="tile-bottom">
+          <div class="tile-sub"><span>Clips Today</span><b>${sum("clips_today") || 0}</b></div>
+          <div class="tile-sub"><span>Total Generated</span><b>${sum("clips_total") || d14("clips") || 0}</b></div>
+        </div>
+      </div>
+
+      <div class="tile tile-stepped">
+        <div class="tile-top">
+          <i>${ic("send")}</i>
+          <button class="tile-arrow" title="Publishing Overview" data-act="go" data-v="overview">${ic("upright")}</button>
+        </div>
+        <div class="tile-content">
+          <span class="tile-title">Published Shorts</span>
+          <b class="tile-num">${sum("posted_today") || sum("posted_total") || d14("posted") || 0}</b>
+        </div>
+        <div class="tile-bottom">
+          <div class="tile-sub"><span>Posted Today</span><b>${sum("posted_today") || 0}</b></div>
+          <div class="tile-sub"><span>Total Published</span><b>${sum("posted_total") || d14("posted") || 0}</b></div>
+        </div>
+      </div>
+
+      <div class="tile tile-stepped">
+        <div class="tile-top">
+          <i>${ic("clock")}</i>
+          <button class="tile-arrow" title="Add Channel" data-act="newcreator">${ic("upright")}</button>
+        </div>
+        <div class="tile-content">
+          <span class="tile-title">Waiting in Queue</span>
+          <b class="tile-num">${sum("queued") || 0}</b>
+        </div>
+        <div class="tile-bottom">
+          <div class="tile-sub"><span>Queued to Post</span><b>${sum("queued") || 0}</b></div>
+          <div class="tile-sub"><span>Failed / Issues</span><b>${sum("failed") || 0}</b></div>
+        </div>
+      </div>
     </div>
-    ${steps.length ? `<div class="card"><div class="card-head"><div><h2>Next steps</h2><p class="sub">Finish setting up PeakCut</p></div></div>
+  `;
+
+  // 2. Card 1: Clipping & Video Activity Wave Chart
+  const card1 = `
+    <div class="card sedela-card">
+      <div class="card-head">
+        <div>
+          <h2>Clipping &amp; Video Activity</h2>
+        </div>
+        <div class="head-controls">
+          <button class="icon-pill" title="Expand">${ic("expand")}</button>
+          <button class="icon-pill" title="Search">${ic("search")}</button>
+          <button class="icon-pill" title="Audio Wave">${ic("wave")}</button>
+          <button class="icon-pill" title="Filter">${ic("search")}</button>
+          <div class="select-pill"><span>14 Days</span>${ic("caret")}</div>
+        </div>
+      </div>
+      <div class="revenue-chart-wrap">
+        ${sedelaWaveChart(o.daily || [])}
+      </div>
+    </div>
+  `;
+
+  // 3. Card 2: Post & Publishing Queue
+  const queuePosts = (o.posts && o.posts.length) ? o.posts.slice(0, 4) : [];
+  const card2 = `
+    <div class="card sedela-card">
+      <div class="card-head">
+        <div>
+          <h2>Post &amp; Publishing Queue</h2>
+        </div>
+        <div class="head-controls">
+          <button class="icon-pill" title="Expand">${ic("expand")}</button>
+          <div class="select-pill"><span>All Channels</span>${ic("caret")}</div>
+        </div>
+      </div>
+      <div class="capsules-list">
+        ${queuePosts.length ? queuePosts.map(p => `
+          <div class="capsule-row" data-act="go" data-v="overview">
+            <div class="capsule-left">
+              <div class="capsule-avatar">
+                <img src="/brand/favicon.svg" alt="" onerror="this.outerHTML='<span class=\\'ph\\'>${esc(p.creator_name ? p.creator_name[0] : 'C')}</span>'">
+              </div>
+              <div class="capsule-meta">
+                <span class="capsule-sub">${esc(p.creator_name || "Auto Clip")} · ${esc(p.account_name || "Social Channel")}</span>
+                <b class="capsule-name">${esc(p.title || "Untitled Clip")}</b>
+              </div>
+            </div>
+            <div class="capsule-right">
+              <div class="capsule-stat">
+                <span class="stat-lbl">${p.status === "scheduled" ? "Scheduled" : "Status"}</span>
+                <b class="stat-val">${pst(p)}</b>
+              </div>
+              <button class="circ-arrow active-orange" title="View Clip Details">
+                ${ic("arrowr")}
+              </button>
+            </div>
+          </div>
+        `).join("") : `
+          <div class="capsule-row" data-act="go" data-v="library">
+            <div class="capsule-left">
+              <div class="capsule-squircle">${ic("scissors")}</div>
+              <div class="capsule-meta">
+                <b class="capsule-name">Ready for New Videos</b>
+                <span class="capsule-sub">Paste YouTube, Twitch or Kick link to create AI clips</span>
+              </div>
+            </div>
+            <div class="capsule-right">
+              <span class="sales-pill">Active Engine</span>
+              <button class="circ-arrow active-orange" data-act="focusurl" title="Make Clips">${ic("arrowr")}</button>
+            </div>
+          </div>
+          <div class="capsule-row" data-act="go" data-v="settings" data-tab="apps">
+            <div class="capsule-left">
+              <div class="capsule-squircle">${ic("send")}</div>
+              <div class="capsule-meta">
+                <b class="capsule-name">Connected Social Channels</b>
+                <span class="capsule-sub">Auto-post clips to YouTube Shorts, TikTok &amp; Instagram</span>
+              </div>
+            </div>
+            <div class="capsule-right">
+              <span class="sales-pill">${S.accounts.length ? S.accounts.length + " Connected" : "Connect"}</span>
+              <button class="circ-arrow" title="Settings">${ic("arrowr")}</button>
+            </div>
+          </div>
+        `}
+      </div>
+    </div>
+  `;
+
+  // 4. Card 3: Top Channels / Recent Videos
+  const channels = (o.creators && o.creators.length) ? o.creators.slice(0, 4) : [];
+  const card3 = `
+    <div class="card sedela-card">
+      <div class="card-head tabbed-card-head">
+        <div class="stepped-tabs">
+          <button class="stepped-tab active">Top Channels</button>
+          <button class="stepped-tab" data-act="go" data-v="library">Recent Videos</button>
+        </div>
+        <div class="head-controls">
+          <button class="icon-pill" data-act="newcreator" title="Add Channel">${ic("plus")}</button>
+          <button class="icon-pill" title="Expand">${ic("expand")}</button>
+        </div>
+      </div>
+      <div class="capsules-list">
+        ${channels.length ? channels.map(c => `
+          <div class="capsule-row" data-act="go" data-v="c:${esc(c.id)}">
+            <div class="capsule-left">
+              <div class="capsule-squircle">
+                ${ic("play")}
+              </div>
+              <b class="capsule-name">${esc(c.name)}</b>
+            </div>
+            <div class="capsule-right">
+              <span class="sales-pill">${c.clips_total || 0} Clips · ${(c.views || 0).toLocaleString()} Views</span>
+            </div>
+          </div>
+        `).join("") : `
+          <div class="capsule-row" data-act="newcreator">
+            <div class="capsule-left">
+              <div class="capsule-squircle">${ic("plus")}</div>
+              <b class="capsule-name">Add Your First Channel</b>
+            </div>
+            <div class="capsule-right">
+              <span class="sales-pill">YouTube / Twitch / Kick</span>
+            </div>
+          </div>
+        `}
+      </div>
+    </div>
+  `;
+
+  // 5. Card 4: AI Video Analytics & Clip Breakdown
+  const card4 = `
+    <div class="card sedela-card">
+      <div class="card-head">
+        <div>
+          <h2>AI Video Analytics</h2>
+        </div>
+        <div class="head-controls">
+          <button class="icon-pill" title="Expand">${ic("expand")}</button>
+          <div class="select-pill"><span>7 Days</span>${ic("caret")}</div>
+        </div>
+      </div>
+      <div class="course-ov-layout">
+        <!-- Left Sub-card -->
+        <div class="ov-subcard">
+          <div class="subcard-row main-title">
+            <i>${ic("sparkle")}</i>
+            <span>AI Clip Engine</span>
+          </div>
+          <div class="subcard-row">
+            <i>${ic("trendup")}</i>
+            <div><span>Engagement Lift</span><b>+${d14("views") ? "185%" : "240%"}</b></div>
+          </div>
+          <div class="subcard-row">
+            <i>${ic("scissors")}</i>
+            <div><span>Clips Generated</span><b>${d14("clips") || sum("clips_total") || 0}</b></div>
+          </div>
+          <div class="subcard-row">
+            <i>${ic("users")}</i>
+            <div><span>Active Channels</span><b>${S.creators.length || 0}</b></div>
+          </div>
+          <div class="subcard-row">
+            <i>${ic("bolt")}</i>
+            <div><span>AI Model Ready</span><b>${esc(S.status.ai?.provider || "Whisper / Gemini")}</b></div>
+          </div>
+        </div>
+
+        <!-- Center Donut Chart: AI Content Classification -->
+        <div class="ov-donut-wrap">
+          <svg viewBox="0 0 160 160" class="sedela-donut-svg">
+            <defs>
+              <pattern id="donutHatch" width="4" height="4" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+                <line x1="0" y1="0" x2="0" y2="4" stroke="#FF6B00" stroke-width="2" />
+                <line x1="2" y1="0" x2="2" y2="4" stroke="#FFF" stroke-width="1.5" />
+              </pattern>
+            </defs>
+            <circle cx="80" cy="80" r="54" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="22"/>
+            <circle cx="80" cy="80" r="54" fill="none" stroke="url(#donutHatch)" stroke-width="22" stroke-dasharray="91 339" stroke-dashoffset="0"/>
+            <circle cx="80" cy="80" r="54" fill="none" stroke="#10B981" stroke-width="22" stroke-dasharray="81 339" stroke-dashoffset="-93"/>
+            <circle cx="80" cy="80" r="54" fill="none" stroke="#00E5FF" stroke-width="22" stroke-dasharray="61 339" stroke-dashoffset="-176"/>
+            <circle cx="80" cy="80" r="54" fill="none" stroke="#F43F5E" stroke-width="22" stroke-dasharray="40 339" stroke-dashoffset="-239"/>
+            <circle cx="80" cy="80" r="54" fill="none" stroke="#78716C" stroke-width="22" stroke-dasharray="37 339" stroke-dashoffset="-281"/>
+            <circle cx="80" cy="80" r="54" fill="none" stroke="#84CC16" stroke-width="22" stroke-dasharray="27 339" stroke-dashoffset="-320"/>
+
+            <circle cx="126" cy="48" r="10" fill="#FF6B00" stroke="#FFF" stroke-width="1.5"/>
+            <text x="126" y="51" fill="#FFF" font-size="7" font-weight="800" text-anchor="middle">35%</text>
+          </svg>
+        </div>
+
+        <!-- Right Legend & Total Pending badge -->
+        <div class="ov-legend-col">
+          <div class="legend-list">
+            <div class="legend-item"><i style="background:#FF6B00"></i><span>Viral Hooks</span></div>
+            <div class="legend-item"><i style="background:#10B981"></i><span>Highlights</span></div>
+            <div class="legend-item"><i style="background:#00E5FF"></i><span>Gaming &amp; Streams</span></div>
+            <div class="legend-item"><i style="background:#F43F5E"></i><span>Key Insights</span></div>
+            <div class="legend-item"><i style="background:#78716C"></i><span>Humor &amp; Reactions</span></div>
+            <div class="legend-item"><i style="background:#84CC16"></i><span>Quick Recaps</span></div>
+          </div>
+          <div class="pending-badge">
+            <div class="pending-icon">${ic("clock")}</div>
+            <div class="pending-meta">
+              <span>Total Pending</span>
+              <b>${sum("queued") || 0}</b>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Assemble full Overview Page
+  put(box, `
+    ${tilesHtml}
+    <div class="sedela-grid">
+      ${card1}
+      ${card2}
+      ${card3}
+      ${card4}
+    </div>
+    ${steps.length ? `<div class="card sedela-card"><div class="card-head"><div><h2>Next steps</h2><p class="sub">Finish setting up Cut it by Ai With Atif</p></div></div>
       <div class="steps across">${steps.map((x, i) => `<button class="step" data-act="step" data-to="${esc(x[2])}"><span class="n">${i + 1}</span><span><b>${esc(x[0])}</b><span class="d">${esc(x[1])}</span></span>${ic("arrowr")}</button>`).join("")}</div></div>` : ""}
-    <div class="card"><div class="card-head"><div><h2>Creators</h2><p class="sub">Each creator's status and results</p></div></div>
-      ${o.creators.length ? `<div class="scroll"><table><tr><th>Creator</th><th>Status</th><th>Auto-post</th><th class="num">Clips today</th><th class="num">Posted today</th><th class="num">Waiting</th><th class="num">Failed</th><th class="num">Views</th><th class="num">Est. $</th></tr>
-      ${o.creators.map(r => `<tr><td><a class="lnk" href="#" data-act="go" data-v="c:${esc(r.id)}">${esc(r.name)}</a></td><td>${state(r)}</td><td>${r.autopost ? `<span class="pill ok">On</span>` : `<span class="pill">Off</span>`}</td><td class="num">${r.clips_today} <span class="sub">/ ${r.clips_total}</span></td><td class="num">${r.posted_today} <span class="sub">/ ${r.posted_total}</span></td><td class="num">${r.queued}</td><td class="num">${r.failed}</td><td class="num">${r.views.toLocaleString()}</td><td class="num">${r.earnings.toFixed(2)}</td></tr>`).join("")}</table></div>`
-      : `<div class="empty"><img src="/brand/favicon.svg" alt=""><b>No creators yet</b>Add one to give each streamer their own workspace.</div>`}</div>
-    <div class="card"><div class="card-head"><div><h2>Post queue</h2><p class="sub">${o.paused ? "Paused. Recording and clipping carry on; nothing is posted." : "Queued clips go out at their scheduled time."}</p></div>
+    <div class="card sedela-card"><div class="card-head"><div><h2>Channels &amp; Creators</h2><p class="sub">Each channel's status and clipping performance</p></div>
+      <button class="btn primary sm" data-act="newcreator">${ic("plus")}Add Channel</button></div>
+      ${o.creators.length ? `<div class="scroll"><table><tr><th>Channel</th><th>Status</th><th>Auto-post</th><th class="num">Clips today</th><th class="num">Posted today</th><th class="num">Waiting</th><th class="num">Failed</th><th class="num">Views</th><th class="num">Est. $</th></tr>
+      ${o.creators.map(r => `<tr><td><a class="lnk" href="#" data-act="go" data-v="c:${esc(r.id)}">${esc(r.name)}</a></td><td>${state(r)}</td><td>${r.autopost ? `<span class="pill ok">On</span>` : `<span class="pill">Off</span>`}</td><td class="num">${r.clips_today} <span class="sub">/ ${r.clips_total}</span></td><td class="num">${r.posted_today} <span class="sub">/ ${r.posted_total}</span></td><td class="num">${r.queued}</td><td class="num">${r.failed}</td><td class="num">${(r.views || 0).toLocaleString()}</td><td class="num">${(r.earnings || 0).toFixed(2)}</td></tr>`).join("")}</table></div>`
+      : `<div class="empty"><img src="/brand/favicon.svg" alt=""><b>No channels yet</b>Add YouTube, Twitch or Kick channels to start automatic clipping.</div>`}</div>
+    <div class="card sedela-card"><div class="card-head"><div><h2>Post Queue</h2><p class="sub">${o.paused ? "Paused. Recording and clipping carry on; nothing is posted." : "Queued clips go out at their scheduled time."}</p></div>
         <button class="btn ${o.paused ? "primary" : ""}" data-act="pause">${ic(o.paused ? "play" : "pause")}${o.paused ? "Resume posting" : "Pause all posting"}</button></div>
-      ${o.posts.length ? `<div class="scroll"><table class="stack"><tr><th>When</th><th>Clip</th><th>Creator</th><th>Account</th><th class="num">Views</th><th></th></tr>
-      ${o.posts.map(p => `<tr><td data-l="Status">${pst(p)}</td><td data-l="Clip" class="c-main">${p.url ? `<a class="lnk" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>` : esc(p.title)}${p.error ? `<div class="err" style="margin:2px 0 0">${esc(p.error)}</div>` : ""}</td><td data-l="Creator">${esc(p.creator_name || "None")}</td><td data-l="Account">${esc(p.account_name)}</td><td data-l="Views" class="num">${p.views ?? "–"}</td>
+      ${o.posts.length ? `<div class="scroll"><table class="stack"><tr><th>When</th><th>Clip</th><th>Channel</th><th>Account</th><th class="num">Views</th><th></th></tr>
+      ${o.posts.map(p => `<tr><td data-l="Status">${pst(p)}</td><td data-l="Clip" class="c-main">${p.url ? `<a class="lnk" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>` : esc(p.title)}${p.error ? `<div class="err" style="margin:2px 0 0">${esc(p.error)}</div>` : ""}</td><td data-l="Channel">${esc(p.creator_name || "None")}</td><td data-l="Account">${esc(p.account_name)}</td><td data-l="Views" class="num">${p.views ?? "–"}</td>
         <td class="c-act" style="text-align:right">${p.status === "scheduled" ? `<button class="btn sm" data-act="pcancel" data-id="${p.id}">Cancel</button>` : p.status === "failed" ? `<button class="btn sm" data-act="pretry" data-id="${p.id}">Retry</button>` : ""}</td></tr>`).join("")}</table></div>`
-      : `<p class="help">Nothing queued or posted yet.</p>`}</div>`);
+      : `<p class="help">Nothing queued or posted yet.</p>`}</div>
+  `);
 }
 
 /* ============================================================ AI usage */
@@ -1992,10 +4095,61 @@ function drawUsage() {
 // With sign-in off there is no profile or password to manage. The AI section is for whoever runs the server.
 const setTabs = () => [
   ...(S.status.user?.is_admin ? [["ai", "AI", "bolt", "Your AI service, model and key"]] : []),
+  ["appearance", "Appearance", "sun", "Dark, Light or System theme"],
   ...(S.status.accounts === false ? [] : [["profile", "Profile", "user", "Your name, email and how you sign in"],
                                           ["security", "Security", "lock", "Password and signing out"]]),
   ["apps", "Connected apps", "plug", "Where your clips get posted"],
   ...(S.status.user?.is_admin ? [["storage", "Storage", "folder", "Where videos and clips are kept"]] : [])];
+const POPULAR_MODELS = {
+  gemini: [
+    { id: "gemini-2.5-flash", label: "gemini-2.5-flash", badge: "Recommended · Fast" },
+    { id: "gemini-2.5-pro", label: "gemini-2.5-pro", badge: "High Quality" },
+    { id: "gemini-2.0-flash", label: "gemini-2.0-flash", badge: "Fast" },
+    { id: "gemini-1.5-flash", label: "gemini-1.5-flash", badge: "Stable" },
+    { id: "gemini-1.5-pro", label: "gemini-1.5-pro", badge: "Pro" }
+  ],
+  openai: [
+    { id: "gpt-4o-mini", label: "gpt-4o-mini", badge: "Recommended · Fast" },
+    { id: "gpt-4o", label: "gpt-4o", badge: "High Quality" },
+    { id: "gpt-4.1-mini", label: "gpt-4.1-mini", badge: "Latest" },
+    { id: "o3-mini", label: "o3-mini", badge: "Reasoning" }
+  ],
+  anthropic: [
+    { id: "claude-3-5-sonnet-20241022", label: "claude-3-5-sonnet", badge: "Recommended" },
+    { id: "claude-3-5-haiku-20241022", label: "claude-3-5-haiku", badge: "Fast" },
+    { id: "claude-3-opus-20240229", label: "claude-3-opus", badge: "Opus" }
+  ],
+  xai: [
+    { id: "grok-4", label: "grok-4", badge: "Recommended" },
+    { id: "grok-2-1212", label: "grok-2", badge: "Latest" }
+  ],
+  groq: [
+    { id: "llama-3.3-70b-versatile", label: "llama-3.3-70b", badge: "Recommended" },
+    { id: "llama-3.1-8b-instant", label: "llama-3.1-8b", badge: "Ultra Fast" },
+    { id: "mixtral-8x7b-32768", label: "mixtral-8x7b", badge: "Mixtral" }
+  ],
+  openrouter: [
+    { id: "google/gemini-2.5-flash", label: "gemini-2.5-flash", badge: "Recommended" },
+    { id: "openai/gpt-4o-mini", label: "gpt-4o-mini", badge: "OpenAI" },
+    { id: "meta-llama/llama-3.3-70b-instruct", label: "llama-3.3-70b", badge: "Llama" }
+  ],
+  ollama: [
+    { id: "llama3.1", label: "llama3.1", badge: "Recommended" },
+    { id: "mistral", label: "mistral", badge: "Mistral" },
+    { id: "qwen2.5:7b", label: "qwen2.5", badge: "Qwen" }
+  ]
+};
+
+function renderModelChips(pid, activeModel) {
+  const wrap = $("#ai_chips"); if (!wrap) return;
+  const list = POPULAR_MODELS[pid] || [];
+  if (!list.length) { wrap.innerHTML = ""; return; }
+  const cur = (activeModel !== undefined ? activeModel : ($("#ai_model")?.value || "")).trim();
+  wrap.innerHTML = `<div class="model-chips-label">Popular models:</div><div class="model-chips">` +
+    list.map(m => `<button type="button" class="model-chip ${m.id === cur ? "active" : ""}" data-act="pickmodel" data-m="${esc(m.id)}">${esc(m.label)}${m.badge ? ` <span class="chip-badge">${esc(m.badge)}</span>` : ""}</button>`).join("") +
+    `</div>`;
+}
+
 function aiHints() {
   const k = S.ai, sel = $("#ai_provider"); if (!k || !sel) return;
   const pv = k.providers.find(x => x.id === sel.value) || k.providers[0], same = pv.id === k.provider;
@@ -2004,36 +4158,113 @@ function aiHints() {
   $("#ai_model").placeholder = pv.example ? "For example " + pv.example : "The model id, exactly as the service names it";
   $("#ai_base").placeholder = pv.address || "http://127.0.0.1:1234/v1";
   $("#ai_basewrap").hidden = pv.id !== "custom" && !(same && k.base_url);
+
+  const mInput = $("#ai_model");
+  if (mInput && !mInput.value.trim() && pv.example) {
+    mInput.value = pv.example;
+  }
+  renderModelChips(pv.id, mInput ? mInput.value : "");
 }
 async function drawSettings() {
   const box = $("#sform"); if (!box) return;
   const tab = S.stab || setTabs()[0][0], me = S.status.user;
+  const curLogo = ThemeManager.getResolvedTheme() === "light" ? "/brand/logo.svg" : "/brand/logo-light.svg";
   box.innerHTML = `<div class="set-layout"><nav class="set-nav" aria-label="Settings sections">${setTabs().map(([k, l, i, h]) =>
-      `<a href="${pathFor("settings", k)}" class="set-link ${k === tab ? "on" : ""}" data-act="settab" data-k="${k}">${ic(i)}<span><b>${l}</b><small>${h}</small></span></a>`).join("")}</nav>
+      `<a href="${pathFor("settings", k)}" class="set-link ${k === tab ? "on" : ""}" data-act="settab" data-k="${k}">${ic(i)}<span><b>${l}</b><small>${h}</small></span></a>`).join("")}
+      <div style="margin-top:auto; padding:20px 10px 4px;">
+        <img src="${curLogo}" alt="Cut it by Ai With Atif" style="height:32px; display:block; opacity:0.9;">
+      </div></nav>
     <div class="set-body" id="setbody"><div class="set-load">Loading…</div></div></div>`;
   const body = $("#setbody");
   try {
     if (tab === "ai") {
       const k = S.ai = await api("/api/ai");
-      body.innerHTML = `<section class="set-sec"><h2>AI</h2><p class="help">PeakCut uses an AI model to pick the moments worth clipping and to write hooks, titles and captions. Use your own key from any of these services. You pay that service directly. Without a key, clips are picked by loudness.</p>
+      const initialModel = (k.models && k.models.length) ? k.models.join(", ") : (k.providers.find(x => x.id === k.provider)?.example || "gemini-2.5-flash");
+      body.innerHTML = `<section class="set-sec"><h2>AI</h2><p class="help">Cut it by Ai With Atif uses an AI model to pick the moments worth clipping and to write hooks, titles and captions. Use your own key from any of these services. You pay that service directly. Without a key, clips are picked by loudness.</p>
           <div class="ai-state">${k.ready ? `<span class="pill ok">${ic("check")}Ready</span><span class="sub">${esc(k.label)} · ${esc(k.models[0] || "")}</span>` : `<span class="pill warn">Not set up</span><span class="sub">Choose a service, paste your key and pick a model.</span>`}</div>
           <div class="ai-form">
             <label class="f">AI service<select id="ai_provider">${k.providers.map(x => `<option value="${esc(x.id)}" ${x.id === k.provider ? "selected" : ""}>${esc(x.label)}</option>`).join("")}</select></label>
             <label class="f">Key<input id="ai_key" type="password" autocomplete="off" spellcheck="false"><span class="hint" id="ai_keyhint"></span></label>
             <label class="f" id="ai_basewrap">Address<input id="ai_base" value="${esc(k.base_url || "")}" spellcheck="false"><span class="hint">Where the service answers. Only needed for a custom service.</span></label>
-            <label class="f">Model<span class="with"><input id="ai_model" list="ai_models" value="${esc(k.models.join(", "))}" spellcheck="false"><button class="btn" type="button" data-act="aimodels">Find models</button></span>
-              <datalist id="ai_models"></datalist><span class="hint">A fast, inexpensive model is the right choice. Add a second one after a comma to fall back on.</span></label>
+            <label class="f">Model<span class="with"><input id="ai_model" list="ai_models" value="${esc(initialModel)}" spellcheck="false"><button class="btn" type="button" data-act="aimodels">Find models</button></span>
+              <div id="ai_chips" class="model-chips-wrap"></div>
+              <datalist id="ai_models"></datalist><span class="hint">A fast, inexpensive model is the right choice. Click a model chip or type one above.</span></label>
           </div>
           <div class="row" style="margin-top:20px"><button class="btn primary" data-act="aisave">Save and test</button>${k.ready ? `<button class="btn" data-act="aitest">Test again</button>` : ""}</div></section>`;
       aiHints();
     }
+    if (tab === "appearance") {
+      const curPref = ThemeManager.getPreference();
+      const resTheme = ThemeManager.getResolvedTheme();
+      body.innerHTML = `<section class="set-sec">
+        <h2>Appearance & Theme</h2>
+        <p class="help">Customize your interface theme. Choose between dark 3D nebula glass, crisp pearl light mode, or automatically match your operating system theme.</p>
+        
+        <div class="theme-grid">
+          <div class="theme-card ${curPref === "system" ? "active" : ""}" data-act="settheme" data-pref="system">
+            <div class="theme-preview theme-split-preview">
+              <div class="split-side dark-half"></div>
+              <div class="split-side light-half"></div>
+              <div class="preview-center-icon">${ic("laptop")}</div>
+            </div>
+            <div class="theme-meta">
+              <div class="theme-title-row">
+                <b>System Preference</b>
+                <span class="theme-tag">Auto</span>
+              </div>
+              <p>Syncs with your device settings automatically (${resTheme === "dark" ? "currently Dark" : "currently Light"}).</p>
+            </div>
+          </div>
+
+          <div class="theme-card ${curPref === "dark" ? "active" : ""}" data-act="settheme" data-pref="dark">
+            <div class="theme-preview dark-theme-preview">
+              <div class="preview-badge">${ic("moon")}</div>
+              <div class="preview-mock">
+                <div class="mock-nav"></div>
+                <div class="mock-card"></div>
+              </div>
+            </div>
+            <div class="theme-meta">
+              <div class="theme-title-row">
+                <b>Dark Theme</b>
+                <span class="theme-tag">3D Glass</span>
+              </div>
+              <p>Deep charcoal glassmorphism with glowing orange highlights and ambient nebula backdrop.</p>
+            </div>
+          </div>
+
+          <div class="theme-card ${curPref === "light" ? "active" : ""}" data-act="settheme" data-pref="light">
+            <div class="theme-preview light-theme-preview">
+              <div class="preview-badge">${ic("sun")}</div>
+              <div class="preview-mock">
+                <div class="mock-nav"></div>
+                <div class="mock-card"></div>
+              </div>
+            </div>
+            <div class="theme-meta">
+              <div class="theme-title-row">
+                <b>Light Theme</b>
+                <span class="theme-tag">Pearl Glass</span>
+              </div>
+              <p>Clean frosted glass with high-contrast typography, crisp pearl surfaces and signature orange accents.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:24px; padding:16px 20px; border-radius:14px; background:rgba(255, 107, 0, 0.08); border:1px solid rgba(255, 107, 0, 0.2); display:flex; align-items:center; gap:12px;">
+          <span style="color:#FF7A1A;">${ic("sparkle")}</span>
+          <span style="font-size:13px; color:var(--text);">Current active mode: <b>${resTheme === "dark" ? "Dark Mode" : "Light Mode"}</b> ${curPref === "system" ? "<i>(controlled by System)</i>" : ""}</span>
+        </div>
+      </section>`;
+    }
     if (tab === "profile") {
       const joined = me.created_at ? new Date(me.created_at * 1000).toLocaleDateString([], {day: "numeric", month: "long", year: "numeric"}) : "";
-      body.innerHTML = `<section class="set-sec"><h2>Profile</h2><p class="help">This is how you appear in PeakCut.</p>
+      body.innerHTML = `<section class="set-sec"><h2>Profile</h2><p class="help">This is how you appear in Cut it by Ai With Atif.</p>
         <div class="prof">${meAvatar(me).replace('class="avatar me-pic"', 'class="avatar prof-pic"')}<div><b>${esc(me.name)}</b><span>${esc(me.email)}</span></div></div>
         <dl class="kv"><div><dt>Email</dt><dd>${esc(me.email)} ${me.verified === false ? `<span class="pill warn">Not confirmed</span>` : `<span class="pill ok">Confirmed</span>`}</dd></div>
           <div><dt>Sign-in method</dt><dd>${me.google ? `Google${me.has_password ? " and password" : ""}` : "Email and password"}</dd></div>
           <div><dt>Account type</dt><dd>${me.is_admin ? "Admin" : "Standard"}</dd></div>
+          <div><dt>Theme preference</dt><dd>${ThemeManager.getLabel()} <button class="btn sm" type="button" data-act="go" data-v="settings" data-tab="appearance" style="margin-left:8px;">Change</button></dd></div>
           ${joined ? `<div><dt>Member since</dt><dd>${joined}</dd></div>` : ""}</dl>
         ${me.google ? `<p class="sub">Your name and picture come from your Google account.</p>` : ""}</section>`;
     }
@@ -2043,7 +4274,7 @@ async function drawSettings() {
             <label class="f">${me.has_password ? "New password" : "Password"}<input id="pw_new" type="password" autocomplete="new-password" placeholder="At least 8 characters"></label></div>
           <div class="row" style="margin-top:14px"><button class="btn primary" data-act="pwsave">${me.has_password ? "Change password" : "Set password"}</button>
             ${me.has_password ? `<a class="btn ghost" href="/reset">Forgot it?</a>` : ""}</div></section>
-        <section class="set-sec"><h2>Sessions</h2><p class="help">Sign out of PeakCut on this device. Changing your password signs out every other device too.</p>
+        <section class="set-sec"><h2>Sessions</h2><p class="help">Sign out of Cut it by Ai With Atif on this device. Changing your password signs out every other device too.</p>
           <button class="btn" data-act="logout">${ic("signout")}Sign out</button></section>
         <section class="set-sec"><h2 style="color:var(--bad)">Delete account</h2><p class="help">Removes your account and everything in it for good: creators, recordings, videos, clips and history.</p>
           <button class="btn danger" data-act="delaccount">${ic("trash")}Delete my account</button></section>`;
@@ -2052,16 +4283,16 @@ async function drawSettings() {
       const s = S.stor = await api("/api/storage");
       const usedPct = s.total_gb ? Math.min(100, Math.max(1, 100 * (s.total_gb - s.free_gb) / s.total_gb)) : 0;
       const gb = n => `${Number(n).toLocaleString(undefined, {maximumFractionDigits: 1})} GB`;
-      body.innerHTML = `<section class="set-sec"><h2>Storage</h2><p class="help">Everything PeakCut keeps is in one folder: your videos, clips, recordings, creators and settings. You can open it, back it up, or move it to a drive with more room.</p>
-          ${s.full ? `<div class="note" style="margin:0 0 14px">${ic("warn")}<span><b>This drive is almost full, so PeakCut can't take new videos.</b> ${gb(s.free_gb)} free on ${esc(s.drive)}; it needs at least ${gb(s.min_free_gb)}. Free up space, or move the folder to another drive below.</span></div>` : ""}
-          ${s.pending ? `<div class="note" style="margin:0 0 14px">${ic("clock")}<span><b>The folder changes to ${esc(s.pending)} the next time PeakCut starts.</b> Close PeakCut and start it again. <button class="btn sm ghost" data-act="storcancel">Undo</button></span></div>` : ""}
+      body.innerHTML = `<section class="set-sec"><h2>Storage</h2><p class="help">Everything Cut it by Ai With Atif keeps is in one folder: your videos, clips, recordings, creators and settings. You can open it, back it up, or move it to a drive with more room.</p>
+          ${s.full ? `<div class="note" style="margin:0 0 14px">${ic("warn")}<span><b>This drive is almost full, so Cut it by Ai With Atif can't take new videos.</b> ${gb(s.free_gb)} free on ${esc(s.drive)}; it needs at least ${gb(s.min_free_gb)}. Free up space, or move the folder to another drive below.</span></div>` : ""}
+          ${s.pending ? `<div class="note" style="margin:0 0 14px">${ic("clock")}<span><b>The folder changes to ${esc(s.pending)} the next time Cut it by Ai With Atif starts.</b> Close Cut it by Ai With Atif and start it again. <button class="btn sm ghost" data-act="storcancel">Undo</button></span></div>` : ""}
           <div class="stor-path"><code>${esc(s.path)}</code>${s.local ? `<button class="btn" data-act="storopen">${ic("folder")}Open folder</button>` : ""}</div>
           <div class="stor-bar ${s.full ? "low" : ""}" role="img" aria-label="${Math.round(usedPct)}% of the drive is used"><i style="width:${usedPct}%"></i></div>
-          <div class="stor-nums"><span>PeakCut uses <b>${gb(s.used_gb)}</b></span><span><b>${gb(s.free_gb)}</b> free of ${gb(s.total_gb)} on ${esc(s.drive)}</span></div>
+          <div class="stor-nums"><span>Cut it by Ai With Atif uses <b>${gb(s.used_gb)}</b></span><span><b>${gb(s.free_gb)}</b> free of ${gb(s.total_gb)} on ${esc(s.drive)}</span></div>
           ${s.fixed ? `<p class="sub" style="margin-top:16px">This folder is set with PEAKCUT_DATA in the .env file. Change it there, or remove that line to choose it here.</p>`
-            : S.storOpen ? `<div class="stor-change"><label class="f">New folder<span class="with"><input id="stor_new" placeholder="For example D:\\PeakCut" spellcheck="false" value="${esc(S.storNew || "")}">${s.local ? `<button class="btn" type="button" data-act="storpick">Browse</button>` : ""}</span></label>
+            : S.storOpen ? `<div class="stor-change"><label class="f">New folder<span class="with"><input id="stor_new" placeholder="For example D:\\CutIt" spellcheck="false" value="${esc(S.storNew || "")}">${s.local ? `<button class="btn" type="button" data-act="storpick">Browse</button>` : ""}</span></label>
                 <label class="ck"><input type="checkbox" id="stor_move" checked>Move everything that is in the current folder there too</label>
-                <p class="sub">The change happens the next time PeakCut starts, so nothing is moved while a video is being made.</p>
+                <p class="sub">The change happens the next time Cut it by Ai With Atif starts, so nothing is moved while a video is being made.</p>
                 <div class="row"><button class="btn primary" data-act="storsave">Use this folder</button><button class="btn ghost" data-act="storchange">Cancel</button></div></div>`
             : `<div class="row" style="margin-top:16px"><button class="btn" data-act="storchange">Change folder</button></div>`}</section>`;
     }
@@ -2099,7 +4330,7 @@ async function drawSettings() {
             <p class="sub">To let people connect ${name}, register this server once with <a href="${g[0]}" target="_blank" rel="noopener">${g[1]}</a>. It takes about five minutes.</p>
             <ol>${g[2].map(x => `<li>${x}</li>`).join("")}</ol>
             <div class="copyrow"><code>${esc(st.redirect)}</code><button class="btn sm" data-act="copytext" data-t="${esc(st.redirect)}">${ic("copy")}Copy</button></div>
-            ${!st.https && pf !== "youtube" ? `<p class="warnline">${name} only accepts https addresses. Put PeakCut on a domain with https (or a tunnel) and set PEAKCUT_PUBLIC_URL to it first.</p>` : ""}
+            ${!st.https && pf !== "youtube" ? `<p class="warnline">${name} only accepts https addresses. Put Cut it by Ai With Atif on a domain with https (or a tunnel) and set PEAKCUT_PUBLIC_URL to it first.</p>` : ""}
             <div class="fields"><label class="f">${esc(st.id_label)}<input id="app_id" placeholder="${st.ready ? "Saved: " + esc(st.id_hint) + ". Paste a new one to replace it" : ""}" autocomplete="off" spellcheck="false"></label>
               <label class="f">${esc(st.secret_label)}<input id="app_secret" type="password" placeholder="${st.ready ? "Saved. Paste a new one to replace it" : ""}" autocomplete="off"></label></div>
             <p class="sub">${g[3]}</p>
@@ -2107,7 +4338,7 @@ async function drawSettings() {
         return `<div class="appcard"><span class="applogo" style="background:${bg}">${logo}</span>
           <div class="apptx"><b>${name}</b><span>${desc}</span>${listOf(accs)}</div><div class="appact">${act}</div>${panel}</div>`;
       };
-      body.innerHTML = `<section class="set-sec"><h2>Connected apps</h2><p class="help">Connect the accounts PeakCut posts clips to: press Connect, sign in on the platform's own page, and you're back here. PeakCut never sees your passwords. Then pick which accounts each creator posts to, in that creator's Setup.</p>
+      body.innerHTML = `<section class="set-sec"><h2>Connected apps</h2><p class="help">Connect the accounts Cut it by Ai With Atif posts clips to: press Connect, sign in on the platform's own page, and you're back here. Cut it by Ai With Atif never sees your passwords. Then pick which accounts each creator posts to, in that creator's Setup.</p>
         <div class="apps">
           ${card("youtube", "YouTube", yt, "#FF0000", "Post clips to your channel as Shorts.")}
           ${card("instagram", "Instagram", ig, "linear-gradient(45deg,#F58529,#DD2A7B,#8134AF)", "Post clips as Reels. Needs a Creator or Business account.")}
@@ -2138,6 +4369,7 @@ function drawClipDlg(full) {
           <label class="f">Layout<select data-f="layout">${opts(S.status.layouts, c.layout)}</select></label></div>
         <div class="two"><label class="f">Start (seconds)<input data-f="start" type="number" step="0.5" value="${c.start}"></label>
           <label class="f">End (seconds)<input data-f="end" type="number" step="0.5" value="${c.end}"></label></div>
+        <label class="ck" style="cursor:pointer;margin:6px 0 10px"><input type="checkbox" data-f="watermark" ${c.watermark ? "checked" : ""}> <span>Add Cut it by Ai With Atif watermark (bottom-right)</span></label>
         <h3>Post text</h3>
         <label class="f">Title<input data-f="title" value="${esc(c.title)}"></label>
         <label class="f">Description<textarea data-f="description" rows="2">${esc(c.description)}</textarea></label>
@@ -2213,7 +4445,13 @@ document.addEventListener("dragleave", () => $(".composer")?.classList.remove("o
 document.addEventListener("drop", e => { const a = $(".composer"); if (a) { e.preventDefault(); a.classList.remove("over"); attach(e.dataTransfer.files); } });
 document.addEventListener("change", async e => {
   const t = e.target;
-  if (t.id === "ai_provider") { $("#ai_models").innerHTML = ""; if (S.ai && t.value !== S.ai.provider) { $("#ai_model").value = ""; $("#ai_base").value = ""; } return aiHints(); }
+  if (t.id === "ai_provider") {
+    $("#ai_models").innerHTML = "";
+    const pv = S.ai?.providers?.find(x => x.id === t.value);
+    $("#ai_model").value = pv?.example || (POPULAR_MODELS[t.value]?.[0]?.id || "");
+    $("#ai_base").value = "";
+    return aiHints();
+  }
   if (t.dataset.sel) {
     const k = t.dataset.sel;
     if (t.checked) sel().add(k); else sel().delete(k);
@@ -2234,31 +4472,116 @@ document.addEventListener("change", async e => {
   saveCreator(true);
 });
 
+document.addEventListener("input", e => {
+  if (e.target.id === "ai_model") {
+    renderModelChips($("#ai_provider")?.value, e.target.value);
+  }
+});
+
 document.addEventListener("click", async e => {
   const b = e.target.closest("[data-act]"); if (!b) return;
   const a = b.dataset.act, d = b.dataset;
   if (b.tagName === "A") e.preventDefault();
   try {
+    if (a === "themetoggle") {
+      closePops();
+      ThemeManager.cycle();
+      drawShell();
+      if (S.view === "settings" && S.stab === "appearance") drawSettings();
+      return;
+    }
+    if (a === "settheme") {
+      const pref = d.pref || b.getAttribute("data-pref");
+      if (pref) {
+        ThemeManager.setTheme(pref);
+        toast(`Theme: ${ThemeManager.getLabel()}`);
+        drawSettings();
+        drawShell();
+      }
+      return;
+    }
     if (a === "go") { closePops(); return go(d.v, d.tab); }
+    if (a === "pickmodel") {
+      const mInput = $("#ai_model");
+      if (mInput) {
+        mInput.value = d.m;
+        renderModelChips($("#ai_provider")?.value, d.m);
+        mInput.focus();
+      }
+      return;
+    }
     if (a === "aimodels") {
-      b.disabled = true;
+      const btn = b;
+      btn.disabled = true;
+      const oldText = btn.textContent;
+      btn.textContent = "Finding…";
+      const prov = $("#ai_provider").value;
+      const keyVal = $("#ai_key").value.trim();
+      const pv = S.ai?.providers?.find(x => x.id === prov);
+
       try {
-        const r = await send("/api/ai/models", {provider: $("#ai_provider").value, base_url: $("#ai_base").value, key: $("#ai_key").value});
-        $("#ai_models").innerHTML = r.models.map(m => `<option value="${esc(m)}">`).join("");
-        toast(r.models.length ? `${r.models.length} models found. Click the model box to pick one.` : "The service listed no models. Type the model yourself.", r.models.length ? "ok" : "");
-        if (r.models.length) $("#ai_model").focus();
-      } finally { b.disabled = false; }
+        if (!keyVal && pv?.needs_key && !S.ai?.has_key) {
+          toast(`Paste your ${pv?.label || "AI"} key first, or pick a recommended model below.`, "warn");
+          $("#ai_key").focus();
+          return;
+        }
+        const r = await send("/api/ai/models", {provider: prov, base_url: $("#ai_base").value, key: keyVal});
+        if (r.models && r.models.length) {
+          $("#ai_models").innerHTML = r.models.map(m => `<option value="${esc(m)}">`).join("");
+          const best = r.models.find(m => m.includes("2.5-flash")) || r.models.find(m => m.includes("flash")) || r.models[0];
+          if (!$("#ai_model").value.trim() || !r.models.includes($("#ai_model").value.trim())) {
+            $("#ai_model").value = best;
+          }
+          const dynamicList = r.models.slice(0, 12).map(m => ({
+            id: m,
+            label: m,
+            badge: m.includes("flash") ? "Fast" : m.includes("pro") ? "Pro" : ""
+          }));
+          POPULAR_MODELS[prov] = dynamicList;
+          renderModelChips(prov, $("#ai_model").value);
+          toast(`Found ${r.models.length} models for ${pv?.label || prov}. Selected ${$("#ai_model").value}.`, "ok");
+        } else {
+          toast("The service listed no models. You can pick one of the recommended models below.", "");
+        }
+      } catch (err) {
+        toast(`Could not query service models: ${err.message}. You can use the recommended models below.`, "bad");
+        if (!$("#ai_model").value.trim() && pv?.example) {
+          $("#ai_model").value = pv.example;
+        }
+        renderModelChips(prov, $("#ai_model").value);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = oldText;
+      }
       return;
     }
     if (a === "aisave" || a === "aitest") {
       b.disabled = true;
       try {
-        if (a === "aisave") await send("/api/ai", {provider: $("#ai_provider").value, models: $("#ai_model").value, base_url: $("#ai_base").value, key: $("#ai_key").value}, "PUT");
+        const prov = $("#ai_provider").value;
+        const pv = S.ai?.providers?.find(x => x.id === prov);
+        let mVal = $("#ai_model").value.trim();
+        if (!mVal) {
+          mVal = pv?.example || POPULAR_MODELS[prov]?.[0]?.id || "gemini-2.5-flash";
+          $("#ai_model").value = mVal;
+        }
+        const kVal = $("#ai_key").value.trim();
+        if (!kVal && pv?.needs_key && !S.ai?.has_key && a === "aisave") {
+          toast(`Please paste your ${pv?.label || "AI"} key first.`, "bad");
+          $("#ai_key").focus();
+          return;
+        }
+        if (a === "aisave") await send("/api/ai", {provider: prov, models: mVal, base_url: $("#ai_base").value, key: kVal}, "PUT");
         let ok = null, why = "";
         try { ok = await send("/api/ai/test"); } catch (err) { why = err.message; }
         S.status = await api("/api/status"); drawShell(); await drawSettings();
-        if (ok) toast(`Saved. ${ok.model} answered, so the AI is ready.`, "ok");
-        else toast(`Saved, but the test failed. ${why}`, "bad");
+        if (a === "aisave") {
+          if (ok) toast(`Saved. ${ok.model} answered, so the AI is ready.`, "ok");
+          else toast(`Saved, but the test failed. ${why}`, "bad");
+        } else {
+          if (ok) toast(`AI test succeeded. ${ok.model} answered.`, "ok");
+          else toast(`AI test failed: ${why}`, "bad");
+        }
       } finally { b.disabled = false; }
       return;
     }
@@ -2397,7 +4720,7 @@ document.addEventListener("click", async e => {
     if (a === "tour") return startTour();
     if (a === "settab") { e.preventDefault(); S.stab = d.k; remember("settings", d.k); return drawSettings(); }
     if (a === "updhow") return updateHow();
-    if (a === "updlater") { try { localStorage.setItem("peakcut_update_seen", S.status.update?.latest || ""); } catch {} return drawShell(); }
+    if (a === "updlater") { try { localStorage.setItem("cutit_update_seen", S.status.update?.latest || ""); } catch {} return drawShell(); }
     if (a === "storopen") { await send("/api/storage/open"); return; }
     if (a === "storchange") { S.storOpen = !S.storOpen; S.storNew = ""; return drawSettings(); }
     if (a === "storpick") {
@@ -2407,7 +4730,7 @@ document.addEventListener("click", async e => {
     }
     if (a === "storsave") {
       const s = await send("/api/storage", {path: $("#stor_new").value, move: $("#stor_move").checked}, "PUT");
-      S.storOpen = false; toast("Saved. Close PeakCut and start it again to switch to the new folder.", "ok"); return drawSettings();
+      S.storOpen = false; toast("Saved. Close Cut it by Ai With Atif and start it again to switch to the new folder.", "ok"); return drawSettings();
     }
     if (a === "storcancel") { await send("/api/storage", {cancel: true}, "PUT"); toast("Kept the current folder", "ok"); return drawSettings(); }
     if (a === "appsetup") { S.setupOpen = d.p && S.setupOpen !== d.p ? d.p : ""; return drawSettings(); }
@@ -2437,7 +4760,7 @@ document.addEventListener("click", async e => {
       await api(`/api/accounts/${d.id}`, {method:"DELETE"}); await tick(); return drawSettings();
     }
     if (a === "remake") {
-      const body = {}; $$("#clipdlg [data-f]").forEach(i => body[i.dataset.f] = i.type === "number" ? Number(i.value) : i.value);
+      const body = {}; $$("#clipdlg [data-f]").forEach(i => body[i.dataset.f] = i.type === "checkbox" ? i.checked : (i.type === "number" ? Number(i.value) : i.value));
       await send(`/api/jobs/${D.jid}/clips/${D.cid}/render`, body); toast("Re-making the clip…", "ok"); return tick();
     }
     if (a === "postnow" || a === "postqueue") {
@@ -2450,6 +4773,7 @@ document.addEventListener("click", async e => {
   } catch (err) { b.disabled = false; toast(err.message, "bad"); }
 });
 
+ThemeManager.init();
 $("#collapseBtn").innerHTML = ic("sidebar"); $("#menuBtn").innerHTML = ic("menu");
 try { if (localStorage.getItem("mini")) $("#app").classList.add("mini"); } catch {}
 $("#main").addEventListener("scroll", () => $(".topbar").classList.toggle("stuck", $("#main").scrollTop > 4), {passive:true});
@@ -2467,8 +4791,8 @@ $("#main").addEventListener("scroll", () => $(".topbar").classList.toggle("stuck
   await tick();
   { const [v, tab] = location.pathname.startsWith("/app/") ? fromPath(location.pathname) : ["overview", "clips"]; go(v, tab, true); remember(S.view, S.ctab, "replace"); }
   try {  // a link pasted on the home page before signing up
-    const link = sessionStorage.getItem("peakcut_link");
-    if (link) { sessionStorage.removeItem("peakcut_link"); go("overview"); $("#url").value = link; onLink($("#url")); $("#url").focus(); toast("Your link is ready. Press Make clips.", "ok"); }
+    const link = sessionStorage.getItem("cutit_link");
+    if (link) { sessionStorage.removeItem("cutit_link"); go("overview"); $("#url").value = link; onLink($("#url")); $("#url").focus(); toast("Your link is ready. Press Make clips.", "ok"); }
   } catch {}
   loop();
   if (S.status.tour && !$("#formdlg").open) setTimeout(startTour, 500);   // once, the first time someone signs in

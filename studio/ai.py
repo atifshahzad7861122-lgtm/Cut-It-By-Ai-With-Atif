@@ -21,12 +21,12 @@ from . import config
 PROVIDERS = {
     "gemini": ("Gemini", "https://generativelanguage.googleapis.com/v1beta/models", "gemini", "https://aistudio.google.com/apikey", "gemini-2.5-flash"),
     "openai": ("OpenAI", "https://api.openai.com/v1", "openai", "https://platform.openai.com/api-keys", "gpt-4o-mini"),
-    "xai": ("Grok", "https://api.x.ai/v1", "openai", "https://console.x.ai", "grok-4"),
+    "xai": ("Grok", "https://api.x.ai/v1", "openai", "https://console.x.ai", "grok-2-1212"),
     "groq": ("Groq", "https://api.groq.com/openai/v1", "openai", "https://console.groq.com/keys", "llama-3.3-70b-versatile"),
     "openrouter": ("OpenRouter", "https://openrouter.ai/api/v1", "openai", "https://openrouter.ai/keys", "google/gemini-2.5-flash"),
-    "anthropic": ("Claude", "https://api.anthropic.com/v1", "anthropic", "https://console.anthropic.com", ""),
+    "anthropic": ("Claude", "https://api.anthropic.com/v1", "anthropic", "https://console.anthropic.com", "claude-3-5-sonnet-20241022"),
     "ollama": ("Ollama (on this machine)", "http://127.0.0.1:11434/v1", "openai", "https://ollama.com", "llama3.1"),
-    "custom": ("Custom (OpenAI-compatible)", "", "openai", "", ""),
+    "custom": ("Custom (OpenAI-compatible)", "", "openai", "", "gpt-4o-mini"),
 }
 ALIASES = {"google": "gemini", "grok": "xai", "claude": "anthropic", "local": "ollama"}
 NO_KEY = {"ollama", "custom"}       # a model running on your own machine needs no key
@@ -162,7 +162,8 @@ def list_models(provider_id=None, address=None, with_key=None) -> list:
         found = [m.get("name", "").split("/")[-1] for m in data.get("models", [])
                  if "generateContent" in (m.get("supportedGenerationMethods") or [])]
     else:
-        found = [m.get("id", "") for m in data.get("data", []) if isinstance(m, dict)]
+        raw_list = data.get("data", []) if isinstance(data, dict) else (data if isinstance(data, list) else [])
+        found = [m.get("id", "") for m in raw_list if isinstance(m, dict)]
     return sorted({m for m in found if m})[:400]
 
 
@@ -179,6 +180,9 @@ class AIError(RuntimeError):
     pass
 
 
+AIProblem = AIError
+
+
 problem = {"text": "", "at": 0.0}       # why the AI last failed, for the dashboard; cleared when it answers again
 
 
@@ -193,7 +197,7 @@ def explain(e) -> str:
     if "429" in text or "quota" in low or "rate limit" in low or "exhausted" in low:
         return f"{label()} says the key has hit its limit or has no credit left. Check the account with {label()}, or try again later."
     if "connect" in low or "timed out" in low or "timeout" in low or "getaddrinfo" in low or "refused" in low:
-        return f"PeakCut couldn't reach {label()}. Check the internet connection" + (" and that Ollama is running." if provider() == "ollama" else ".")
+        return f"Cut it by Ai With Atif couldn't reach {label()}. Check the internet connection" + (" and that Ollama is running." if provider() == "ollama" else ".")
     return ""
 
 
@@ -258,10 +262,23 @@ def _gemini(model, prompt, schema):
     if r.status_code != 200:
         _fail(r, model)
     data = r.json()
-    text = "".join(p.get("text", "") for p in data["candidates"][0]["content"]["parts"])
+    candidates = data.get("candidates") or []
+    if not candidates:
+        feedback = (data.get("promptFeedback") or {}).get("blockReason")
+        raise AIError(f"Gemini did not return any candidates{f': {feedback}' if feedback else '.'}")
+    cand = candidates[0]
+    finish = cand.get("finishReason")
+    if finish in ("SAFETY", "RECITATION", "BLOCKLIST", "PROHIBITED_CONTENT", "SPII"):
+        raise AIError(f"Gemini blocked the response ({finish}).")
+    parts = (cand.get("content") or {}).get("parts") or []
+    text = "".join(p.get("text", "") for p in parts if isinstance(p, dict))
+    if not text:
+        if finish:
+            raise AIError(f"Gemini stopped without content ({finish}).")
+        raise AIError("Gemini returned empty content.")
     u = data.get("usageMetadata", {})
     sent = int(u.get("promptTokenCount") or 0)
-    return json.loads(text), sent, max(0, int(u.get("totalTokenCount") or 0) - sent)   # the answer, and any thinking billed with it
+    return _parse(text), sent, max(0, int(u.get("totalTokenCount") or 0) - sent)   # the answer, and any thinking billed with it
 
 
 def _openai(model, prompt, schema):
@@ -277,8 +294,15 @@ def _openai(model, prompt, schema):
     if r.status_code != 200:
         _fail(r, model)
     data = r.json()
+    choices = data.get("choices") or []
+    if not choices:
+        raise AIError("The model did not return any choices.")
+    msg = choices[0].get("message") or {}
+    content = msg.get("content")
+    if not content and msg.get("refusal"):
+        raise AIError(f"Model refused: {msg['refusal']}")
     u = data.get("usage") or {}
-    return _parse(data["choices"][0]["message"].get("content")), int(u.get("prompt_tokens") or 0), int(u.get("completion_tokens") or 0)
+    return _parse(content), int(u.get("prompt_tokens") or 0), int(u.get("completion_tokens") or 0)
 
 
 def _anthropic(model, prompt, schema):
@@ -288,6 +312,12 @@ def _anthropic(model, prompt, schema):
     if r.status_code != 200:
         _fail(r, model)
     data = r.json()
-    text = "".join(b.get("text", "") for b in data.get("content", []) if b.get("type") == "text")
+    content_list = data.get("content", []) if isinstance(data, dict) else []
+    text = "".join(b.get("text", "") for b in content_list if isinstance(b, dict) and b.get("type") == "text")
+    if not text:
+        stop = data.get("stop_reason") if isinstance(data, dict) else None
+        if stop:
+            raise AIError(f"Anthropic stopped without content ({stop}).")
+        raise AIError("Anthropic returned empty content.")
     u = data.get("usage") or {}
     return _parse(text), int(u.get("input_tokens") or 0), int(u.get("output_tokens") or 0)

@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+WEB_DIR = ROOT / "web"
 
 
 def _load_dotenv():
@@ -121,13 +122,22 @@ USERS_DIR = DATA_DIR / "users"          # users/<user id>/{creators,jobs,account
 MODELS_DIR = Path(env("PEAKCUT_MODELS") or DATA_DIR / "models")
 TMP_DIR = DATA_DIR / "tmp"
 FONTS_DIR = DATA_DIR / "fonts"          # caption fonts, copied from studio/fonts so every server renders the same
+WEB_DIR = ROOT / "web"
 # YouTube already has a word-by-word transcript of most videos. With this on, that is what the AI reads to find the
 # clips (seconds instead of transcribing hours), and our own model is run only on the clips themselves.
 YT_TRANSCRIPT = env("PEAKCUT_YT_TRANSCRIPT", "1") != "0"
 # the compact model for processors; a machine with a graphics card sets PEAKCUT_ASR_MODEL to the full-precision one
 ASR_MODEL_NAME = env("PEAKCUT_ASR_MODEL", "sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8")
 ASR_MODEL_DIR = MODELS_DIR / ASR_MODEL_NAME
-DATABASE_URL = env("DATABASE_URL") or f"sqlite:///{(DATA_DIR / 'peakcut.db').as_posix()}"
+_raw_db = (env("DATABASE_URL") or "").strip()
+if _raw_db:
+    if _raw_db.startswith("postgres://"):
+        _raw_db = "postgresql+psycopg://" + _raw_db[len("postgres://"):]
+    elif _raw_db.startswith("postgresql://") and not _raw_db.startswith("postgresql+"):
+        _raw_db = "postgresql+psycopg://" + _raw_db[len("postgresql://"):]
+    DATABASE_URL = _raw_db
+else:
+    DATABASE_URL = f"sqlite:///{(DATA_DIR / 'peakcut.db').as_posix()}"
 
 for d in (USERS_DIR, MODELS_DIR, TMP_DIR, FONTS_DIR):
     d.mkdir(parents=True, exist_ok=True)
@@ -151,8 +161,8 @@ SESSION_DAYS = int(env("PEAKCUT_SESSION_DAYS", "30"))
 ACCOUNTS = env("PEAKCUT_ACCOUNTS", "0") == "1"
 # The two buttons along the top of the dashboard: the project's code, and where to follow its maker (feedback goes
 # there too). Set either to an empty value to hide that button, or point them at your own pages in a fork.
-REPO_URL = env("PEAKCUT_REPO_URL", "https://github.com/haziqahmedqasmi/peakcut").strip()
-FOLLOW_URL = env("PEAKCUT_FOLLOW_URL", "https://www.instagram.com/haziq.builds/").strip()
+REPO_URL = env("PEAKCUT_REPO_URL", "").strip()
+FOLLOW_URL = env("PEAKCUT_FOLLOW_URL", "").strip()
 
 # ---------------------------------------------------------------- limits (per user, and for the whole server)
 # Your own PeakCut has no limits unless you set them: 0 (the default) means "none" for every limit below. The

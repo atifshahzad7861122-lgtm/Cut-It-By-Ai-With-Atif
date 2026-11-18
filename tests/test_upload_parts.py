@@ -19,7 +19,8 @@ def check(name, ok, extra=""):
 
 def user(email):
     c = httpx.Client(base_url=B, headers={"Origin": B}, timeout=120)
-    c.post("/api/auth/signup", json={"email": email, "password": "test-pass-123", "name": "U"})
+    r = c.post("/api/auth/signup", json={"email": email, "password": "test-pass-123", "name": "U"})
+    assert r.status_code == 200, f"Signup failed for {email}: {r.status_code} {r.text}"
     return c
 
 
@@ -64,7 +65,9 @@ if data_dir and job.get("id"):
     src = list(Path(data_dir).glob(f"users/*/jobs/{job['id']}/source.mp4"))
     check("the file arrived byte for byte", bool(src) and hashlib.sha256(src[0].read_bytes()).hexdigest() == hashlib.sha256(data).hexdigest())
     check("no pieces are left behind", not list(Path(data_dir).glob("tmp/uploads/up-*")))
-check("someone else does not see my video", all(j["id"] != job.get("id") for j in b.get("/api/jobs").json()))
+b_res = b.get("/api/jobs")
+b_jobs = b_res.json() if b_res.status_code == 200 else []
+check("someone else does not see my video", isinstance(b_jobs, list) and all(isinstance(j, dict) and j.get("id") != job.get("id") for j in b_jobs))
 limit = st["max_upload_mb"] * 1024 * 1024
 check("a file over the limit is refused before anything is sent", a.post("/api/upload/start", json={"name": "x.mp4", "size": limit + 1}).status_code == 413)
 check("a file that is not a video is refused", a.post("/api/upload/start", json={"name": "x.exe", "size": 5000}).status_code == 400)

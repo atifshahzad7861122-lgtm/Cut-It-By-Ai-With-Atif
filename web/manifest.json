@@ -1,0 +1,21 @@
+{
+  "name": "Cut it by Ai With Atif",
+  "short_name": "Cut it by Ai",
+  "description": "AI clip maker with Atif - Turn videos into captioned shorts",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1E140E",
+  "theme_color": "#1E140E",
+  "icons": [
+    {
+      "src": "/brand/cut-it-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/brand/cut-it-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

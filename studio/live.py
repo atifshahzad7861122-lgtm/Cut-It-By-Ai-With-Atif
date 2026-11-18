@@ -1,4 +1,5 @@
 """Live sessions: record a stream into a rolling buffer, transcribe as it goes, let the AI pick clips."""
+import atexit
 import collections
 import json
 import re
@@ -67,7 +68,8 @@ def resolve(url: str) -> dict:
     if "(live)" in title and info.get("description"):  # Twitch puts the real stream title here
         title = str(info["description"]).splitlines()[0][:120]
     return {"urls": [f["url"] for f in fmts], "title": title,
-            "uploader": info.get("uploader") or info.get("channel") or ""}
+            "uploader": info.get("uploader") or info.get("channel") or "",
+            "video_id": info.get("id") or ""}
 
 
 def active():
@@ -129,6 +131,7 @@ class Session:
         self.tokens = 0
         self.manual = []
         self.n = 0
+        self.video_id = None
         self.spike = None             # a jump in loudness or chat waiting for its transcript
         self.said = None              # someone said "clip": that moment, waiting for its transcript
         self.last_said = -999.0
@@ -141,9 +144,14 @@ class Session:
         SESSIONS[self.job["id"]] = self
         threading.Thread(target=ctx.bind(self._ingest), daemon=True).start()
         threading.Thread(target=ctx.bind(self._analyze), daemon=True).start()
-        m = re.match(r"^https?://(?:www\.)?twitch\.tv/([A-Za-z0-9_]+)", self.job["source"]["url"])
+        url = self.job["source"]["url"]
+        m = re.match(r"^https?://(?:www\.)?twitch\.tv/([A-Za-z0-9_]+)", url)
         if m:
             threading.Thread(target=ctx.bind(self._chat), args=(m.group(1).lower(),), daemon=True).start()
+        m_yt = re.search(r"(?:v=|/live/|youtu\.be/)([A-Za-z0-9_-]{11})", url)
+        if m_yt:
+            self.video_id = m_yt.group(1)
+            threading.Thread(target=ctx.bind(self._chat_youtube), args=(self.video_id,), daemon=True).start()
 
     def stop(self, note="Stopped by you"):
         """Instant for the user: the card and the creator show as stopped straight away. Clips already being made
@@ -173,6 +181,9 @@ class Session:
                 continue
             if not self.job.get("uploader"):
                 self.job.update(title=info["title"], uploader=info["uploader"])
+            if not self.video_id and info.get("video_id") and (media.is_youtube(url) or "youtube.com" in url or "youtu.be" in url):
+                self.video_id = info["video_id"]
+                threading.Thread(target=ctx.bind(self._chat_youtube), args=(self.video_id,), daemon=True).start()
             self.part += 1
             with self.lock:
                 self.seg_clock = max(self.seg_clock, self.samples / SR)
@@ -232,6 +243,8 @@ class Session:
     # ---------------------------------------------------------------- chat (Twitch only)
     def _chat(self, channel):
         while not self.stop_flag.is_set() and not self.ended:
+            raw = None
+            s = None
             try:
                 raw = socket.create_connection(("irc.chat.twitch.tv", 6697), timeout=20)
                 s = ssl.create_default_context().wrap_socket(raw, server_hostname="irc.chat.twitch.tv")
@@ -254,10 +267,52 @@ class Session:
                             with self.lock:
                                 self.chat[int(self.samples / SR)] += 1
                                 self.chat_total += 1
-                s.close()
             except Exception:  # noqa: BLE001
                 pass
+            finally:
+                if s:
+                    try:
+                        s.close()
+                    except Exception:
+                        pass
+                elif raw:
+                    try:
+                        raw.close()
+                    except Exception:
+                        pass
             self.chat_on = False
+            self.stop_flag.wait(5)
+
+    # ---------------------------------------------------------------- chat (YouTube)
+    def _chat_youtube(self, video_id):
+        """Stream live comments from YouTube into self.chat for real-time spike detection."""
+        if not video_id:
+            return
+        while not self.stop_flag.is_set() and not self.ended:
+            chat = None
+            try:
+                import pytchat
+                chat = pytchat.create(video_id=video_id)
+                self.chat_on = True
+                while not self.stop_flag.is_set() and not self.ended and chat.is_alive():
+                    data = chat.get()
+                    items = list(data.sync_items()) if hasattr(data, "sync_items") else []
+                    count = len(items) if items else (getattr(data, "itemcount", 0) or 0)
+                    if count > 0:
+                        with self.lock:
+                            sec = int(self.samples / SR)
+                            self.chat[sec] += count
+                            self.chat_total += count
+                    self.stop_flag.wait(1)
+            except Exception:  # noqa: BLE001
+                pass
+            finally:
+                self.chat_on = False
+                if chat:
+                    try:
+                        chat.terminate()
+                    except Exception:
+                        pass
             self.stop_flag.wait(5)
 
     def _chat_spike(self, s, e):

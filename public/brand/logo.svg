@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3800 1024" width="3800" height="1024" role="img" aria-label="Cut it by Ai">
+  <defs>
+    <linearGradient id="bg-light" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFA23A"/>
+      <stop offset="1" stop-color="#FF5A00"/>
+    </linearGradient>
+    <clipPath id="top-light"><polygon points="-688.7,1380.4 1768.7,-340.4 908.4,-1569.1 -1549.1,151.6"/></clipPath>
+    <clipPath id="bot-light"><polygon points="-688.7,1380.4 1768.7,-340.4 2629.1,888.4 171.6,2609.1"/></clipPath>
+  </defs>
+
+  <!-- Logo Mark -->
+  <g transform="translate(0, 0)">
+    <rect width="1024" height="1024" rx="230" fill="url(#bg-light)"/>
+    <g transform="translate(-7.5,-10.6)"><g clip-path="url(#top-light)">
+      <path d="M372,318 L372,722 L742,520 Z" fill="#fff" stroke="#fff" stroke-width="56" stroke-linejoin="round"/>
+    </g></g>
+    <g transform="translate(7.5,10.6)"><g clip-path="url(#bot-light)">
+      <path d="M372,318 L372,722 L742,520 Z" fill="#fff" stroke="#fff" stroke-width="56" stroke-linejoin="round"/>
+    </g></g>
+    <path d="M800,196 Q806,262 872,268 Q806,274 800,340 Q794,274 728,268 Q794,262 800,196 Z" fill="#fff"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="1310" y="550" font-family="Inter, -apple-system, system-ui, sans-serif" font-weight="700" font-size="440" letter-spacing="-10" textLength="2150" lengthAdjust="spacingAndGlyphs" fill="#1E140E">Cut it <tspan fill="#FF7A1A">by Ai</tspan></text>
+  <text x="1325" y="785" font-family="Inter, -apple-system, system-ui, sans-serif" font-weight="600" font-size="175" letter-spacing="35" textLength="1650" lengthAdjust="spacingAndGlyphs" fill="#7A6354">WITH ATIF</text>
+</svg>

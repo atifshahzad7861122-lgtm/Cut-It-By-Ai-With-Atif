@@ -112,8 +112,10 @@ def _take_now():
 def _recognizer():
     """Kept for callers that only need the model loaded (warm-up)."""
     rec = _take()
-    _free.put(rec)
-    return rec
+    try:
+        return rec
+    finally:
+        _free.put(rec)
 
 
 def _chunks(audio: np.ndarray, lo=12.0, hi=24.0):
@@ -175,9 +177,9 @@ def decode_pieces(pieces: list, rec=None) -> list:
             st.accept_waveform(16000, seg)
             streams.append(st)
         rec.decode_streams(streams)
+        return [(list(st.result.tokens), [float(t) for t in st.result.timestamps]) for st in streams]
     finally:
         _free.put(rec)
-    return [(list(st.result.tokens), [float(t) for t in st.result.timestamps]) for st in streams]
 
 
 def _remote_ok() -> bool:
@@ -228,20 +230,28 @@ def transcribe(audio: np.ndarray, on_progress=None) -> list:
                 finally:
                     REMOTE_SLOTS.release()
                 continue
-            rec = _take_now()
-            if rec is None and not (remote and _remote_ok()):
-                rec = _take()                                # nothing else to wait for: wait for a copy here
-            if rec is not None:
-                got = []
-                step = max(1, BATCH)
-                try:
+            rec = None
+            try:
+                rec = _take_now()
+                if rec is None and not (remote and _remote_ok()):
+                    rec = _take()                                # nothing else to wait for: wait for a copy here
+                if rec is not None:
+                    got = []
+                    step = max(1, BATCH)
                     for i in range(0, len(segs), step):
-                        got += decode_pieces(segs[i:i + step], rec)
-                        rec = None if i + step >= len(segs) else _take()
-                except Exception:
-                    got = None
-                    raise
-                continue
+                        current_rec = rec
+                        rec = None  # decode_pieces takes ownership and returns it to _free in its finally
+                        got += decode_pieces(segs[i:i + step], current_rec)
+                        if i + step < len(segs):
+                            rec = _take()
+                    continue
+            except Exception:
+                got = None
+                raise
+            finally:
+                if rec is not None:
+                    _free.put(rec)
+                    rec = None
             time.sleep(0.02)
         out = [_words(tok, ts, a, b) for (a, b, _), (tok, ts) in zip(group, got)]
         done[0] += 1

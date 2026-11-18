@@ -8,6 +8,9 @@ secrets/
 *service-account*.json
 *client_secret*.json
 data/
+buffer/
+clips/
+tmp/
 storage.json
 *.db
 *.db-wal
@@ -21,6 +24,7 @@ CLAUDE.local.md
 .vscode/
 .idea/
 *.bat
+!start.bat
 Thumbs.db
 .DS_Store
 
@@ -30,3 +34,8 @@ __pycache__/
 .venv/
 venv/
 .pytest_cache/
+
+# ---- Node & Remotion
+node_modules/
+.remotion/
+out/

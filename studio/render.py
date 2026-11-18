@@ -2,6 +2,7 @@
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
@@ -238,7 +239,18 @@ def _filter(layout, fg_h):
 
 
 _qsv_ok = None
+_nvenc_ok = None
+_vt_ok = None
 RENDER_SECONDS = 600      # one clip's video encode; far beyond normal, so a frozen encoder is stopped, not waited on
+
+
+def _safe_path(p: Path) -> str:
+    """Handle extended Windows paths approaching or exceeding MAX_PATH (260 characters)."""
+    s = str(Path(p).resolve())
+    if sys.platform == "win32" and not s.startswith("\\\\?\\") and not s.startswith("\\\\"):
+        if len(s) >= 240:
+            return "\\\\?\\" + s
+    return s
 
 
 def render_clip(src: Path, out_dir: Path, name: str, clip: dict, words: list, src_w: int, src_h: int) -> dict:
@@ -254,41 +266,76 @@ def render_clip(src: Path, out_dir: Path, name: str, clip: dict, words: list, sr
     # break the filter syntax).
     work = Path(tempfile.mkdtemp(prefix="pk"))
     try:
-        return _render_in(work, src, out_dir, name, start, end, layout, fg_h, ass)
+        return _render_in(work, src, out_dir, name, start, end, layout, fg_h, ass, bool(clip.get("watermark")))
     finally:
         shutil.rmtree(work, ignore_errors=True)
 
 
-def _render_in(work: Path, src: Path, out_dir: Path, name: str, start, end, layout, fg_h, ass: str) -> dict:
-    global _qsv_ok
+def _render_in(work: Path, src: Path, out_dir: Path, name: str, start, end, layout, fg_h, ass: str, watermark: bool = False) -> dict:
+    global _qsv_ok, _nvenc_ok, _vt_ok
     (work / f"{name}.ass").write_text(ass, encoding="utf-8")
-    (work / "f").mkdir()
+    (work / "f").mkdir(exist_ok=True)
     for f in config.FONTS_DIR.glob("*.ttf"):
         shutil.copyfile(f, work / "f" / f.name)
-    fc = _filter(layout, fg_h) + f"[v0]ass={name}.ass:fontsdir=f[v]"
-    base = ["ffmpeg", "-y", "-v", "error", "-ss", f"{start:.2f}", "-t", f"{end - start:.2f}", "-i", str(src),
-            "-filter_complex", fc, "-map", "[v]", "-map", "0:a:0", "-af", "loudnorm=I=-14:TP=-1.5:LRA=11",
+    try:
+        wm_png = config.WEB_DIR / "brand" / "watermark.png"
+    except AttributeError:
+        wm_png = config.ROOT / "web" / "brand" / "watermark.png"
+    has_wm = watermark and wm_png.is_file()
+    src_path = _safe_path(src)
+    if has_wm:
+        try:
+            shutil.copyfile(wm_png, work / "wm.png")
+            fc = _filter(layout, fg_h) + f"[v0]ass={name}.ass:fontsdir=f[v_sub];[1:v]scale=96:96[wm];[v_sub][wm]overlay=W-w-48:H-h-48:format=auto[v]"
+            inputs = ["ffmpeg", "-y", "-v", "error", "-ss", f"{start:.2f}", "-t", f"{end - start:.2f}", "-i", src_path, "-i", "wm.png"]
+        except OSError:
+            has_wm = False
+    if not has_wm:
+        fc = _filter(layout, fg_h) + f"[v0]ass={name}.ass:fontsdir=f[v]"
+        inputs = ["ffmpeg", "-y", "-v", "error", "-ss", f"{start:.2f}", "-t", f"{end - start:.2f}", "-i", src_path]
+    base = inputs + ["-filter_complex", fc, "-map", "[v]", "-map", "0:a:0", "-af", "loudnorm=I=-14:TP=-1.5:LRA=11",
             "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-movflags", "+faststart", "-pix_fmt"]
     encoders = []
+    if _nvenc_ok is not False:
+        encoders.append(("nvenc", ["yuv420p", "-c:v", "h264_nvenc", "-cq", "23", "-preset", "p4"]))
     if _qsv_ok is not False:
         encoders.append(("qsv", ["nv12", "-c:v", "h264_qsv", "-global_quality", "23", "-preset", "fast"]))
+    if _vt_ok is not False and sys.platform == "darwin":
+        encoders.append(("vt", ["yuv420p", "-c:v", "h264_videotoolbox", "-q:v", "65"]))
     encoders.append(("x264", ["yuv420p", "-c:v", "libx264", "-crf", "21", "-preset", "veryfast"]))
     err = None
     for label, enc in encoders:
         p = subprocess.run(base + enc + [f"{name}.mp4"], cwd=work, capture_output=True, text=True,
                            encoding="utf-8", errors="replace", creationflags=NO_WINDOW, timeout=RENDER_SECONDS)
         if p.returncode == 0:
-            if label == "qsv":
+            if label == "nvenc":
+                _nvenc_ok = True
+            elif label == "qsv":
                 _qsv_ok = True
+            elif label == "vt":
+                _vt_ok = True
             break
         err = p.stderr[-1200:]
-        if label == "qsv":
+        if label == "nvenc":
+            _nvenc_ok = False
+        elif label == "qsv":
             _qsv_ok = False
+        elif label == "vt":
+            _vt_ok = False
     else:
         raise RuntimeError(f"Render failed: {err}")
-    cover_t = min(1.2, (end - start) / 2)
-    run(["ffmpeg", "-y", "-v", "error", "-ss", f"{cover_t:.2f}", "-i", f"{name}.mp4", "-frames:v", "1",
-         "-q:v", "3", f"{name}.jpg"], cwd=work)
-    for ext in ("mp4", "jpg", "ass"):
-        shutil.move(str(work / f"{name}.{ext}"), str(out_dir / f"{name}.{ext}"))
-    return {"file": f"{name}.mp4", "cover": f"{name}.jpg", "layout": layout}
+    cover_t = min(1.2, max(0.0, (end - start) / 2))
+    has_cover = False
+    try:
+        run(["ffmpeg", "-y", "-v", "error", "-ss", f"{cover_t:.2f}", "-i", f"{name}.mp4", "-frames:v", "1",
+             "-q:v", "3", f"{name}.jpg"], cwd=work)
+        has_cover = (work / f"{name}.jpg").is_file()
+    except Exception:
+        has_cover = False
+    for ext in ("mp4", "ass"):
+        p = work / f"{name}.{ext}"
+        if p.is_file():
+            shutil.move(str(p), str(out_dir / f"{name}.{ext}"))
+    if has_cover and (work / f"{name}.jpg").is_file():
+        shutil.move(str(work / f"{name}.jpg"), str(out_dir / f"{name}.jpg"))
+    return {"file": f"{name}.mp4", "cover": f"{name}.jpg" if has_cover else "", "layout": layout}

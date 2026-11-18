@@ -1,8 +1,10 @@
 """Getting video in: link download, probing, audio extraction, loudness."""
 import contextlib
 import json
+import math
 import re
 import subprocess
+import threading
 import time
 from pathlib import Path
 
@@ -19,7 +21,7 @@ NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 # minutes, with a clear message, instead of each one waiting to fail. Then the next link simply tries again.
 YT_PAUSE = 600
 _yt_refused_until = 0.0
-YT_BLOCKED = ("YouTube isn't letting PeakCut download videos right now. Upload the video file instead, or use a "
+YT_BLOCKED = ("YouTube isn't letting Cut it by Ai With Atif download videos right now. Upload the video file instead, or use a "
               "Twitch or Kick link. YouTube links will be tried again in a few minutes.")
 _BOT_CHECK = re.compile(r"not a bot|confirm you.?re not|sign in to confirm(?! your age)", re.I)
 
@@ -173,28 +175,33 @@ def _caption_words(data: dict) -> list:
         timed = len(segs) > 1 or "tOffsetMs" in segs[0]
         for x in segs:
             parts = x["utf8"].split()
+            seg_dur = float(x.get("dDurationMs") or 0) if "dDurationMs" in x else (dur / max(1, len(parts)) if not timed else 0.0)
             for n, w in enumerate(parts):
                 if re.fullmatch(r"[\[(].*[\])]", w) or w in ("[", "]", "__"):
                     continue                      # [Music], [Applause], and words YouTube blanked out
                 # a line with no word timings: its words are spread evenly over the time the line was on screen
                 at = t0 + float(x.get("tOffsetMs") or 0) if timed else t0 + dur * n / max(1, len(parts))
-                out.append({"w": w, "s": round(at / 1000, 2)})
+                part_dur = seg_dur / max(1, len(parts)) if seg_dur > 0 else 0.0
+                we = (at + part_dur) / 1000 if part_dur > 0 else (at / 1000 + 0.6)
+                out.append({"w": w, "s": round(at / 1000, 2), "e": round(we, 2)})
     out.sort(key=lambda w: w["s"])
     for n, w in enumerate(out):
-        nxt = out[n + 1]["s"] if n + 1 < len(out) else w["s"] + 0.4
-        w["e"] = round(max(w["s"] + 0.08, min(nxt, w["s"] + 0.6)), 2)
+        nxt = out[n + 1]["s"] if n + 1 < len(out) else w["e"] + 0.4
+        w["e"] = round(max(w["s"] + 0.08, min(nxt, max(w["e"], w["s"] + 0.6))), 2)
     return out
 
 
 _PREVIEWS: dict = {}
+_previews_lock = threading.Lock()
 
 
 def preview(url: str) -> dict:
     """What the user will get from a link, checked before any work starts. The thumbnail comes back inline
     (the page may only load images from this site). Cached, so retyping a link costs nothing."""
     url = url.strip()
-    if url in _PREVIEWS:
-        return _PREVIEWS[url]
+    with _previews_lock:
+        if url in _PREVIEWS:
+            return _PREVIEWS[url]
     i = info(url)
     if i["kind"] != "video" or not i["title"]:
         raise ValueError("That link is a channel or playlist, not a single video.")
@@ -214,9 +221,10 @@ def preview(url: str) -> dict:
             thumb = ""
     out = {"title": i["title"][:200], "uploader": i["uploader"][:120], "duration": i["duration"],
            "is_live": i["is_live"], "thumb": thumb}
-    if len(_PREVIEWS) > 300:
-        _PREVIEWS.pop(next(iter(_PREVIEWS)))
-    _PREVIEWS[url] = out
+    with _previews_lock:
+        if len(_PREVIEWS) > 300:
+            _PREVIEWS.pop(next(iter(_PREVIEWS)))
+        _PREVIEWS[url] = out
     return out
 
 
@@ -301,7 +309,14 @@ def probe(path: Path) -> dict:
     rot = str((v.get("side_data_list") or [{}])[0].get("rotation", "0"))
     if rot.lstrip("-") in ("90", "270"):
         w, h = h, w
-    return {"width": w, "height": h, "duration": float(data["format"]["duration"])}
+    dur = data.get("format", {}).get("duration") or v.get("duration") or 0.0
+    try:
+        dur = float(dur)
+        if not math.isfinite(dur) or dur < 0:
+            dur = 0.0
+    except (ValueError, TypeError):
+        dur = 0.0
+    return {"width": w, "height": h, "duration": dur}
 
 
 def extract_audio(src: Path, wav: Path):

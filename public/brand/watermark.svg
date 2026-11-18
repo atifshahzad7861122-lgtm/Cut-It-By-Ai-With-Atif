@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" opacity="0.4">
+  <defs>
+    <clipPath id="wm-top"><polygon points="-688.7,1380.4 1768.7,-340.4 908.4,-1569.1 -1549.1,151.6"/></clipPath>
+    <clipPath id="wm-bot"><polygon points="-688.7,1380.4 1768.7,-340.4 2629.1,888.4 171.6,2609.1"/></clipPath>
+  </defs>
+  <rect width="1024" height="1024" rx="230" fill="none" stroke="#FFFFFF" stroke-width="64"/>
+  <g transform="translate(-7.5,-10.6)"><g clip-path="url(#wm-top)">
+    <path d="M372,318 L372,722 L742,520 Z" fill="#fff" stroke="#fff" stroke-width="56" stroke-linejoin="round"/>
+  </g></g>
+  <g transform="translate(7.5,10.6)"><g clip-path="url(#wm-bot)">
+    <path d="M372,318 L372,722 L742,520 Z" fill="#fff" stroke="#fff" stroke-width="56" stroke-linejoin="round"/>
+  </g></g>
+  <path d="M800,196 Q806,262 872,268 Q806,274 800,340 Q794,274 728,268 Q794,262 800,196 Z" fill="#fff"/>
+</svg>

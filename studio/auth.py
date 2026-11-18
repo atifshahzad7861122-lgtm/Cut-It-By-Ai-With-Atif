@@ -57,9 +57,12 @@ def throttle(key: str, limit: int, window: int):
     """Raise if `key` has been used more than `limit` times in the last `window` seconds."""
     now, key = time.time(), key[:200]
     with _lock:
-        if len(_attempts) > 20000:     # never let the store of attempts grow without limit
+        if len(_attempts) >= 10000:     # never let the store of attempts grow without limit
             for k in [k for k, v in _attempts.items() if not v or v[-1] < now - 3600]:
                 del _attempts[k]
+            if len(_attempts) >= 10000:
+                for k in list(_attempts.keys())[:len(_attempts) - 8000]:
+                    del _attempts[k]
         q = _attempts[key]
         while q and q[0] < now - window:
             q.popleft()
@@ -135,8 +138,8 @@ def _use_link(token: str, purpose: str) -> str:
 def send_verify(u) -> bool:
     from . import mailer
     link = f"{config.PUBLIC_URL}/auth/verify?t={_make_link(u.id, 'verify', 3 * 86400)}"
-    return mailer.send(u.email, "Confirm your email for PeakCut", "Confirm your email",
-                       "Thanks for joining PeakCut. Confirm this is your email address to start clipping.",
+    return mailer.send(u.email, "Confirm your email for Cut it by Ai With Atif", "Confirm your email",
+                       "Thanks for joining Cut it by Ai With Atif. Confirm this is your email address to start clipping.",
                        "Confirm my email", link, "The link works for 3 days. If you didn't sign up, you can ignore this email.")
 
 
@@ -154,8 +157,8 @@ def forgot(email: str):
     if not u or u.disabled:
         return
     link = f"{config.PUBLIC_URL}/reset?t={_make_link(u.id, 'reset', 3600)}"
-    mailer.send(u.email, "Reset your PeakCut password", "Reset your password",
-                "Someone asked to reset the password for this PeakCut account. If that was you, choose a new one below.",
+    mailer.send(u.email, "Reset your Cut it by Ai With Atif password", "Reset your password",
+                "Someone asked to reset the password for this Cut it by Ai With Atif account. If that was you, choose a new one below.",
                 "Choose a new password", link, "The link works for one hour. If you didn't ask for this, ignore this email and your password stays the same.")
 
 
