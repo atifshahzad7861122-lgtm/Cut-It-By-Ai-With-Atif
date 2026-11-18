@@ -25,33 +25,98 @@ creator's live stream and clip the highlights while the stream is still running 
 - **Your own AI.** Gemini, OpenAI, Grok, Groq, OpenRouter, Claude, a local model through Ollama, or anything that
   speaks the OpenAI chat format. No key at all also works: clips are then picked by loudness.
 
-## Quick start
+## 🚀 Quick Start & Installation Guide
 
-You need Python 3.10 or newer and `ffmpeg`. On Windows: `winget install Gyan.FFmpeg`. On a Mac: `brew install ffmpeg`.
-On Linux: `sudo apt install ffmpeg`. PeakCut finds it by itself and tells you in the dashboard if it is missing.
+### 1. Prerequisites
+
+Before installing, make sure you have:
+1. **Python 3.10 or newer** ([python.org](https://www.python.org/downloads/))
+2. **FFmpeg** installed and accessible in your system PATH:
+   - **Windows**: `winget install Gyan.FFmpeg` (or download from [gyan.dev](https://www.gyan.dev/ffmpeg/builds/))
+   - **macOS**: `brew install ffmpeg`
+   - **Linux (Ubuntu/Debian)**: `sudo apt update && sudo apt install -y ffmpeg`
+3. *(Optional)* **Node.js 18+** if you want to use the Remotion React video animation suite.
+
+---
+
+### 2. Clone the Repository
 
 ```bash
-git clone <this repository> peakcut
+git clone https://github.com/atifshahzad7861122-lgtm/Cut-It-By-Ai-With-Atif.git
+cd Cut-It-By-Ai-With-Atif
 ```
 
-```bash
-cd peakcut
-```
+---
 
-```bash
+### 3. Setup Virtual Environment & Install Packages
+
+#### On Windows:
+```powershell
+# 1. Create a virtual environment
+python -m venv .venv
+
+# 2. Activate the virtual environment
+.venv\Scripts\activate
+
+# 3. Install Python requirements
 pip install -r requirements.txt
+
+# 4. (Optional) Install Remotion dependencies for React video animations
+npm install
 ```
 
-Start the server:
+#### On macOS / Linux:
+```bash
+# 1. Create a virtual environment
+python3 -m venv .venv
 
+# 2. Activate the virtual environment
+source .venv/bin/activate
+
+# 3. Install Python requirements
+pip install -r requirements.txt
+
+# 4. (Optional) Install Remotion dependencies for React video animations
+npm install
+```
+
+---
+
+### 4. Run the Tool
+
+#### Option A: One-Click Start (Windows)
+Simply double-click `start.bat` in the project root, or in PowerShell/CMD run:
+```powershell
+.\start.bat
+```
+
+#### Option B: Terminal Command (Any OS)
+With your virtual environment activated:
 ```bash
 python -m studio.server
 ```
 
-The first start downloads the speech model by itself (about 480 MB, once).
+> **Note**: On the very first launch, the local speech-to-text model (~480 MB) downloads automatically in the background.
 
-Open http://127.0.0.1:8765. There is no sign-in: it opens straight into the dashboard. Go to **Settings, AI**, choose
-your AI service, paste your key and press **Save and test** (see [Choose your AI](#choose-your-ai)).
+---
+
+### 5. Open the Web Dashboard
+
+Open your browser and navigate to:
+👉 **[http://localhost:8765](http://localhost:8765)** (or `http://127.0.0.1:8765`)
+
+There is no sign-in required when running locally on your computer—it opens straight to the dashboard!
+
+---
+
+### 6. Connect Your AI Key
+
+1. Inside the dashboard, go to **Settings → AI**.
+2. Choose your provider (**Gemini**, **OpenAI**, **Claude**, **Grok**, **Groq**, **OpenRouter**, or **Ollama** for 100% offline local AI).
+3. Paste your API key and click **Find models** to choose from your provider's live model list.
+4. Click **Save and test**.
+
+*(Even without an AI key, the engine will still generate clips by detecting speech density and stream volume surges).*
 
 ## Choose your AI
 
