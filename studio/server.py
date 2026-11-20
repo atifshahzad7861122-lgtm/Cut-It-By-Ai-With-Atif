@@ -21,8 +21,9 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Redirect
 
 from . import admin as admins
 from . import account, load
-from . import (accounts, ai, alerts, auth, config, creators, ctx, db, jobs, live, media, posting,
-               profiles, render, safe, transcribe, usage)
+from . import (accounts, ai, alerts, auth, brands, config, creators, ctx, curation, db,
+               facecam_detect, jobs, layouts, live, media, posting, profiles, render, safe,
+               styling, subtitles, transcribe, usage)
 
 from . import tools as _tools  # noqa: E402
 
@@ -591,7 +592,8 @@ def status(request: Request):
     return {"user": auth.public(me_), "update": updates.latest() if me_.is_admin else None, "accounts": config.ACCOUNTS, "disk_full": load.disk_full(), "no_ffmpeg": bool(_tools.missing()), "links": {"repo": config.REPO_URL, "follow": config.FOLLOW_URL}, "ai": usage.brief(), "unread": notices.unread(),
             "tour": not accounts.settings()["tour_done"],
             "youtube": accounts.youtube_ready(), "connect": {p: accounts.can_connect(p) for p in accounts.PLATFORM_NAMES}, "max_upload_mb": config.MAX_UPLOAD_MB, "upload_part_mb": config.UPLOAD_PART_MB, "max_batch": config.MAX_ACTIVE_JOBS_PER_USER,
-            "styles": {k: v["label"] for k, v in render.STYLES.items()}, "layouts": render.LAYOUTS}
+            "styles": {k: v["label"] for k, v in render.STYLES.items()}, "layouts": render.LAYOUTS,
+            "aspects": list(layouts.ASPECTS.keys()), "templates": list(styling.TEMPLATES)}
 
 
 # ================================================================ videos
@@ -959,6 +961,93 @@ def rerender(jid: str, cid: str, body: dict = Body(...)):
     except (ValueError, TypeError) as e:
         raise HTTPException(400, str(e))
     return jobs.public(job)
+
+
+@app.get("/api/layouts")
+def get_layouts():
+    return {"catalog": layouts.CATALOG, "aspects": list(layouts.ASPECTS.keys()), "layouts": render.LAYOUTS}
+
+
+@app.get("/api/brands")
+def list_caption_brands():
+    p = config.DATA_DIR / "preferences"
+    return {"profiles": brands.load_profiles(p), "fonts": list(brands.FONTS)}
+
+
+@app.post("/api/brands")
+def save_caption_brand(body: dict = Body(...)):
+    _need_verified()
+    name = str(body.get("name", "")).strip()
+    if not 1 <= len(name) <= 60:
+        raise HTTPException(400, "Use a profile name of 1–60 characters.")
+    p = config.DATA_DIR / "preferences"
+    try:
+        saved = brands.save_profile(p, name, body.get("settings", {}))
+        return saved
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+
+
+@app.get("/api/jobs/{jid}/clips/{cid}/subtitles")
+def export_clip_subtitles(jid: str, cid: str, format: str = "srt"):
+    job = _job_or_404(jid)
+    clip = next((c for c in job["clips"] if c["id"] == cid), None)
+    if not clip:
+        raise HTTPException(404, "No such clip")
+    if format not in ("srt", "vtt"):
+        raise HTTPException(400, "Format must be srt or vtt")
+    try:
+        words_path = Path(job["dir"]) / "words.json"
+        if not words_path.is_file():
+            raise HTTPException(404, "Transcript not found")
+        words = json.loads(words_path.read_text(encoding="utf-8"))
+        clip_words = [w for w in words if clip["start"] <= w.get("s", w.get("start", 0)) < clip["end"]]
+        rel_words = [dict(w, s=w.get("s", 0) - clip["start"], e=w.get("e", 0) - clip["start"]) for w in clip_words]
+        track = subtitles.write_track(rel_words, format=format, duration=clip["end"] - clip["start"])
+        media_type = "text/vtt" if format == "vtt" else "application/x-subrip"
+        return Response(content=track, media_type=media_type, headers={
+            "Content-Disposition": f'attachment; filename="clip-{cid}.{format}"'
+        })
+    except Exception as e:
+        raise HTTPException(400, f"Subtitle export failed: {e}")
+
+
+@app.post("/api/jobs/{jid}/clips/{cid}/subtitles")
+def import_clip_subtitles(jid: str, cid: str, body: dict = Body(...)):
+    job = _job_or_404(jid)
+    clip = next((c for c in job["clips"] if c["id"] == cid), None)
+    if not clip:
+        raise HTTPException(404, "No such clip")
+    text = str(body.get("text", "")).strip()
+    if not text:
+        raise HTTPException(400, "Provide subtitle text in SRT or WebVTT format.")
+    try:
+        cues = subtitles.parse_track(text)
+        new_rel_words = subtitles.cues_to_words(cues)
+        new_abs_words = [dict(w, s=w["s"] + clip["start"], e=w["e"] + clip["start"]) for w in new_rel_words]
+        words_path = Path(job["dir"]) / "words.json"
+        existing = json.loads(words_path.read_text(encoding="utf-8")) if words_path.is_file() else []
+        filtered = [w for w in existing if not (clip["start"] <= w.get("s", 0) < clip["end"])]
+        merged = sorted(filtered + new_abs_words, key=lambda w: w["s"])
+        words_path.write_text(json.dumps(merged), encoding="utf-8")
+        jobs.request_render(jid, cid, {})
+        ctx.bump()
+        return {"ok": True, "words": len(new_abs_words)}
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+
+
+@app.post("/api/facecam/detect")
+def detect_facecam_box(body: dict = Body(...)):
+    jid = body.get("job_id")
+    if not jid:
+        raise HTTPException(400, "job_id is required.")
+    job = _job_or_404(jid)
+    src_path = job.get("source_path") or (job.get("source") or {}).get("path")
+    if not src_path or not Path(src_path).is_file():
+        raise HTTPException(400, "Source video file is not available on disk.")
+    res = facecam_detect.detect_facecam(Path(src_path))
+    return res
 
 
 @app.delete("/api/jobs/{jid}")

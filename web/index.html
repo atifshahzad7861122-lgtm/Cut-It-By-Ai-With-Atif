@@ -50,164 +50,1133 @@
       box-sizing: border-box
     }
 
-main{background:rgba(255,255,255,.84);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border:1px solid rgba(255,255,255,.75);box-shadow:0 14px 44px rgba(0,0,0,.22);margin:8px 8px 8px 0;border-radius:var(--r-lg);height:calc(100vh - 16px);overflow-y:auto;min-width:0;scrollbar-gutter:stable}
-.topbar{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.75);backdrop-filter:blur(18px) saturate(170%);-webkit-backdrop-filter:blur(18px) saturate(170%);display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:10px 28px;min-height:54px;border-bottom:1px solid rgba(0,0,0,.06);transition:border-color .2s ease,background-color .2s ease,box-shadow .2s ease}
-.topbar.stuck{background:rgba(255,255,255,.88);border-color:rgba(0,0,0,.08);box-shadow:0 4px 20px rgba(0,0,0,.04)}
-#vbanner:empty{display:none}
-.upd{display:grid;gap:14px}
-.upd ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:13px;color:var(--text);max-height:180px;overflow:auto}
-.upd ul small{color:var(--dim)}
-.upd .cmd{display:flex;gap:8px;align-items:center}
-.upd .cmd code{flex:1;min-width:0;overflow-wrap:anywhere;font-size:12px;background:var(--muted);border-radius:8px;padding:9px 11px}
-.upd h3{font-size:13px;font-weight:600;color:var(--brand-ink);margin:0}
-.vb{display:flex;align-items:center;gap:12px;margin:12px 28px 0;padding:12px 12px 12px 16px;border-radius:12px;background:#FFF4E6;color:#7A3E0C;font-size:14px;animation:rise .3s ease both}
-.vb svg{width:18px;height:18px;flex:none;color:var(--brand-deep)}
-.vb span{flex:1;min-width:0}
-.vb b{color:#5A2C06}
-@media (max-width:640px){.vb{margin:10px 16px 0;flex-wrap:wrap}}
-.topbar .titles{flex:1;min-width:0}
-#tpic:empty{display:none}
-#tpic img,#tpic .avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;display:block;font-size:15px}
-#tpic span.avatar{background:var(--brand-soft);color:var(--brand-deep);display:grid;place-items:center;font-weight:700}
-#tpic.live img,#tpic.live .avatar{padding:2px;background:#fff;border:2px solid #E5323F}
-.topbar.tabbed{border-color:var(--line)}
-.topbar.tabbed .titles{flex:0 1 auto;max-width:34%}
-.topbar.tabbed #actions{margin-left:auto}
-.utabs:empty{display:none}
-.utabs{display:flex;gap:2px;padding:3px;background:rgba(247,244,241,.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.8);border-radius:11px;overflow-x:auto;scrollbar-width:none}
-@media (min-width:761px){.topbar.tabbed{position:sticky}.topbar.tabbed .utabs{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}.topbar.tabbed .titles{max-width:calc(50% - 230px)}}
-@media (max-width:760px){.utabs{order:5;flex-basis:100%;margin:2px 0 0;position:relative}.topbar.tabbed .titles{max-width:none;flex:1}}
-.utabs .tabbtn{height:34px;padding:0 14px;border-radius:8px;background:transparent;color:var(--dim);font-size:13px;transition:background-color .18s ease,color .18s ease}
-.utabs .tabbtn:hover{background:#EDE3DB;color:var(--text)}
-.utabs .tabbtn::after{display:none}
-.utabs .tabbtn.on{background:transparent;color:var(--brand-ink)}
-.utabs .tabbtn{position:relative;z-index:1}
-.utabs .ind{position:absolute;top:3px;bottom:3px;left:0;border-radius:8px;background:var(--brand);z-index:0;transition:transform .32s cubic-bezier(.3,.7,.2,1),width .32s cubic-bezier(.3,.7,.2,1)}
-.utabs .tabbtn,.utabs .tabbtn svg,.utabs .tabbtn .n{transition:color .25s ease,background-color .25s ease}
-.utabs .tabbtn.on svg{color:var(--brand-ink)}
-.utabs .tabbtn .n{background:var(--muted);color:var(--dim)}
-.utabs .tabbtn.on .n{background:rgba(42,26,18,.14);color:var(--brand-ink)}
-.rdot{flex:none;width:9px;height:9px;border-radius:50%;background:#fff}
-.btn .rdot.on{background:#E5323F;animation:pulse 1.3s infinite}
-/* live stream panel */
-.stream{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(250px,1fr);gap:14px;background:#1E1612;border-radius:16px;padding:12px;margin-bottom:22px;color:#EFE5DE;animation:rise .3s ease both}
-.stream .player{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#000}
-.stream iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.noembed{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:20px;text-align:center;background:#120D0A;color:#EFE5DE}
-.noembed .logo{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;margin-bottom:4px}
-.noembed .logo svg{width:22px;height:22px}
-.noembed b{font-size:15px;color:#fff}
-.noembed span{font-size:13px;color:#B9A597;max-width:380px}
-.noembed .btn{margin-top:6px}
-.sinfo{display:flex;flex-direction:column;gap:12px;padding:6px 6px 4px 2px;min-width:0}
-.sinfo .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.sinfo .logo{flex:none;width:28px;height:28px;border-radius:8px;display:grid;place-items:center}
-.sinfo .logo svg{width:16px;height:16px}
-.sinfo .lv{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;background:#E5323F;color:#fff;padding:3px 10px;border-radius:999px}
-.sinfo .lv i{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.3s infinite}
-.sinfo h3{font-size:16px;line-height:1.4;font-weight:600;color:#fff;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
-.sinfo .by{font-size:12px;color:#B9A597;margin-top:-6px}
-.sstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:8px}
-.sstats div{background:rgba(255,255,255,.06);border-radius:10px;padding:10px 12px}
-.sstats b{display:block;font-size:17px;font-weight:700;color:#fff;letter-spacing:-.01em}
-.sstats span{font-size:11px;color:#B9A597}
-.sinfo .cta{margin-top:auto;display:flex;flex-direction:column;gap:8px}
-.sinfo .cta .btn{height:46px;width:100%;justify-content:center;font-size:15px}
-.sinfo .cta small{font-size:12px;color:#B9A597;text-align:center}
-.splat{display:flex;gap:4px;margin-left:auto}
-.splat button{display:grid;place-items:center;width:30px;height:30px;border:0;border-radius:8px;background:rgba(255,255,255,.06);color:#B9A597;cursor:pointer;transition:background-color .15s ease}
-.splat button:hover{background:rgba(255,255,255,.12)}
-.splat button.on{background:rgba(255,139,51,.22)}
-.splat svg{width:15px;height:15px}
-@media (max-width:960px){.stream{grid-template-columns:1fr}}
-.sbadge{display:inline-flex;align-items:center;gap:6px;margin-top:3px;font-size:11px;font-weight:600;padding:2px 8px 2px 7px;border-radius:999px;background:var(--muted);color:var(--dim)}
-.sbadge i{width:6px;height:6px;border-radius:50%;background:currentColor}
-.sbadge.live{background:#FDECEC;color:#C53030}.sbadge.live i,.sbadge.rec i{animation:pulse 1.3s infinite}
-.sbadge.rec{background:#E5323F;color:#fff}
-.sbadge svg{width:12px;height:12px}
-.sbadge{white-space:nowrap;max-width:100%}
-/* multi-stream studio */
-.ms-wrap{display:flex;flex-direction:column;gap:16px;margin-bottom:24px}
-.ms-banner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;background:#1E1612;border-radius:16px;padding:14px 18px;color:#EFE5DE}
-.ms-banner .left{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.ms-banner h2{margin:0;font-size:18px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px}
-.ms-banner .badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.08);color:#B9A597}
-.ms-banner .badge.live{background:#E5323F;color:#fff}
-.ms-banner .badge.live i{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.3s infinite}
-.ms-banner .actions{display:flex;align-items:center;gap:8px;margin-left:auto}
-.ms-bar{display:flex;gap:8px;flex-wrap:wrap;background:#17110E;border-radius:14px;padding:10px 14px}
-.ms-bar input{flex:1;min-width:240px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;color:#fff;font-size:13px}
-.ms-bar input:focus{border-color:#FF8B33;outline:none}
-.ms-bar select{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;color:#fff;font-size:13px}
-.ms-grid{display:grid;gap:14px;margin-bottom:18px}
-.ms-grid.g-1{grid-template-columns:1fr}
-.ms-grid.g-2{grid-template-columns:repeat(2,1fr)}
-.ms-grid.g-3{grid-template-columns:repeat(3,1fr)}
-.ms-grid.g-4{grid-template-columns:repeat(2,1fr)}
-.ms-grid.g-5,.ms-grid.g-6{grid-template-columns:repeat(3,1fr)}
-@media (max-width:1100px){.ms-grid.g-3,.ms-grid.g-5,.ms-grid.g-6{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:700px){.ms-grid.g-2,.ms-grid.g-3,.ms-grid.g-4,.ms-grid.g-5,.ms-grid.g-6{grid-template-columns:1fr}}
-.ms-card{background:#1E1612;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;color:#EFE5DE;transition:background-color .15s}
-.ms-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;background:rgba(0,0,0,.3)}
-.ms-card-top .title-box{display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden}
-.ms-card-top .stitle{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ms-card-top .screator{font-size:11px;color:#B9A597;white-space:nowrap}
-.ms-card .player{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
-.ms-card iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.ms-card-meta{padding:10px 12px;display:flex;flex-direction:column;gap:8px}
-.ms-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:11px}
-.ms-metric{background:rgba(255,255,255,.05);border-radius:8px;padding:6px 8px}
-.ms-metric span{display:block;color:#B9A597;font-size:10px}
-.ms-metric b{color:#fff;font-size:12px}
-.ms-metric.spike{background:rgba(229,50,63,.25)}
-.ms-card-acts{display:flex;align-items:center;gap:6px;margin-top:2px}
-.ms-card-acts .btn{flex:1;height:32px;font-size:12px;padding:0 8px}
-.ms-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:48px 24px;background:#1E1612;border-radius:16px;text-align:center;color:#B9A597}
-.ms-empty h3{font-size:18px;color:#fff;margin:0}
-.ms-empty p{max-width:440px;font-size:13px;line-height:1.5;margin:0}
-.ms-clips-head{display:flex;align-items:center;justify-content:space-between;margin:16px 0 10px;color:var(--text)}
-.ms-clips-head h3{font-size:16px;font-weight:700;margin:0;display:flex;align-items:center;gap:6px}
-.ms-clips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
-.ms-clip-tile{background:#1E1612;border-radius:12px;overflow:hidden;color:#EFE5DE;cursor:pointer;transition:transform .15s}
-.ms-clip-tile:hover{transform:translateY(-2px)}
-.ms-clip-cover{position:relative;aspect-ratio:9/16;background:#000;overflow:hidden}
-.ms-clip-cover img{width:100%;height:100%;object-fit:cover}
-.ms-clip-info{padding:8px 10px}
-.ms-clip-info b{display:block;font-size:12px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ms-clip-info span{font-size:10px;color:#B9A597}
-.topbar .titles{overflow:hidden}
-@media (max-width:560px){#tpic img,#tpic .avatar{width:36px;height:36px}.topbar #actions .btn[data-act=golive]{font-size:0;gap:0;width:38px;padding:0;justify-content:center}.topbar #actions .btn[data-act=golive] .rdot{width:12px;height:12px}}
-.ttabs{display:inline-flex;gap:2px;padding:3px;background:var(--muted);border-radius:10px}
-.ttabs .tabbtn{height:32px;padding:0 12px;border-radius:8px;font-size:13px;color:var(--dim)}
-.ttabs .tabbtn::after{display:none}
-.ttabs .tabbtn svg{width:16px;height:16px}
-.ttabs .tabbtn:hover{background:#EDE3DB;color:var(--text)}
-.ttabs .tabbtn.on{background:var(--brand-soft);color:var(--brand-ink)}
-.ttabs .tabbtn.on .n{background:#fff}
-#actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-#actions a.btn{text-decoration:none}
-@media (max-width:560px){#actions .btn .long{display:none}}
-@media (max-width:900px){.ttabs .tabbtn .lbl{display:none}.ttabs .tabbtn{padding:0 10px}}
-/* channels in Setup */
-.chans{display:flex;flex-direction:column;gap:8px}
-.chan{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:var(--muted);min-height:64px}
-.chan .logo{flex:none;width:36px;height:36px;border-radius:10px;display:grid;place-items:center}
-.chan .logo svg{width:20px;height:20px}
-.chan .pic{flex:none;width:40px;height:40px;border-radius:50%;object-fit:cover;background:#EFE7E1}
-.chan .who{flex:1;min-width:0}
-.chan .who b{display:block;font-size:14px;color:var(--brand-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.chan .who span{font-size:12px;color:var(--faint)}
-.chan input{flex:1;min-width:0}
-.chan .main{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--dim);cursor:pointer;white-space:nowrap}
-.chan .main input{accent-color:var(--brand);width:15px;height:15px;flex:none}
-.chan .sbadge{margin:0}
-@media (max-width:640px){.chan{flex-wrap:wrap}.chan .main{order:5}}
-.topbar h1{font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--brand-ink)}
-.topbar p{font-size:12px;color:var(--dim);margin-top:0;overflow-wrap:anywhere}
-.icon-btn.menu{display:none}
-.content{padding:28px 32px 72px;max-width:1280px;margin:0 auto}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.grow{flex:1}
+    main {
+      background: rgba(255, 255, 255, .84);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, .75);
+      box-shadow: 0 14px 44px rgba(0, 0, 0, .22);
+      margin: 8px 8px 8px 0;
+      border-radius: var(--r-lg);
+      height: calc(100vh - 16px);
+      overflow-y: auto;
+      min-width: 0;
+      scrollbar-gutter: stable
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: rgba(255, 255, 255, .75);
+      backdrop-filter: blur(18px) saturate(170%);
+      -webkit-backdrop-filter: blur(18px) saturate(170%);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 28px;
+      min-height: 54px;
+      border-bottom: 1px solid rgba(0, 0, 0, .06);
+      transition: border-color .2s ease, background-color .2s ease, box-shadow .2s ease
+    }
+
+    .topbar.stuck {
+      background: rgba(255, 255, 255, .88);
+      border-color: rgba(0, 0, 0, .08);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .04)
+    }
+
+    #vbanner:empty {
+      display: none
+    }
+
+    .upd {
+      display: grid;
+      gap: 14px
+    }
+
+    .upd ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 4px;
+      font-size: 13px;
+      color: var(--text);
+      max-height: 180px;
+      overflow: auto
+    }
+
+    .upd ul small {
+      color: var(--dim)
+    }
+
+    .upd .cmd {
+      display: flex;
+      gap: 8px;
+      align-items: center
+    }
+
+    .upd .cmd code {
+      flex: 1;
+      min-width: 0;
+      overflow-wrap: anywhere;
+      font-size: 12px;
+      background: var(--muted);
+      border-radius: 8px;
+      padding: 9px 11px
+    }
+
+    .upd h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--brand-ink);
+      margin: 0
+    }
+
+    .vb {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 12px 28px 0;
+      padding: 12px 12px 12px 16px;
+      border-radius: 12px;
+      background: #FFF4E6;
+      color: #7A3E0C;
+      font-size: 14px;
+      animation: rise .3s ease both
+    }
+
+    .vb svg {
+      width: 18px;
+      height: 18px;
+      flex: none;
+      color: var(--brand-deep)
+    }
+
+    .vb span {
+      flex: 1;
+      min-width: 0
+    }
+
+    .vb b {
+      color: #5A2C06
+    }
+
+    @media (max-width:640px) {
+      .vb {
+        margin: 10px 16px 0;
+        flex-wrap: wrap
+      }
+    }
+
+    .topbar .titles {
+      flex: 1;
+      min-width: 0
+    }
+
+    #tpic:empty {
+      display: none
+    }
+
+    #tpic img,
+    #tpic .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      font-size: 15px
+    }
+
+    #tpic span.avatar {
+      background: var(--brand-soft);
+      color: var(--brand-deep);
+      display: grid;
+      place-items: center;
+      font-weight: 700
+    }
+
+    #tpic.live img,
+    #tpic.live .avatar {
+      padding: 2px;
+      background: #fff;
+      border: 2px solid #E5323F
+    }
+
+    .topbar.tabbed {
+      border-color: var(--line)
+    }
+
+    .topbar.tabbed .titles {
+      flex: 0 1 auto;
+      max-width: 34%
+    }
+
+    .topbar.tabbed #actions {
+      margin-left: auto
+    }
+
+    .utabs:empty {
+      display: none
+    }
+
+    .utabs {
+      display: flex;
+      gap: 2px;
+      padding: 3px;
+      background: rgba(247, 244, 241, .6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, .8);
+      border-radius: 11px;
+      overflow-x: auto;
+      scrollbar-width: none
+    }
+
+    @media (min-width:761px) {
+      .topbar.tabbed {
+        position: sticky
+      }
+
+      .topbar.tabbed .utabs {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%)
+      }
+
+      .topbar.tabbed .titles {
+        max-width: calc(50% - 230px)
+      }
+    }
+
+    @media (max-width:760px) {
+      .utabs {
+        order: 5;
+        flex-basis: 100%;
+        margin: 2px 0 0;
+        position: relative
+      }
+
+      .topbar.tabbed .titles {
+        max-width: none;
+        flex: 1
+      }
+    }
+
+    .utabs .tabbtn {
+      height: 34px;
+      padding: 0 14px;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--dim);
+      font-size: 13px;
+      transition: background-color .18s ease, color .18s ease
+    }
+
+    .utabs .tabbtn:hover {
+      background: #EDE3DB;
+      color: var(--text)
+    }
+
+    .utabs .tabbtn::after {
+      display: none
+    }
+
+    .utabs .tabbtn.on {
+      background: transparent;
+      color: var(--brand-ink)
+    }
+
+    .utabs .tabbtn {
+      position: relative;
+      z-index: 1
+    }
+
+    .utabs .ind {
+      position: absolute;
+      top: 3px;
+      bottom: 3px;
+      left: 0;
+      border-radius: 8px;
+      background: var(--brand);
+      z-index: 0;
+      transition: transform .32s cubic-bezier(.3, .7, .2, 1), width .32s cubic-bezier(.3, .7, .2, 1)
+    }
+
+    .utabs .tabbtn,
+    .utabs .tabbtn svg,
+    .utabs .tabbtn .n {
+      transition: color .25s ease, background-color .25s ease
+    }
+
+    .utabs .tabbtn.on svg {
+      color: var(--brand-ink)
+    }
+
+    .utabs .tabbtn .n {
+      background: var(--muted);
+      color: var(--dim)
+    }
+
+    .utabs .tabbtn.on .n {
+      background: rgba(42, 26, 18, .14);
+      color: var(--brand-ink)
+    }
+
+    .rdot {
+      flex: none;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #fff
+    }
+
+    .btn .rdot.on {
+      background: #E5323F;
+      animation: pulse 1.3s infinite
+    }
+
+    /* live stream panel */
+    .stream {
+      display: grid;
+      grid-template-columns: minmax(0, 1.65fr) minmax(250px, 1fr);
+      gap: 14px;
+      background: #1E1612;
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 22px;
+      color: #EFE5DE;
+      animation: rise .3s ease both
+    }
+
+    .stream .player {
+      position: relative;
+      aspect-ratio: 16/9;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #000
+    }
+
+    .stream iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0
+    }
+
+    .noembed {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 20px;
+      text-align: center;
+      background: #120D0A;
+      color: #EFE5DE
+    }
+
+    .noembed .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 4px
+    }
+
+    .noembed .logo svg {
+      width: 22px;
+      height: 22px
+    }
+
+    .noembed b {
+      font-size: 15px;
+      color: #fff
+    }
+
+    .noembed span {
+      font-size: 13px;
+      color: #B9A597;
+      max-width: 380px
+    }
+
+    .noembed .btn {
+      margin-top: 6px
+    }
+
+    .sinfo {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 6px 6px 4px 2px;
+      min-width: 0
+    }
+
+    .sinfo .top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .sinfo .logo {
+      flex: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center
+    }
+
+    .sinfo .logo svg {
+      width: 16px;
+      height: 16px
+    }
+
+    .sinfo .lv {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #E5323F;
+      color: #fff;
+      padding: 3px 10px;
+      border-radius: 999px
+    }
+
+    .sinfo .lv i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fff;
+      animation: pulse 1.3s infinite
+    }
+
+    .sinfo h3 {
+      font-size: 16px;
+      line-height: 1.4;
+      font-weight: 600;
+      color: #fff;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      overflow-wrap: anywhere
+    }
+
+    .sinfo .by {
+      font-size: 12px;
+      color: #B9A597;
+      margin-top: -6px
+    }
+
+    .sstats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+      gap: 8px
+    }
+
+    .sstats div {
+      background: rgba(255, 255, 255, .06);
+      border-radius: 10px;
+      padding: 10px 12px
+    }
+
+    .sstats b {
+      display: block;
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -.01em
+    }
+
+    .sstats span {
+      font-size: 11px;
+      color: #B9A597
+    }
+
+    .sinfo .cta {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px
+    }
+
+    .sinfo .cta .btn {
+      height: 46px;
+      width: 100%;
+      justify-content: center;
+      font-size: 15px
+    }
+
+    .sinfo .cta small {
+      font-size: 12px;
+      color: #B9A597;
+      text-align: center
+    }
+
+    .splat {
+      display: flex;
+      gap: 4px;
+      margin-left: auto
+    }
+
+    .splat button {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border: 0;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .06);
+      color: #B9A597;
+      cursor: pointer;
+      transition: background-color .15s ease
+    }
+
+    .splat button:hover {
+      background: rgba(255, 255, 255, .12)
+    }
+
+    .splat button.on {
+      background: rgba(255, 139, 51, .22)
+    }
+
+    .splat svg {
+      width: 15px;
+      height: 15px
+    }
+
+    @media (max-width:960px) {
+      .stream {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .sbadge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px 2px 7px;
+      border-radius: 999px;
+      background: var(--muted);
+      color: var(--dim)
+    }
+
+    .sbadge i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor
+    }
+
+    .sbadge.live {
+      background: #FDECEC;
+      color: #C53030
+    }
+
+    .sbadge.live i,
+    .sbadge.rec i {
+      animation: pulse 1.3s infinite
+    }
+
+    .sbadge.rec {
+      background: #E5323F;
+      color: #fff
+    }
+
+    .sbadge svg {
+      width: 12px;
+      height: 12px
+    }
+
+    .sbadge {
+      white-space: nowrap;
+      max-width: 100%
+    }
+
+    /* multi-stream studio */
+    .ms-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px
+    }
+
+    .ms-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: #1E1612;
+      border-radius: 16px;
+      padding: 14px 18px;
+      color: #EFE5DE
+    }
+
+    .ms-banner .left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap
+    }
+
+    .ms-banner h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .ms-banner .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .08);
+      color: #B9A597
+    }
+
+    .ms-banner .badge.live {
+      background: #E5323F;
+      color: #fff
+    }
+
+    .ms-banner .badge.live i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fff;
+      animation: pulse 1.3s infinite
+    }
+
+    .ms-banner .actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto
+    }
+
+    .ms-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      background: #17110E;
+      border-radius: 14px;
+      padding: 10px 14px
+    }
+
+    .ms-bar input {
+      flex: 1;
+      min-width: 240px;
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #fff;
+      font-size: 13px
+    }
+
+    .ms-bar input:focus {
+      border-color: #FF8B33;
+      outline: none
+    }
+
+    .ms-bar select {
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 8px;
+      padding: 8px 10px;
+      color: #fff;
+      font-size: 13px
+    }
+
+    .ms-grid {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 18px
+    }
+
+    .ms-grid.g-1 {
+      grid-template-columns: 1fr
+    }
+
+    .ms-grid.g-2 {
+      grid-template-columns: repeat(2, 1fr)
+    }
+
+    .ms-grid.g-3 {
+      grid-template-columns: repeat(3, 1fr)
+    }
+
+    .ms-grid.g-4 {
+      grid-template-columns: repeat(2, 1fr)
+    }
+
+    .ms-grid.g-5,
+    .ms-grid.g-6 {
+      grid-template-columns: repeat(3, 1fr)
+    }
+
+    @media (max-width:1100px) {
+
+      .ms-grid.g-3,
+      .ms-grid.g-5,
+      .ms-grid.g-6 {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+
+    @media (max-width:700px) {
+
+      .ms-grid.g-2,
+      .ms-grid.g-3,
+      .ms-grid.g-4,
+      .ms-grid.g-5,
+      .ms-grid.g-6 {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .ms-card {
+      background: #1E1612;
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      color: #EFE5DE;
+      transition: background-color .15s
+    }
+
+    .ms-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 12px;
+      background: rgba(0, 0, 0, .3)
+    }
+
+    .ms-card-top .title-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      overflow: hidden
+    }
+
+    .ms-card-top .stitle {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .ms-card-top .screator {
+      font-size: 11px;
+      color: #B9A597;
+      white-space: nowrap
+    }
+
+    .ms-card .player {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: #000;
+      overflow: hidden
+    }
+
+    .ms-card iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0
+    }
+
+    .ms-card-meta {
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px
+    }
+
+    .ms-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      font-size: 11px
+    }
+
+    .ms-metric {
+      background: rgba(255, 255, 255, .05);
+      border-radius: 8px;
+      padding: 6px 8px
+    }
+
+    .ms-metric span {
+      display: block;
+      color: #B9A597;
+      font-size: 10px
+    }
+
+    .ms-metric b {
+      color: #fff;
+      font-size: 12px
+    }
+
+    .ms-metric.spike {
+      background: rgba(229, 50, 63, .25)
+    }
+
+    .ms-card-acts {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px
+    }
+
+    .ms-card-acts .btn {
+      flex: 1;
+      height: 32px;
+      font-size: 12px;
+      padding: 0 8px
+    }
+
+    .ms-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 48px 24px;
+      background: #1E1612;
+      border-radius: 16px;
+      text-align: center;
+      color: #B9A597
+    }
+
+    .ms-empty h3 {
+      font-size: 18px;
+      color: #fff;
+      margin: 0
+    }
+
+    .ms-empty p {
+      max-width: 440px;
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 0
+    }
+
+    .ms-clips-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 16px 0 10px;
+      color: var(--text)
+    }
+
+    .ms-clips-head h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .ms-clips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px
+    }
+
+    .ms-clip-tile {
+      background: #1E1612;
+      border-radius: 12px;
+      overflow: hidden;
+      color: #EFE5DE;
+      cursor: pointer;
+      transition: transform .15s
+    }
+
+    .ms-clip-tile:hover {
+      transform: translateY(-2px)
+    }
+
+    .ms-clip-cover {
+      position: relative;
+      aspect-ratio: 9/16;
+      background: #000;
+      overflow: hidden
+    }
+
+    .ms-clip-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .ms-clip-info {
+      padding: 8px 10px
+    }
+
+    .ms-clip-info b {
+      display: block;
+      font-size: 12px;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .ms-clip-info span {
+      font-size: 10px;
+      color: #B9A597
+    }
+
+    .topbar .titles {
+      overflow: hidden
+    }
+
+    @media (max-width:560px) {
+
+      #tpic img,
+      #tpic .avatar {
+        width: 36px;
+        height: 36px
+      }
+
+      .topbar #actions .btn[data-act=golive] {
+        font-size: 0;
+        gap: 0;
+        width: 38px;
+        padding: 0;
+        justify-content: center
+      }
+
+      .topbar #actions .btn[data-act=golive] .rdot {
+        width: 12px;
+        height: 12px
+      }
+    }
+
+    .ttabs {
+      display: inline-flex;
+      gap: 2px;
+      padding: 3px;
+      background: var(--muted);
+      border-radius: 10px
+    }
+
+    .ttabs .tabbtn {
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--dim)
+    }
+
+    .ttabs .tabbtn::after {
+      display: none
+    }
+
+    .ttabs .tabbtn svg {
+      width: 16px;
+      height: 16px
+    }
+
+    .ttabs .tabbtn:hover {
+      background: #EDE3DB;
+      color: var(--text)
+    }
+
+    .ttabs .tabbtn.on {
+      background: var(--brand-soft);
+      color: var(--brand-ink)
+    }
+
+    .ttabs .tabbtn.on .n {
+      background: #fff
+    }
+
+    #actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end
+    }
+
+    #actions a.btn {
+      text-decoration: none
+    }
+
+    @media (max-width:560px) {
+      #actions .btn .long {
+        display: none
+      }
+    }
+
+    @media (max-width:900px) {
+      .ttabs .tabbtn .lbl {
+        display: none
+      }
+
+      .ttabs .tabbtn {
+        padding: 0 10px
+      }
+    }
+
+    /* channels in Setup */
+    .chans {
+      display: flex;
+      flex-direction: column;
+      gap: 8px
+    }
+
+    .chan {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: var(--muted);
+      min-height: 64px
+    }
+
+    .chan .logo {
+      flex: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center
+    }
+
+    .chan .logo svg {
+      width: 20px;
+      height: 20px
+    }
+
+    .chan .pic {
+      flex: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #EFE7E1
+    }
+
+    .chan .who {
+      flex: 1;
+      min-width: 0
+    }
+
+    .chan .who b {
+      display: block;
+      font-size: 14px;
+      color: var(--brand-ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .chan .who span {
+      font-size: 12px;
+      color: var(--faint)
+    }
+
+    .chan input {
+      flex: 1;
+      min-width: 0
+    }
+
+    .chan .main {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--dim);
+      cursor: pointer;
+      white-space: nowrap
+    }
+
+    .chan .main input {
+      accent-color: var(--brand);
+      width: 15px;
+      height: 15px;
+      flex: none
+    }
+
+    .chan .sbadge {
+      margin: 0
+    }
+
+    @media (max-width:640px) {
+      .chan {
+        flex-wrap: wrap
+      }
+
+      .chan .main {
+        order: 5
+      }
+    }
+
+    .topbar h1 {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      color: var(--brand-ink)
+    }
+
+    .topbar p {
+      font-size: 12px;
+      color: var(--dim);
+      margin-top: 0;
+      overflow-wrap: anywhere
+    }
+
+    .icon-btn.menu {
+      display: none
+    }
+
+    .content {
+      padding: 28px 32px 72px;
+      max-width: 1280px;
+      margin: 0 auto
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center
+    }
+
+    .grow {
+      flex: 1
+    }
 
     html,
     body {
@@ -2786,6 +3755,62 @@ main{background:rgba(255,255,255,.84);backdrop-filter:blur(28px) saturate(180%);
       background: linear-gradient(135deg, #38576e, #1a2936);
       border-radius: 0 0 4px 4px;
       z-index: 1
+    }
+
+    .lay-prev.stack .ph i {
+      left: 0; right: 0; top: 0; height: 44%;
+      background: linear-gradient(135deg, #FF8B33, #FFB27A);
+      border-bottom: 2px solid #1E1612; border-radius: 4px 4px 0 0; transform: none; z-index: 2
+    }
+    .lay-prev.stack .ph::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 54%;
+      background: linear-gradient(135deg, #38576e, #1a2936); border-radius: 0 0 4px 4px; z-index: 1
+    }
+    .lay-prev.bottom .ph i {
+      left: 0; right: 0; bottom: 0; top: auto; height: 44%;
+      background: linear-gradient(135deg, #FF8B33, #FFB27A);
+      border-top: 2px solid #1E1612; border-radius: 0 0 4px 4px; transform: none; z-index: 2
+    }
+    .lay-prev.bottom .ph::after {
+      content: ""; position: absolute; left: 0; right: 0; top: 0; height: 54%;
+      background: linear-gradient(135deg, #38576e, #1a2936); border-radius: 4px 4px 0 0; z-index: 1
+    }
+    .lay-prev.side .ph i {
+      left: 0; width: 50%; right: auto; top: 0; height: 100%;
+      background: #FF8B33; transform: none; border-right: 2px solid #1E1612; z-index: 2
+    }
+    .lay-prev.side .ph::after {
+      content: ""; position: absolute; right: 0; left: 50%; top: 0; bottom: 0;
+      background: #2b3d4a; z-index: 1
+    }
+    .lay-prev.circle .ph i {
+      left: auto; right: 3px; top: 4px; width: 14px; height: 14px;
+      border-radius: 50%; background: #FF8B33; transform: none; z-index: 2
+    }
+    .lay-prev.circle .ph::after {
+      content: ""; position: absolute; inset: 0; background: #2b3d4a; z-index: 1
+    }
+    .lay-prev.pip_tr .ph i {
+      left: auto; right: 2px; top: 3px; width: 12px; height: 10px;
+      background: #FF8B33; border-radius: 2px; transform: none; z-index: 2
+    }
+    .lay-prev.pip_tl .ph i {
+      left: 2px; right: auto; top: 3px; width: 12px; height: 10px;
+      background: #FF8B33; border-radius: 2px; transform: none; z-index: 2
+    }
+    .lay-prev.pip_br .ph i {
+      left: auto; right: 2px; bottom: 3px; top: auto; width: 12px; height: 10px;
+      background: #FF8B33; border-radius: 2px; transform: none; z-index: 2
+    }
+    .lay-prev.pip_bl .ph i {
+      left: 2px; right: auto; bottom: 3px; top: auto; width: 12px; height: 10px;
+      background: #FF8B33; border-radius: 2px; transform: none; z-index: 2
+    }
+    .lay-prev.pip_tr .ph::after,
+    .lay-prev.pip_tl .ph::after,
+    .lay-prev.pip_br .ph::after,
+    .lay-prev.pip_bl .ph::after {
+      content: ""; position: absolute; inset: 0; background: #2b3d4a; z-index: 1
     }
 
     .seg {
@@ -8141,18 +9166,18 @@ main{background:rgba(255,255,255,.84);backdrop-filter:blur(28px) saturate(180%);
     <h3>${esc(p.title || "Live now")}</h3><p class="by">${esc(p.name || c.name)}</p>
     ${stats.length ? `<div class="sstats">${stats.map(([v, l]) => `<div><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join("")}</div>` : ""}
     <div class="cta">${rec
-      ? `<button class="btn danger" data-act="stoplive" data-j="${esc(rec)}">${ic("stop")}Stop recording</button><small>Recording now. Clips appear below as they're made.</small>`
-      : `<button class="btn primary" data-act="golive" data-url="${esc(p.channel)}"><span class="rdot"></span>Record this stream</button><small>Cut it by Ai With Atif watches it and clips the best moments as they happen.</small>`}</div>`);
-}
-const streamPlatform = u => !u ? "video" : /twitch\.tv/i.test(u) ? "twitch" : /kick\.com/i.test(u) ? "kick" : /youtu/i.test(u) ? "youtube" : "video";
-function drawMultiStream() {
-  const box = $("#mstream"); if (!box) return;
-  const liveJobs = S.jobs.filter(j => j.status === "live");
-  const liveCount = liveJobs.length;
-  const idleCreators = S.creators.filter(c => !c.live_job && (c.channel || (c.channels && Object.keys(c.channels).length)));
-  const anyLiveCreators = S.creators.filter(c => !c.live_job && liveOn(c).length > 0);
+          ? `<button class="btn danger" data-act="stoplive" data-j="${esc(rec)}">${ic("stop")}Stop recording</button><small>Recording now. Clips appear below as they're made.</small>`
+          : `<button class="btn primary" data-act="golive" data-url="${esc(p.channel)}"><span class="rdot"></span>Record this stream</button><small>Cut it by Ai With Atif watches it and clips the best moments as they happen.</small>`}</div>`);
+    }
+    const streamPlatform = u => !u ? "video" : /twitch\.tv/i.test(u) ? "twitch" : /kick\.com/i.test(u) ? "kick" : /youtu/i.test(u) ? "youtube" : "video";
+    function drawMultiStream() {
+      const box = $("#mstream"); if (!box) return;
+      const liveJobs = S.jobs.filter(j => j.status === "live");
+      const liveCount = liveJobs.length;
+      const idleCreators = S.creators.filter(c => !c.live_job && (c.channel || (c.channels && Object.keys(c.channels).length)));
+      const anyLiveCreators = S.creators.filter(c => !c.live_job && liveOn(c).length > 0);
 
-  let html = `<div class="ms-wrap">
+      let html = `<div class="ms-wrap">
     <div class="ms-banner">
       <div class="left">
         <h2>${ic("radio")} Multi-Stream Studio</h2>
@@ -8176,25 +9201,25 @@ function drawMultiStream() {
       ` : ""}
     </div>`;
 
-  if (liveCount === 0) {
-    html += `<div class="ms-empty">
+      if (liveCount === 0) {
+        html += `<div class="ms-empty">
       <i>${ic("radio")}</i>
       <h3>No Live Streams Active</h3>
       <p>Watch and record up to 6 YouTube, Twitch, or Kick live streams at once. Cut it by Ai With Atif automatically monitors comments, loudness spikes, and chat activity to extract viral clips in real-time.</p>
       ${idleCreators.length ? `<div class="row" style="margin-top:8px">${idleCreators.slice(0, 4).map(c => `<button class="btn sm" data-act="golive_c" data-cid="${esc(c.id)}">${cav(c)}Record ${esc(c.name)}</button>`).join("")}</div>` : ""}
     </div>`;
-  } else {
-    const gridClass = `g-${Math.min(6, liveCount)}`;
-    html += `<div class="ms-grid ${gridClass}" id="ms_grid">`;
-    for (const j of liveJobs) {
-      const L = j.live || {};
-      const plat = L.platform || streamPlatform(j.source?.url);
-      const lastLevel = L.level && L.level.length ? L.level[L.level.length - 1] : -30;
-      const lastChat = L.chat && L.chat.length ? L.chat[L.chat.length - 1] : 0;
-      const elapsed = L.elapsed || 0;
-      const timeStr = `${Math.floor(elapsed / 60)}m ${elapsed % 60}s`;
+      } else {
+        const gridClass = `g-${Math.min(6, liveCount)}`;
+        html += `<div class="ms-grid ${gridClass}" id="ms_grid">`;
+        for (const j of liveJobs) {
+          const L = j.live || {};
+          const plat = L.platform || streamPlatform(j.source?.url);
+          const lastLevel = L.level && L.level.length ? L.level[L.level.length - 1] : -30;
+          const lastChat = L.chat && L.chat.length ? L.chat[L.chat.length - 1] : 0;
+          const elapsed = L.elapsed || 0;
+          const timeStr = `${Math.floor(elapsed / 60)}m ${elapsed % 60}s`;
 
-      html += `<div class="ms-card" data-jid="${esc(j.id)}">
+          html += `<div class="ms-card" data-jid="${esc(j.id)}">
         <div class="ms-card-top">
           <div class="title-box">
             ${platLogo(plat)}
@@ -8228,20 +9253,20 @@ function drawMultiStream() {
           </div>
         </div>
       </div>`;
-    }
-    html += `</div>`;
-  }
+        }
+        html += `</div>`;
+      }
 
-  const allClips = [];
-  for (const j of liveJobs) {
-    for (const c of (j.clips || [])) {
-      allClips.push({...c, jid: j.id, stream_title: j.title || j.name, uploader: j.uploader});
-    }
-  }
-  allClips.sort((a, b) => (b.made_at || 0) - (a.made_at || 0));
+      const allClips = [];
+      for (const j of liveJobs) {
+        for (const c of (j.clips || [])) {
+          allClips.push({ ...c, jid: j.id, stream_title: j.title || j.name, uploader: j.uploader });
+        }
+      }
+      allClips.sort((a, b) => (b.made_at || 0) - (a.made_at || 0));
 
-  if (allClips.length > 0) {
-    html += `<div class="ms-clips-head">
+      if (allClips.length > 0) {
+        html += `<div class="ms-clips-head">
       <h3>${ic("scissors")} Clips Generated from Live Streams (${allClips.length})</h3>
     </div>
     <div class="ms-clips-grid">
@@ -8257,65 +9282,69 @@ function drawMultiStream() {
         </div>
       `).join("")}
     </div>`;
-  }
+      }
 
-  html += `</div>`;
-  put(box, html);
+      html += `</div>`;
+      put(box, html);
 
-  for (const j of liveJobs) {
-    const L = j.live || {};
-    const plat = L.platform || streamPlatform(j.source?.url);
-    const embed = L.embed || "";
-    const src = playerSrc(plat, embed);
-    const pl = box.querySelector(`.ms-card[data-jid="${j.id}"] .player`);
-    if (pl && pl.dataset.src !== src) {
-      pl.dataset.src = src;
-      const ipHost = /^[\d.]+$|^\[/.test(location.hostname);
-      pl.innerHTML = (plat === "twitch" && ipHost)
-        ? `<div class="noembed">${platLogo(plat)}<b>Twitch embed unavailable on IP</b><span>Use localhost or watch directly on Twitch.</span></div>`
-        : src ? `<iframe src="${src}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="${PLAT[plat]?.name || 'Live'} stream"></iframe>`
-        : `<div class="noembed"><b>Live recording in progress</b><span>Stream transcribing &amp; auto-clipping.</span></div>`;
+      for (const j of liveJobs) {
+        const L = j.live || {};
+        const plat = L.platform || streamPlatform(j.source?.url);
+        const embed = L.embed || "";
+        const src = playerSrc(plat, embed);
+        const pl = box.querySelector(`.ms-card[data-jid="${j.id}"] .player`);
+        if (pl && pl.dataset.src !== src) {
+          pl.dataset.src = src;
+          const ipHost = /^[\d.]+$|^\[/.test(location.hostname);
+          pl.innerHTML = (plat === "twitch" && ipHost)
+            ? `<div class="noembed">${platLogo(plat)}<b>Twitch embed unavailable on IP</b><span>Use localhost or watch directly on Twitch.</span></div>`
+            : src ? `<iframe src="${src}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="${PLAT[plat]?.name || 'Live'} stream"></iframe>`
+              : `<div class="noembed"><b>Live recording in progress</b><span>Stream transcribing &amp; auto-clipping.</span></div>`;
+        }
+      }
     }
-  }
-}
-function liveOn(c) { return Object.entries(c.profiles || {}).filter(([k, p]) => p.live && c.channels?.[k] === p.channel).sort(([, p]) => p.channel === c.channel ? -1 : 1); }
-function statusBadge(c) {
-  if (c.live_job) return `<span class="sbadge rec"><i></i>Recording</span>`;
-  const on = liveOn(c);
-  if (on.length) { const [k, p] = on[0]; return `<span class="sbadge live"><i></i>Live on ${PLAT[k].name}${p.viewers ? " · " + fmtK(p.viewers) + " watching" : ""}</span>`; }
-  if (!Object.keys(c.channels || {}).length) return `<span class="sbadge">No channel yet</span>`;
-  return `<span class="sbadge"><i></i>Offline${c.auto_watch ? " · records when live" : ""}</span>`;
-}
-const cav = c => { const r = c.live_job || liveOn(c).length ? " ring" : "";
-  return c.profile?.pic && c.profile.channel === c.channel ? `<img class="avatar${r}" src="${avatarUrl(c)}" alt="">` : `<span class="avatar${r}">${esc((c.name || "?")[0].toUpperCase())}</span>`; };
-const GRADS = [["#FF8B33", "#FFB27A"], ["#7C5CFF", "#B9A7FF"], ["#0EA5E9", "#7DD3FC"], ["#10B981", "#6EE7B7"],
-               ["#F43F5E", "#FDA4AF"], ["#F59E0B", "#FDE68A"], ["#EC4899", "#F9A8D4"], ["#14B8A6", "#99F6E4"]];
-function meAvatar(u) {
-  if (u.photo) return `<img class="avatar me-pic" src="/api/me/photo?v=${u.photo}" alt="">`;
-  let h = 0; for (const ch of u.email || u.name) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-  const [a, b] = GRADS[h % GRADS.length];
-  return `<span class="avatar me-pic" style="background:linear-gradient(135deg,${a},${b});color:#fff">${esc((u.name || "?")[0].toUpperCase())}</span>`;
-}
-const NT_ICON = {live: "radio", clips: "scissors", post: "warn", fail: "warn", account: "user", feedback: "chat"};
-const ago = t => { const s = Date.now() / 1000 - t; return s < 60 ? "just now" : s < 3600 ? Math.floor(s / 60) + " min ago" : s < 86400 ? Math.floor(s / 3600) + " h ago" : new Date(t * 1000).toLocaleDateString([], {day: "numeric", month: "short"}); };
-function closePops(except) { ["bellpop", "acctpop"].forEach(id => { const p = $("#" + id); if (p !== except && !p.hidden) { p.classList.remove("open"); setTimeout(() => { if (!p.classList.contains("open")) p.hidden = true; }, 180); } });
-  $$('[data-act="acctmenu"]').forEach(b => b.setAttribute("aria-expanded", String(except?.id === "acctpop"))); }
-function openPop(p, anchor) {
-  closePops(p); p.hidden = false;
-  // beside the sidebar, bottom lined up with the button that opened it
-  const side = $(".side").getBoundingClientRect(), a = anchor?.getBoundingClientRect();
-  if (innerWidth > 900) { p.style.left = side.right + 8 + "px"; p.style.bottom = Math.max(12, innerHeight - (a ? a.bottom + 6 : side.bottom - 12)) + "px"; }
-  else { p.style.left = ""; p.style.bottom = ""; }
-  requestAnimationFrame(() => p.classList.add("open"));
-}
-async function openBell() {
-  const p = $("#bellpop");
-  if (!p.hidden) return closePops();
-  p.innerHTML = `<div class="pop-head"><h3>Notifications</h3></div><div class="pop-empty">Loading…</div>`;
-  openPop(p, $("[data-act=bell]"));
-  try {
-    const d = await api("/api/notifications");
-    p.innerHTML = `<div class="pop-head"><h3>Notifications</h3>${d.unread ? `<button data-act="bellread">Mark all as read</button>` : ""}</div>
+    function liveOn(c) { return Object.entries(c.profiles || {}).filter(([k, p]) => p.live && c.channels?.[k] === p.channel).sort(([, p]) => p.channel === c.channel ? -1 : 1); }
+    function statusBadge(c) {
+      if (c.live_job) return `<span class="sbadge rec"><i></i>Recording</span>`;
+      const on = liveOn(c);
+      if (on.length) { const [k, p] = on[0]; return `<span class="sbadge live"><i></i>Live on ${PLAT[k].name}${p.viewers ? " · " + fmtK(p.viewers) + " watching" : ""}</span>`; }
+      if (!Object.keys(c.channels || {}).length) return `<span class="sbadge">No channel yet</span>`;
+      return `<span class="sbadge"><i></i>Offline${c.auto_watch ? " · records when live" : ""}</span>`;
+    }
+    const cav = c => {
+      const r = c.live_job || liveOn(c).length ? " ring" : "";
+      return c.profile?.pic && c.profile.channel === c.channel ? `<img class="avatar${r}" src="${avatarUrl(c)}" alt="">` : `<span class="avatar${r}">${esc((c.name || "?")[0].toUpperCase())}</span>`;
+    };
+    const GRADS = [["#FF8B33", "#FFB27A"], ["#7C5CFF", "#B9A7FF"], ["#0EA5E9", "#7DD3FC"], ["#10B981", "#6EE7B7"],
+    ["#F43F5E", "#FDA4AF"], ["#F59E0B", "#FDE68A"], ["#EC4899", "#F9A8D4"], ["#14B8A6", "#99F6E4"]];
+    function meAvatar(u) {
+      if (u.photo) return `<img class="avatar me-pic" src="/api/me/photo?v=${u.photo}" alt="">`;
+      let h = 0; for (const ch of u.email || u.name) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+      const [a, b] = GRADS[h % GRADS.length];
+      return `<span class="avatar me-pic" style="background:linear-gradient(135deg,${a},${b});color:#fff">${esc((u.name || "?")[0].toUpperCase())}</span>`;
+    }
+    const NT_ICON = { live: "radio", clips: "scissors", post: "warn", fail: "warn", account: "user", feedback: "chat" };
+    const ago = t => { const s = Date.now() / 1000 - t; return s < 60 ? "just now" : s < 3600 ? Math.floor(s / 60) + " min ago" : s < 86400 ? Math.floor(s / 3600) + " h ago" : new Date(t * 1000).toLocaleDateString([], { day: "numeric", month: "short" }); };
+    function closePops(except) {
+      ["bellpop", "acctpop"].forEach(id => { const p = $("#" + id); if (p !== except && !p.hidden) { p.classList.remove("open"); setTimeout(() => { if (!p.classList.contains("open")) p.hidden = true; }, 180); } });
+      $$('[data-act="acctmenu"]').forEach(b => b.setAttribute("aria-expanded", String(except?.id === "acctpop")));
+    }
+    function openPop(p, anchor) {
+      closePops(p); p.hidden = false;
+      // beside the sidebar, bottom lined up with the button that opened it
+      const side = $(".side").getBoundingClientRect(), a = anchor?.getBoundingClientRect();
+      if (innerWidth > 900) { p.style.left = side.right + 8 + "px"; p.style.bottom = Math.max(12, innerHeight - (a ? a.bottom + 6 : side.bottom - 12)) + "px"; }
+      else { p.style.left = ""; p.style.bottom = ""; }
+      requestAnimationFrame(() => p.classList.add("open"));
+    }
+    async function openBell() {
+      const p = $("#bellpop");
+      if (!p.hidden) return closePops();
+      p.innerHTML = `<div class="pop-head"><h3>Notifications</h3></div><div class="pop-empty">Loading…</div>`;
+      openPop(p, $("[data-act=bell]"));
+      try {
+        const d = await api("/api/notifications");
+        p.innerHTML = `<div class="pop-head"><h3>Notifications</h3>${d.unread ? `<button data-act="bellread">Mark all as read</button>` : ""}</div>
       ${d.items.length ? `<div class="pop-list">${d.items.map(n => `<button class="nt k-${esc(n.kind)} ${n.read ? "" : "new"}" data-act="ntgo" data-link="${esc(n.link)}">
         <i>${ic(NT_ICON[n.kind] || "bell")}</i><span class="tx"><b>${esc(n.title)}</b>${n.body ? `<span>${esc(n.body)}</span>` : ""}<small>${ago(n.t)}</small></span></button>`).join("")}</div>`
             : `<div class="pop-empty">${ic("bell")}Nothing yet. Recordings, finished clips and posts that need a look show up here.</div>`}`;
@@ -8393,85 +9422,88 @@ async function openBell() {
     ${up.restart ? "" : cmd("Ask your AI coding assistant (Claude, Cursor, Copilot...)", ai) + cmd("Or run it yourself, in this folder", "git pull && pip install -r requirements.txt")}
     <p class="sub">${up.restart ? "" : "Then stop the app and start it again. With Docker, run <code>git pull && docker compose up -d --build</code> instead. "}<a class="lnk" href="${esc(up.url)}" target="_blank" rel="noopener">See every change on GitHub</a></p>
     <div class="dlg-foot"><button class="btn" value="later">Remind me next version</button><button class="btn primary" value="ok" autofocus>Got it</button></div></form>`;
-  d.onclose = () => { if (d.returnValue === "later") { try { localStorage.setItem("cutit_update_seen", up.latest); } catch {} drawShell(); } };
-  d.returnValue = "ok"; d.showModal();
-}
-function greeting() { const h = new Date().getHours(); return h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"; }
-let lastInd = null;
-addEventListener("resize", () => { lastInd = null; const i = $("#utabs .ind"); if (i) i.remove(); moveInd(); });   // where the orange pill was, so it can slide from there to the new tab
-function moveInd() {
-  const nav = $("#utabs"), on = nav?.querySelector(".tabbtn.on");
-  if (!on) return;
-  let ind = nav.querySelector(".ind");
-  if (!ind) {
-    ind = document.createElement("span"); ind.className = "ind"; nav.prepend(ind);
-    if (lastInd) { ind.style.transition = "none"; ind.style.width = lastInd.w + "px"; ind.style.transform = `translateX(${lastInd.x}px)`; ind.offsetWidth; ind.style.transition = ""; }
-  }
-  const x = on.offsetLeft, w = on.offsetWidth;
-  requestAnimationFrame(() => { ind.style.width = w + "px"; ind.style.transform = `translateX(${x}px)`; });
-  lastInd = {x, w};
-}
-function drawShell() {  const nav = (v, icon, label, extra = "") => `<button class="nav-item ${S.view === v ? "on" : ""}" data-act="go" data-v="${esc(v)}" title="${esc(label)}">${icon}<span class="label">${esc(label)}</span>${extra}</button>`;
-  const liveCount = S.jobs.filter(j => j.status === "live").length;
-  const multiBadge = liveCount ? `<span class="working" title="${liveCount} live streams recording"><i></i>${liveCount} Live</span>` : "";
-  put($("#nav"), nav("overview", navIc("home", "overview"), "Home") +
-    nav("multistream", navIc("radio", "multistream"), "Multi-Stream", multiBadge) +
-    nav("library", navIc("film", "library"), "All videos", (() => { const w = S.jobs.filter(j => ["queued", "running"].includes(j.status)).length;
-      return w ? `<span class="working" title="${w} working now"><i></i>${w} working</span>` : S.jobs.length ? `<span class="count">${S.jobs.length}</span>` : ""; })()) +
-    `<h4><span>Creators</span></h4>` +
-    S.creators.map(c => nav("c:" + c.id, cav(c), c.name,
-      c.live_job ? `<span class="sb-tag rec" title="Recording now"><i></i>Rec</span>`
-        : liveOn(c).length ? `<span class="sb-tag" title="Live on ${esc(liveOn(c).map(([k]) => PLAT[k].name).join(" and "))}"><i></i>Live</span>` : "")).join("") +
-    `<button class="nav-item" data-act="newcreator" title="New creator">${ic("plusc")}<span class="label">New creator</span></button>` +
-    (S.status.user?.role === "admin" && S.status.accounts !== false ? `<h4><span>Owner</span></h4><a class="nav-item" href="/admin" title="Admin dashboard" style="text-decoration:none">${ic("shield")}<span class="label">Admin dashboard</span></a>` : ""));
-  const st = S.status;
-  const k = S.status.ai;
-  put($("#foot"), (k ? `<button class="ai-card ${S.view === "usage" ? "on" : ""}" data-act="go" data-v="usage" title="${k.ready ? `AI: ${esc(k.provider || "ready")}, ${k.today_calls || 0} calls today` : "The AI is not set up"}">
+      d.onclose = () => { if (d.returnValue === "later") { try { localStorage.setItem("cutit_update_seen", up.latest); } catch { } drawShell(); } };
+      d.returnValue = "ok"; d.showModal();
+    }
+    function greeting() { const h = new Date().getHours(); return h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening"; }
+    let lastInd = null;
+    addEventListener("resize", () => { lastInd = null; const i = $("#utabs .ind"); if (i) i.remove(); moveInd(); });   // where the orange pill was, so it can slide from there to the new tab
+    function moveInd() {
+      const nav = $("#utabs"), on = nav?.querySelector(".tabbtn.on");
+      if (!on) return;
+      let ind = nav.querySelector(".ind");
+      if (!ind) {
+        ind = document.createElement("span"); ind.className = "ind"; nav.prepend(ind);
+        if (lastInd) { ind.style.transition = "none"; ind.style.width = lastInd.w + "px"; ind.style.transform = `translateX(${lastInd.x}px)`; ind.offsetWidth; ind.style.transition = ""; }
+      }
+      const x = on.offsetLeft, w = on.offsetWidth;
+      requestAnimationFrame(() => { ind.style.width = w + "px"; ind.style.transform = `translateX(${x}px)`; });
+      lastInd = { x, w };
+    }
+    function drawShell() {
+      const nav = (v, icon, label, extra = "") => `<button class="nav-item ${S.view === v ? "on" : ""}" data-act="go" data-v="${esc(v)}" title="${esc(label)}">${icon}<span class="label">${esc(label)}</span>${extra}</button>`;
+      const liveCount = S.jobs.filter(j => j.status === "live").length;
+      const multiBadge = liveCount ? `<span class="working" title="${liveCount} live streams recording"><i></i>${liveCount} Live</span>` : "";
+      put($("#nav"), nav("overview", navIc("home", "overview"), "Home") +
+        nav("multistream", navIc("radio", "multistream"), "Multi-Stream", multiBadge) +
+        nav("library", navIc("film", "library"), "All videos", (() => {
+          const w = S.jobs.filter(j => ["queued", "running"].includes(j.status)).length;
+          return w ? `<span class="working" title="${w} working now"><i></i>${w} working</span>` : S.jobs.length ? `<span class="count">${S.jobs.length}</span>` : "";
+        })()) +
+        `<h4><span>Creators</span></h4>` +
+        S.creators.map(c => nav("c:" + c.id, cav(c), c.name,
+          c.live_job ? `<span class="sb-tag rec" title="Recording now"><i></i>Rec</span>`
+            : liveOn(c).length ? `<span class="sb-tag" title="Live on ${esc(liveOn(c).map(([k]) => PLAT[k].name).join(" and "))}"><i></i>Live</span>` : "")).join("") +
+        `<button class="nav-item" data-act="newcreator" title="New creator">${ic("plusc")}<span class="label">New creator</span></button>` +
+        (S.status.user?.role === "admin" && S.status.accounts !== false ? `<h4><span>Owner</span></h4><a class="nav-item" href="/admin" title="Admin dashboard" style="text-decoration:none">${ic("shield")}<span class="label">Admin dashboard</span></a>` : ""));
+      const st = S.status;
+      const k = S.status.ai;
+      put($("#foot"), (k ? `<button class="ai-card ${S.view === "usage" ? "on" : ""}" data-act="go" data-v="usage" title="${k.ready ? `AI: ${esc(k.provider || "ready")}, ${k.today_calls || 0} calls today` : "The AI is not set up"}">
       <span class="ai-ic">${ic("bolt")}</span><span class="ai-tx"><small>AI</small><b>${k.ready ? esc(k.provider || "Ready") : "Not set up"}</b></span>${k.ready ? `<span class="ai-n">${(k.today_calls || 0).toLocaleString()} today</span>` : ""}</button>` : "") +
         (S.status.user ? `<div class="me"><button class="me-btn" data-act="acctmenu" aria-haspopup="menu" aria-expanded="false">${meAvatar(S.status.user)}
       <span class="who">${S.status.accounts === false ? `<b>Settings</b><span>AI key, connected apps</span>` : `<b>${esc(S.status.user.name)}</b><span>${esc(S.status.user.email)}</span>`}</span></button>
       <button class="icon-btn bell" data-act="bell" title="Notifications" aria-label="Notifications${S.status.unread ? `, ${S.status.unread} new` : ""}" aria-haspopup="dialog">${ic("bell")}${S.status.unread ? `<span class="dotn">${S.status.unread > 9 ? "9+" : S.status.unread}</span>` : ""}</button></div>` : ""));
-  const c = creator();
-  const recording = S.creators.filter(x => x.live_job).length;
-  let title = {overview:"Dashboard Overview", multistream:"Multi-Stream Studio", library:"All videos", settings:"Settings", usage:"AI usage"}[S.view] || "", sub = "", act = "";
-  if (S.view === "usage") sub = "What the AI has been used for.";
-  if (S.view === "overview") sub = `${greeting()}. ${S.creators.length} creator${S.creators.length === 1 ? "" : "s"}${recording ? `, ${recording} recording now` : ""}.`;
-  if (S.view === "multistream") sub = "Watch and record up to 6 streams simultaneously with real-time AI auto-clipping.";
-  if (S.view === "library") sub = "Every video and recording, across all creators.";
-  if (S.view === "settings") sub = (S.status.accounts === false ? "Your AI key and connected apps." : "Your profile, security and connected apps.");
-  let pic = "", subHtml = null, tabs = "";
-  if (c) {
-    title = c.name;
-    pic = cav(c);
-    subHtml = statusBadge(c);
-    const nJobs = S.jobs.filter(j => j.creator === c.id).length, nLog = (c.log || []).length;
-    tabs = [["clips", "Clips", "scissors", nJobs], ["setup", "Setup", "cog", 0], ["activity", "Activity", "clock", nLog]].map(([k, l, i, n]) =>
-      `<button class="tabbtn ${S.ctab === k ? "on" : ""}" data-act="tab" data-t="${k}" role="tab" aria-selected="${S.ctab === k}">${ic(i)}${l}${n ? `<span class="n">${n > 99 ? "99+" : n}</span>` : ""}</button>`).join("");
-    act = `<div style="display:flex;align-items:center;gap:10px;">
+      const c = creator();
+      const recording = S.creators.filter(x => x.live_job).length;
+      let title = { overview: "Dashboard Overview", multistream: "Multi-Stream Studio", library: "All videos", settings: "Settings", usage: "AI usage" }[S.view] || "", sub = "", act = "";
+      if (S.view === "usage") sub = "What the AI has been used for.";
+      if (S.view === "overview") sub = `${greeting()}. ${S.creators.length} creator${S.creators.length === 1 ? "" : "s"}${recording ? `, ${recording} recording now` : ""}.`;
+      if (S.view === "multistream") sub = "Watch and record up to 6 streams simultaneously with real-time AI auto-clipping.";
+      if (S.view === "library") sub = "Every video and recording, across all creators.";
+      if (S.view === "settings") sub = (S.status.accounts === false ? "Your AI key and connected apps." : "Your profile, security and connected apps.");
+      let pic = "", subHtml = null, tabs = "";
+      if (c) {
+        title = c.name;
+        pic = cav(c);
+        subHtml = statusBadge(c);
+        const nJobs = S.jobs.filter(j => j.creator === c.id).length, nLog = (c.log || []).length;
+        tabs = [["clips", "Clips", "scissors", nJobs], ["setup", "Setup", "cog", 0], ["activity", "Activity", "clock", nLog]].map(([k, l, i, n]) =>
+          `<button class="tabbtn ${S.ctab === k ? "on" : ""}" data-act="tab" data-t="${k}" role="tab" aria-selected="${S.ctab === k}">${ic(i)}${l}${n ? `<span class="n">${n > 99 ? "99+" : n}</span>` : ""}</button>`).join("");
+        act = `<div style="display:flex;align-items:center;gap:10px;">
       <button class="head-btn" data-act="themetoggle" title="Theme: ${ThemeManager.getLabel()} (Click to change)">${ic(ThemeManager.getIcon())}</button>
       ${c.live_job ? `<button class="btn danger" data-act="stoplive" data-j="${esc(c.live_job)}">${ic("stop")}Stop recording</button>`
             : `<button class="btn primary" data-act="golive"><span class="rdot"></span>${liveOn(c).length ? "Record live stream" : "Start recording"}</button>`}
     </div>`;
-  } else {
-    const pills = [
-      ["overview", "Overview", ""],
-      ["multistream", "Multi-Stream", ""],
-      ["library", "All Videos", "caret"],
-      ["creators", "Channels", "caret"],
-      ["usage", "AI Analytics", "caret"],
-      ["settings_apps", "Connected Apps", "caret"],
-      ["settings", "Settings", ""]
-    ];
-    tabs = pills.map(([target, label, chev], idx) => {
-      const isOn = (target === "overview" && S.view === "overview" && idx === 0) || (target === S.view && target !== "overview");
-      let actAttr = `data-act="go" data-v="${target}"`;
-      if (target === "creators") actAttr = `data-act="newcreator"`;
-      else if (target === "settings_apps") actAttr = `data-act="go" data-v="settings" data-tab="apps"`;
-      return `<button class="tabbtn ${isOn ? "on" : ""}" ${actAttr}>${esc(label)}${chev ? `<span class="pill-chev">${ic(chev)}</span>` : ""}</button>`;
-    }).join("");
-  }
-  if (!c) {
-    act = `
+      } else {
+        const pills = [
+          ["overview", "Overview", ""],
+          ["multistream", "Multi-Stream", ""],
+          ["library", "All Videos", "caret"],
+          ["creators", "Channels", "caret"],
+          ["usage", "AI Analytics", "caret"],
+          ["settings_apps", "Connected Apps", "caret"],
+          ["settings", "Settings", ""]
+        ];
+        tabs = pills.map(([target, label, chev], idx) => {
+          const isOn = (target === "overview" && S.view === "overview" && idx === 0) || (target === S.view && target !== "overview");
+          let actAttr = `data-act="go" data-v="${target}"`;
+          if (target === "creators") actAttr = `data-act="newcreator"`;
+          else if (target === "settings_apps") actAttr = `data-act="go" data-v="settings" data-tab="apps"`;
+          return `<button class="tabbtn ${isOn ? "on" : ""}" ${actAttr}>${esc(label)}${chev ? `<span class="pill-chev">${ic(chev)}</span>` : ""}</button>`;
+        }).join("");
+      }
+      if (!c) {
+        act = `
       <div class="topbar-icons">
         <button class="head-btn" title="Global Network">${ic("globe")}</button>
         <button class="head-btn" data-act="go" data-v="usage" title="AI Model & Features">${ic("sparkle")}</button>
@@ -8500,59 +9532,59 @@ function drawShell() {  const nav = (v, icon, label, extra = "") => `<button cla
       put($("#title"), `<span>${esc(title)}</span>`); put($("#subtitle"), subHtml ?? esc(sub)); put($("#actions"), act);
     }
 
-const ROUTES = {overview: "", multistream: "multistream", library: "videos", settings: "settings", usage: "usage"};
-function pathFor(v, tab) {
-  if (v.startsWith("c:")) return `/app/creators/${encodeURIComponent(v.slice(2))}${tab && tab !== "clips" ? "/" + tab : ""}`;
-  if (v === "settings") return "/app/settings" + (tab ? "/" + tab : "");
-  return "/app" + (ROUTES[v] ? "/" + ROUTES[v] : "");
-}
-function fromPath(path) {
-  const m = path.match(/^\/app\/creators\/([^/]+)(?:\/(setup|activity|clips))?\/?$/);
-  if (m) return ["c:" + decodeURIComponent(m[1]), m[2] || "clips"];
-  const st = path.match(/^\/app\/settings(?:\/(ai|appearance|profile|security|apps|storage))?\/?$/);
-  if (st) return ["settings", st[1] || null];
-  const k = Object.keys(ROUTES).find(x => ROUTES[x] && path.replace(/\/$/, "") === "/app/" + ROUTES[x]);
-  return [k || "overview", "clips"];
-}
-function remember(v, tab, how = "push") {
-  const url = pathFor(v, tab);
-  if (location.pathname !== url) history[how === "replace" ? "replaceState" : "pushState"]({v, tab}, "", url);
-}
-addEventListener("popstate", () => { const [v, tab] = fromPath(location.pathname); go(v, tab, true); });
-function go(v, tab, fromHistory) {
-  if (v.startsWith("c:") && !S.creators.some(c => "c:" + c.id === v)) v = "overview";
-  S.view = v; if (tab) S.ctab = tab; else if (!v.startsWith("c:")) S.ctab = "clips";
-  if (v === "settings") S.stab = setTabs().some(x => x[0] === tab) ? tab : setTabs()[0][0];
-  if (!fromHistory) remember(v, v.startsWith("c:") ? S.ctab : v === "settings" ? S.stab : null);
-  localStorage.setItem("view", v);
-  $("#app").classList.remove("open");
-  const view = $("#view");
-  if (window._gaStop) { window._gaStop(); window._gaStop = null; }
-  $("#heroSlot").innerHTML = v === "overview" ? `<section class="hero"><div class="ga-bg" id="appAscii" aria-hidden="true"></div><h2>What do you want to clip today?</h2>
+    const ROUTES = { overview: "", multistream: "multistream", library: "videos", settings: "settings", usage: "usage" };
+    function pathFor(v, tab) {
+      if (v.startsWith("c:")) return `/app/creators/${encodeURIComponent(v.slice(2))}${tab && tab !== "clips" ? "/" + tab : ""}`;
+      if (v === "settings") return "/app/settings" + (tab ? "/" + tab : "");
+      return "/app" + (ROUTES[v] ? "/" + ROUTES[v] : "");
+    }
+    function fromPath(path) {
+      const m = path.match(/^\/app\/creators\/([^/]+)(?:\/(setup|activity|clips))?\/?$/);
+      if (m) return ["c:" + decodeURIComponent(m[1]), m[2] || "clips"];
+      const st = path.match(/^\/app\/settings(?:\/(ai|appearance|profile|security|apps|storage))?\/?$/);
+      if (st) return ["settings", st[1] || null];
+      const k = Object.keys(ROUTES).find(x => ROUTES[x] && path.replace(/\/$/, "") === "/app/" + ROUTES[x]);
+      return [k || "overview", "clips"];
+    }
+    function remember(v, tab, how = "push") {
+      const url = pathFor(v, tab);
+      if (location.pathname !== url) history[how === "replace" ? "replaceState" : "pushState"]({ v, tab }, "", url);
+    }
+    addEventListener("popstate", () => { const [v, tab] = fromPath(location.pathname); go(v, tab, true); });
+    function go(v, tab, fromHistory) {
+      if (v.startsWith("c:") && !S.creators.some(c => "c:" + c.id === v)) v = "overview";
+      S.view = v; if (tab) S.ctab = tab; else if (!v.startsWith("c:")) S.ctab = "clips";
+      if (v === "settings") S.stab = setTabs().some(x => x[0] === tab) ? tab : setTabs()[0][0];
+      if (!fromHistory) remember(v, v.startsWith("c:") ? S.ctab : v === "settings" ? S.stab : null);
+      localStorage.setItem("view", v);
+      $("#app").classList.remove("open");
+      const view = $("#view");
+      if (window._gaStop) { window._gaStop(); window._gaStop = null; }
+      $("#heroSlot").innerHTML = v === "overview" ? `<section class="hero"><div class="ga-bg" id="appAscii" aria-hidden="true"></div><h2>What do you want to clip today?</h2>
       <p>Paste a link or drop in videos. You get captioned shorts back.</p><div id="add"></div></section>` : "";
-  if (v === "overview") view.innerHTML = `<div id="ov"></div>`;
-  else if (v === "multistream") view.innerHTML = `<div id="mstream"></div>`;
-  else if (v === "library") view.innerHTML = `<div id="add"></div><div id="jobs"></div>`;
-  else if (v === "settings") view.innerHTML = `<div id="sform"></div>`;
-  else if (v === "usage") { view.innerHTML = `<div id="usage"></div>`; loadUsage(); }
-  else view.innerHTML = `<div id="stream"></div><div id="cbody"></div>`;   // the live player stays put across tabs: no restart, no rebuffer
-  if ($("#add")) drawAdd(v === "overview" ? "hero" : "compact");
-  if (v === "overview" && window.GradientASCII) { try { window._gaStop = GradientASCII($("#appAscii"), {colors: ["#ffb27a", "#ffffff", "#ffd2ae", "#ffe0c2", "#fff1e6"], shape: "horizon", lightMode: true, cellSize: 16, density: 0.8, glyphOpacity: 0.26, gradientOpacity: 0.32, glow: 0.06, grain: 0.06, mouseInteraction: false, clickEffect: "none"}); } catch {} }
-  if (v === "settings") drawSettings();
-  if (v.startsWith("c:")) setTab(S.ctab);
-  $("#main").scrollTo(0, 0); render();
-  if (v === "overview") loadOverview();
-}
-function setTab(t) {
-  S.ctab = t;
-  if (S.view.startsWith("c:")) remember(S.view, t, "replace");
-  drawShell();
-  $("#cbody").innerHTML = t === "clips" ? `<div id="live"></div><div id="add"></div><div id="jobs"></div>` : t === "setup" ? `<div id="cform"></div>` : `<div id="clog"></div>`;
-  if ($("#stream")) $("#stream").style.display = t === "clips" ? "" : "none";
-  if (t === "clips") drawAdd("compact");
-  if (t === "setup") drawCreatorForm();
-  render();
-}
+      if (v === "overview") view.innerHTML = `<div id="ov"></div>`;
+      else if (v === "multistream") view.innerHTML = `<div id="mstream"></div>`;
+      else if (v === "library") view.innerHTML = `<div id="add"></div><div id="jobs"></div>`;
+      else if (v === "settings") view.innerHTML = `<div id="sform"></div>`;
+      else if (v === "usage") { view.innerHTML = `<div id="usage"></div>`; loadUsage(); }
+      else view.innerHTML = `<div id="stream"></div><div id="cbody"></div>`;   // the live player stays put across tabs: no restart, no rebuffer
+      if ($("#add")) drawAdd(v === "overview" ? "hero" : "compact");
+      if (v === "overview" && window.GradientASCII) { try { window._gaStop = GradientASCII($("#appAscii"), { colors: ["#ffb27a", "#ffffff", "#ffd2ae", "#ffe0c2", "#fff1e6"], shape: "horizon", lightMode: true, cellSize: 16, density: 0.8, glyphOpacity: 0.26, gradientOpacity: 0.32, glow: 0.06, grain: 0.06, mouseInteraction: false, clickEffect: "none" }); } catch { } }
+      if (v === "settings") drawSettings();
+      if (v.startsWith("c:")) setTab(S.ctab);
+      $("#main").scrollTo(0, 0); render();
+      if (v === "overview") loadOverview();
+    }
+    function setTab(t) {
+      S.ctab = t;
+      if (S.view.startsWith("c:")) remember(S.view, t, "replace");
+      drawShell();
+      $("#cbody").innerHTML = t === "clips" ? `<div id="live"></div><div id="add"></div><div id="jobs"></div>` : t === "setup" ? `<div id="cform"></div>` : `<div id="clog"></div>`;
+      if ($("#stream")) $("#stream").style.display = t === "clips" ? "" : "none";
+      if (t === "clips") drawAdd("compact");
+      if (t === "setup") drawCreatorForm();
+      render();
+    }
 
     /* ============================================================ add bar */
     function drawAdd(variant) {
@@ -8595,6 +9627,16 @@ function setTab(t) {
       split_br: "Split (Cam Bottom-Right)",
       split_bl: "Split (Cam Bottom-Left)",
       split_top: "Split (Cam Center)",
+      stack: "Stack (Cam Above Game)",
+      bottom: "Bottom (Game Above Cam)",
+      fill: "Fill Screen",
+      game: "Gameplay Only",
+      pip_tl: "PiP Cam Top-Left",
+      pip_tr: "PiP Cam Top-Right",
+      pip_bl: "PiP Cam Bottom-Left",
+      pip_br: "PiP Cam Bottom-Right",
+      circle: "Circle Cam Overlay",
+      side: "Side-by-Side Split",
     };
     const CAP_LOOK = { bounce: { font: "'Archivo Black'", hl: "#FFFF00", up: true }, hype: { font: "Anton", hl: "#FF3C3C", up: true }, clean: { font: "Poppins", hl: "#6BD7FF", up: false, w: 800 } };
     function capPrev(k) {
@@ -8771,28 +9813,30 @@ function setTab(t) {
     }
   });
 }
-let linkTimer = 0;
-function onLink(input) {
-  clearTimeout(linkTimer);
-  const A = att(), u = input.value.trim();
-  if (!u) { A.note = null; return drawAtt(); }
-  if (isChannel(u)) { A.note = "That's a channel, not a video. To clip their live streams, add them as a creator and press Start recording."; return drawAtt(); }
-  if (!looksLink(u)) { A.note = u.length > 10 ? "Paste a full YouTube, Twitch or Kick video link." : null; return drawAtt(); }
-  A.note = null; drawAtt();
-  if (fullLink(u)) return takeLink(A, u, input);
-  linkTimer = setTimeout(() => { if (input.value.trim() === u) takeLink(A, u, input); }, 900);   // other link shapes: take it once typing stops
-}
-document.addEventListener("input", e => { if (e.target.id === "url") onLink(e.target);
-  if (e.target.closest?.("#cform") && e.target.dataset.k && !/checkbox|radio/.test(e.target.type)) dirty(true); });
-document.addEventListener("keydown", e => { if (e.target.id === "url" && e.key === "Enter" && e.target.value.trim() && looksLink(e.target.value.trim())) { e.preventDefault(); clearTimeout(linkTimer); takeLink(att(), e.target.value.trim(), e.target); } });
-document.addEventListener("keydown", e => { if (e.target.id === "ms_url" && e.key === "Enter" && e.target.value.trim()) { e.preventDefault(); $('[data-act="ms_add"]')?.click(); } });
-document.addEventListener("click", e => {
-  const r = e.target.closest("[data-rm]"), A = att(); if (!r || A.busy) return;
-  if (r.dataset.rm === "link") A.links = A.links.filter(l => l.id !== r.dataset.id);
-  else { const i = A.files.findIndex(f => f.id === r.dataset.id); if (i >= 0) { URL.revokeObjectURL(A.files[i].src); A.files.splice(i, 1); } }
-  if (!A.links.some(l => l.state === "wait")) A.queued = false;
-  drawAtt();
-});
+    let linkTimer = 0;
+    function onLink(input) {
+      clearTimeout(linkTimer);
+      const A = att(), u = input.value.trim();
+      if (!u) { A.note = null; return drawAtt(); }
+      if (isChannel(u)) { A.note = "That's a channel, not a video. To clip their live streams, add them as a creator and press Start recording."; return drawAtt(); }
+      if (!looksLink(u)) { A.note = u.length > 10 ? "Paste a full YouTube, Twitch or Kick video link." : null; return drawAtt(); }
+      A.note = null; drawAtt();
+      if (fullLink(u)) return takeLink(A, u, input);
+      linkTimer = setTimeout(() => { if (input.value.trim() === u) takeLink(A, u, input); }, 900);   // other link shapes: take it once typing stops
+    }
+    document.addEventListener("input", e => {
+      if (e.target.id === "url") onLink(e.target);
+      if (e.target.closest?.("#cform") && e.target.dataset.k && !/checkbox|radio/.test(e.target.type)) dirty(true);
+    });
+    document.addEventListener("keydown", e => { if (e.target.id === "url" && e.key === "Enter" && e.target.value.trim() && looksLink(e.target.value.trim())) { e.preventDefault(); clearTimeout(linkTimer); takeLink(att(), e.target.value.trim(), e.target); } });
+    document.addEventListener("keydown", e => { if (e.target.id === "ms_url" && e.key === "Enter" && e.target.value.trim()) { e.preventDefault(); $('[data-act="ms_add"]')?.click(); } });
+    document.addEventListener("click", e => {
+      const r = e.target.closest("[data-rm]"), A = att(); if (!r || A.busy) return;
+      if (r.dataset.rm === "link") A.links = A.links.filter(l => l.id !== r.dataset.id);
+      else { const i = A.files.findIndex(f => f.id === r.dataset.id); if (i >= 0) { URL.revokeObjectURL(A.files[i].src); A.files.splice(i, 1); } }
+      if (!A.links.some(l => l.state === "wait")) A.queued = false;
+      drawAtt();
+    });
 
     // A big file goes in pieces (anything standing in front of the app refuses one huge request), two at a time,
     // and a piece that fails is simply sent again. The bar shows the whole file.
@@ -8915,7 +9959,7 @@ document.addEventListener("click", e => {
       ${postPills(c) ? `<div class="row" style="gap:4px">${postPills(c)}</div>` : ""}
       <div class="clip-foot">
         ${busyClip ? "" : `<label class="selck" title="Select this clip"><input type="checkbox" data-sel="${key}" ${sel().has(key) ? "checked" : ""} aria-label="Select this clip"></label>`}
-        ${c.status === "done" ? `<a class="btn sm icon ghost" href="${m}${esc(c.file)}?download=1" title="Download" aria-label="Download">${ic("down")}</a>` : ""}
+        ${c.status === "done" ? `<a class="btn sm icon ghost" href="${m}${esc(c.file)}?download=1" title="Download MP4" aria-label="Download MP4">${ic("down")}</a><a class="btn sm icon ghost" href="/api/jobs/${j.id}/clips/${esc(c.id)}/subtitles?format=srt" title="Download SRT" aria-label="Download SRT">${ic("file")}</a>` : ""}
         <button class="btn sm icon ghost" data-act="copy" ${a} title="Copy post text" aria-label="Copy post text">${ic("copy")}</button>
         ${busyClip ? "" : `<button class="btn sm icon ghost" data-act="delclip" ${a} title="Delete this clip" aria-label="Delete this clip">${ic("trash")}</button>`}
         <span class="grow"></span>
@@ -9845,32 +10889,12 @@ document.addEventListener("click", e => {
           <div class="row"><button class="btn primary" data-act="postnow">${ic("send")}Post now</button><button class="btn" data-act="postqueue">Add to queue</button></div>`
             : `<p class="help">No accounts connected yet. Connect one in Settings.</p>`}
         <div class="row" style="margin-top:auto;padding-top:8px;border-top:1px solid var(--line)">
-          ${c.status === "done" ? `<a class="btn" href="${m}${esc(c.file)}?download=1">${ic("down")}Download</a>` : ""}
+          ${c.status === "done" ? `<a class="btn" href="${m}${esc(c.file)}?download=1">${ic("down")}Download MP4</a><a class="btn ghost" href="/api/jobs/${j.id}/clips/${esc(c.id)}/subtitles?format=srt">${ic("file")}Export SRT</a><a class="btn ghost" href="/api/jobs/${j.id}/clips/${esc(c.id)}/subtitles?format=vtt">${ic("file")}Export VTT</a>` : ""}
           <button class="btn" data-act="copy" data-j="${j.id}" data-c="${esc(c.id)}">${ic("copy")}Copy post text</button></div>
       </div></div>`;
-  } else if (D.sig !== sig) $("#stage").innerHTML = stage;
-  D.sig = sig;
-  put($("#dposts"), postPills(c));
-}
-$("#clipdlg").addEventListener("close", () => { $("#clipdlg").innerHTML = ""; D.jid = null; });
-$("#clipdlg").addEventListener("click", e => { if (e.target === e.currentTarget) e.currentTarget.close(); });
-
-/* ============================================================ render + polling */
-function render() {
-  drawShell(); drawJobs(); drawStream(); drawSelBar();
-  if (S.view === "overview") drawOverview();
-  if (S.view === "multistream") drawMultiStream();
-  if ($("#clog")) drawLog();
-  if (D.jid) drawClipDlg(false);
-}
-async function tick() {
-  try {
-    const got = await api("/api/sync?v=" + encodeURIComponent(S.syncV || ""));
-    const fresh = !!got.jobs, stale = Date.now() - (S.ovAt || 0) > 20000;
-    S.syncV = got.v;
-    if (!fresh) {                                   // nothing of ours changed on the server
-      if (S.view === "overview" && stale) { S.overview = await api("/api/overview"); S.ovAt = Date.now(); render(); }
-      return;
+      } else if (D.sig !== sig) $("#stage").innerHTML = stage;
+      D.sig = sig;
+      put($("#dposts"), postPills(c));
     }
     $("#clipdlg").addEventListener("close", () => { $("#clipdlg").innerHTML = ""; D.jid = null; });
     $("#clipdlg").addEventListener("click", e => { if (e.target === e.currentTarget) e.currentTarget.close(); });
@@ -9879,6 +10903,7 @@ async function tick() {
     function render() {
       drawShell(); drawJobs(); drawStream(); drawSelBar();
       if (S.view === "overview") drawOverview();
+      if (S.view === "multistream") drawMultiStream();
       if ($("#clog")) drawLog();
       if (D.jid) drawClipDlg(false);
     }
@@ -9891,296 +10916,315 @@ async function tick() {
           if (S.view === "overview" && stale) { S.overview = await api("/api/overview"); S.ovAt = Date.now(); render(); }
           return;
         }
-        const { jobs, creators, accounts } = got;
-        // a server from before multi-channel support sends only `channel`: show it as that platform's channel
-        creators.forEach(c => { if (!c.channels) { const u = c.channel || "", k = /youtu/i.test(u) ? "youtube" : /twitch/i.test(u) ? "twitch" : /kick/i.test(u) ? "kick" : ""; c.channels = k ? { [k]: u } : {}; } });
-        S.jobs = jobs; S.creators = creators; S.accounts = accounts;
-        if (got.ai) S.status.ai = got.ai;
-        if (got.unread != null) S.status.unread = got.unread;
-        if (S.view === "overview") { S.overview = await api("/api/overview"); S.ovAt = Date.now(); }
-        if (creatorId() && !creator()) return go("overview");
-        render();
-      } catch { }
-    }
-    // Back on the tab (or window): ask straight away instead of waiting out the slow background timer, and put a
-    // live player that fell behind while hidden back at the live edge.
-    let hiddenAt = 0;
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) { hiddenAt = Date.now(); return; }
-      tick();
-      if (hiddenAt && Date.now() - hiddenAt > 60000) {   // away a while: jump back to the live moment
-        const pl = $("#stream .player"), f = pl?.querySelector("iframe");
-        if (f) { const src = f.src; f.src = "about:blank"; requestAnimationFrame(() => { f.src = src; }); }
-      }
-      hiddenAt = 0;
-    });
-    window.addEventListener("focus", () => { if (!document.hidden) tick(); });
-    function loop() {
-      const active = S.jobs.some(j => ["queued", "running", "live"].includes(j.status) || j.clips.some(c => c.status === "queued" || c.status === "rendering"));
-      // quick while something is being made, relaxed otherwise, and slow when the tab is in the background
-      const waiting = S.creators.some(c => (c.channels && Object.keys(c.channels).length && !c.profile?.pic) || c.live_job && !jobOf(c.live_job));
-      setTimeout(async () => { await tick(); loop(); }, document.hidden ? 20000 : waiting ? 1000 : active ? 2000 : 4000);
-    }
+        $("#clipdlg").addEventListener("close", () => { $("#clipdlg").innerHTML = ""; D.jid = null; });
+        $("#clipdlg").addEventListener("click", e => { if (e.target === e.currentTarget) e.currentTarget.close(); });
 
-    /* ============================================================ actions */
-    document.addEventListener("submit", e => { if (e.target.id === "addform") { e.preventDefault(); makeClips(); } });
-    $("#file").addEventListener("change", e => { attach(e.target.files); e.target.value = ""; });
-    document.addEventListener("dragover", e => { const a = $(".composer"); if (a) { e.preventDefault(); a.classList.add("over"); } });
-    document.addEventListener("dragleave", () => $(".composer")?.classList.remove("over"));
-    document.addEventListener("drop", e => { const a = $(".composer"); if (a) { e.preventDefault(); a.classList.remove("over"); attach(e.dataTransfer.files); } });
-    document.addEventListener("change", async e => {
-      const t = e.target;
-      if (t.id === "ai_provider") {
-        $("#ai_models").innerHTML = "";
-        const pv = S.ai?.providers?.find(x => x.id === t.value);
-        $("#ai_model").value = pv?.example || (POPULAR_MODELS[t.value]?.[0]?.id || "");
-        $("#ai_base").value = "";
-        return aiHints();
-      }
-      if (t.dataset.sel) {
-        const k = t.dataset.sel;
-        if (t.checked) sel().add(k); else sel().delete(k);
-        if (k.startsWith("j:")) (jobOf(k.slice(2))?.clips || []).forEach(c => sel().delete(`c:${k.slice(2)}:${c.id}`));   // the video covers its clips
-        return render();
-      }
-      if (t.dataset.every !== undefined) {
-        const cid = t.dataset.every; if (!cid) return toast("This recording isn't filed under a creator.", "bad");
-        try { await send(`/api/creators/${cid}`, { ai_every_min: Number(t.value) }, "PUT"); toast(`AI checks every ${t.value} min`, "ok"); tick(); }
-        catch (err) { toast(err.message, "bad"); }
-        return;
-      }
-      if (t.dataset.k === "ai_every_min" && $("#costhint")) $("#costhint").textContent = costHint(Number(t.value));
-      if (t.name === "mainch") return;  // saved by its own click handler
-      if (t.closest("#cform") && t.type === "radio") { $$("#cform .plan").forEach(l => l.classList.toggle("on", l.contains(t))); return saveCreator(true); }
-      if (!t.closest("#cform") || t.type !== "checkbox") return;
-      if (t.dataset.k === "autopost" && t.checked && !await ask("Turn on auto-posting?", "Clips that score high enough will be posted to the ticked accounts without you seeing them first.", "Turn on")) { t.checked = false; return; }
-      saveCreator(true);
-    });
-
-    document.addEventListener("input", e => {
-      if (e.target.id === "ai_model") {
-        renderModelChips($("#ai_provider")?.value, e.target.value);
-      }
-    });
-
-    document.addEventListener("click", async e => {
-      const b = e.target.closest("[data-act]"); if (!b) return;
-      const a = b.dataset.act, d = b.dataset;
-      if (b.tagName === "A") e.preventDefault();
-      try {
-        if (a === "themetoggle") {
-          closePops();
-          ThemeManager.cycle();
-          drawShell();
-          if (S.view === "settings" && S.stab === "appearance") drawSettings();
-          return;
+        /* ============================================================ render + polling */
+        function render() {
+          drawShell(); drawJobs(); drawStream(); drawSelBar();
+          if (S.view === "overview") drawOverview();
+          if ($("#clog")) drawLog();
+          if (D.jid) drawClipDlg(false);
         }
-        if (a === "settheme") {
-          const pref = d.pref || b.getAttribute("data-pref");
-          if (pref) {
-            ThemeManager.setTheme(pref);
-            toast(`Theme: ${ThemeManager.getLabel()}`);
-            drawSettings();
-            drawShell();
-          }
-          return;
-        }
-        if (a === "go") { closePops(); return go(d.v, d.tab); }
-        if (a === "pickmodel") {
-          const mInput = $("#ai_model");
-          if (mInput) {
-            mInput.value = d.m;
-            renderModelChips($("#ai_provider")?.value, d.m);
-            mInput.focus();
-          }
-          return;
-        }
-        if (a === "aimodels") {
-          const btn = b;
-          btn.disabled = true;
-          const oldText = btn.textContent;
-          btn.textContent = "Finding…";
-          const prov = $("#ai_provider").value;
-          const keyVal = $("#ai_key").value.trim();
-          const pv = S.ai?.providers?.find(x => x.id === prov);
-
+        async function tick() {
           try {
-            if (!keyVal && pv?.needs_key && !S.ai?.has_key) {
-              toast(`Paste your ${pv?.label || "AI"} key first, or pick a recommended model below.`, "warn");
-              $("#ai_key").focus();
+            const got = await api("/api/sync?v=" + encodeURIComponent(S.syncV || ""));
+            const fresh = !!got.jobs, stale = Date.now() - (S.ovAt || 0) > 20000;
+            S.syncV = got.v;
+            if (!fresh) {                                   // nothing of ours changed on the server
+              if (S.view === "overview" && stale) { S.overview = await api("/api/overview"); S.ovAt = Date.now(); render(); }
               return;
             }
-            const r = await send("/api/ai/models", { provider: prov, base_url: $("#ai_base").value, key: keyVal });
-            if (r.models && r.models.length) {
-              $("#ai_models").innerHTML = r.models.map(m => `<option value="${esc(m)}">`).join("");
-              const best = r.models.find(m => m.includes("2.5-flash")) || r.models.find(m => m.includes("flash")) || r.models[0];
-              if (!$("#ai_model").value.trim() || !r.models.includes($("#ai_model").value.trim())) {
-                $("#ai_model").value = best;
+            const { jobs, creators, accounts } = got;
+            // a server from before multi-channel support sends only `channel`: show it as that platform's channel
+            creators.forEach(c => { if (!c.channels) { const u = c.channel || "", k = /youtu/i.test(u) ? "youtube" : /twitch/i.test(u) ? "twitch" : /kick/i.test(u) ? "kick" : ""; c.channels = k ? { [k]: u } : {}; } });
+            S.jobs = jobs; S.creators = creators; S.accounts = accounts;
+            if (got.ai) S.status.ai = got.ai;
+            if (got.unread != null) S.status.unread = got.unread;
+            if (S.view === "overview") { S.overview = await api("/api/overview"); S.ovAt = Date.now(); }
+            if (creatorId() && !creator()) return go("overview");
+            render();
+          } catch { }
+        }
+        // Back on the tab (or window): ask straight away instead of waiting out the slow background timer, and put a
+        // live player that fell behind while hidden back at the live edge.
+        let hiddenAt = 0;
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) { hiddenAt = Date.now(); return; }
+          tick();
+          if (hiddenAt && Date.now() - hiddenAt > 60000) {   // away a while: jump back to the live moment
+            const pl = $("#stream .player"), f = pl?.querySelector("iframe");
+            if (f) { const src = f.src; f.src = "about:blank"; requestAnimationFrame(() => { f.src = src; }); }
+          }
+          hiddenAt = 0;
+        });
+        window.addEventListener("focus", () => { if (!document.hidden) tick(); });
+        function loop() {
+          const active = S.jobs.some(j => ["queued", "running", "live"].includes(j.status) || j.clips.some(c => c.status === "queued" || c.status === "rendering"));
+          // quick while something is being made, relaxed otherwise, and slow when the tab is in the background
+          const waiting = S.creators.some(c => (c.channels && Object.keys(c.channels).length && !c.profile?.pic) || c.live_job && !jobOf(c.live_job));
+          setTimeout(async () => { await tick(); loop(); }, document.hidden ? 20000 : waiting ? 1000 : active ? 2000 : 4000);
+        }
+
+        /* ============================================================ actions */
+        document.addEventListener("submit", e => { if (e.target.id === "addform") { e.preventDefault(); makeClips(); } });
+        $("#file").addEventListener("change", e => { attach(e.target.files); e.target.value = ""; });
+        document.addEventListener("dragover", e => { const a = $(".composer"); if (a) { e.preventDefault(); a.classList.add("over"); } });
+        document.addEventListener("dragleave", () => $(".composer")?.classList.remove("over"));
+        document.addEventListener("drop", e => { const a = $(".composer"); if (a) { e.preventDefault(); a.classList.remove("over"); attach(e.dataTransfer.files); } });
+        document.addEventListener("change", async e => {
+          const t = e.target;
+          if (t.id === "ai_provider") {
+            $("#ai_models").innerHTML = "";
+            const pv = S.ai?.providers?.find(x => x.id === t.value);
+            $("#ai_model").value = pv?.example || (POPULAR_MODELS[t.value]?.[0]?.id || "");
+            $("#ai_base").value = "";
+            return aiHints();
+          }
+          if (t.dataset.sel) {
+            const k = t.dataset.sel;
+            if (t.checked) sel().add(k); else sel().delete(k);
+            if (k.startsWith("j:")) (jobOf(k.slice(2))?.clips || []).forEach(c => sel().delete(`c:${k.slice(2)}:${c.id}`));   // the video covers its clips
+            return render();
+          }
+          if (t.dataset.every !== undefined) {
+            const cid = t.dataset.every; if (!cid) return toast("This recording isn't filed under a creator.", "bad");
+            try { await send(`/api/creators/${cid}`, { ai_every_min: Number(t.value) }, "PUT"); toast(`AI checks every ${t.value} min`, "ok"); tick(); }
+            catch (err) { toast(err.message, "bad"); }
+            return;
+          }
+          if (t.dataset.k === "ai_every_min" && $("#costhint")) $("#costhint").textContent = costHint(Number(t.value));
+          if (t.name === "mainch") return;  // saved by its own click handler
+          if (t.closest("#cform") && t.type === "radio") { $$("#cform .plan").forEach(l => l.classList.toggle("on", l.contains(t))); return saveCreator(true); }
+          if (!t.closest("#cform") || t.type !== "checkbox") return;
+          if (t.dataset.k === "autopost" && t.checked && !await ask("Turn on auto-posting?", "Clips that score high enough will be posted to the ticked accounts without you seeing them first.", "Turn on")) { t.checked = false; return; }
+          saveCreator(true);
+        });
+
+        document.addEventListener("input", e => {
+          if (e.target.id === "ai_model") {
+            renderModelChips($("#ai_provider")?.value, e.target.value);
+          }
+        });
+
+        document.addEventListener("click", async e => {
+          const b = e.target.closest("[data-act]"); if (!b) return;
+          const a = b.dataset.act, d = b.dataset;
+          if (b.tagName === "A") e.preventDefault();
+          try {
+            if (a === "themetoggle") {
+              closePops();
+              ThemeManager.cycle();
+              drawShell();
+              if (S.view === "settings" && S.stab === "appearance") drawSettings();
+              return;
+            }
+            if (a === "settheme") {
+              const pref = d.pref || b.getAttribute("data-pref");
+              if (pref) {
+                ThemeManager.setTheme(pref);
+                toast(`Theme: ${ThemeManager.getLabel()}`);
+                drawSettings();
+                drawShell();
               }
-              const dynamicList = r.models.slice(0, 12).map(m => ({
-                id: m,
-                label: m,
-                badge: m.includes("flash") ? "Fast" : m.includes("pro") ? "Pro" : ""
-              }));
-              POPULAR_MODELS[prov] = dynamicList;
-              renderModelChips(prov, $("#ai_model").value);
-              toast(`Found ${r.models.length} models for ${pv?.label || prov}. Selected ${$("#ai_model").value}.`, "ok");
-            } else {
-              toast("The service listed no models. You can pick one of the recommended models below.", "");
-            }
-          } catch (err) {
-            toast(`Could not query service models: ${err.message}. You can use the recommended models below.`, "bad");
-            if (!$("#ai_model").value.trim() && pv?.example) {
-              $("#ai_model").value = pv.example;
-            }
-            renderModelChips(prov, $("#ai_model").value);
-          } finally {
-            btn.disabled = false;
-            btn.textContent = oldText;
-          }
-          return;
-        }
-        if (a === "aisave" || a === "aitest") {
-          b.disabled = true;
-          try {
-            const prov = $("#ai_provider").value;
-            const pv = S.ai?.providers?.find(x => x.id === prov);
-            let mVal = $("#ai_model").value.trim();
-            if (!mVal) {
-              mVal = pv?.example || POPULAR_MODELS[prov]?.[0]?.id || "gemini-2.5-flash";
-              $("#ai_model").value = mVal;
-            }
-            const kVal = $("#ai_key").value.trim();
-            if (!kVal && pv?.needs_key && !S.ai?.has_key && a === "aisave") {
-              toast(`Please paste your ${pv?.label || "AI"} key first.`, "bad");
-              $("#ai_key").focus();
               return;
             }
-            if (a === "aisave") await send("/api/ai", { provider: prov, models: mVal, base_url: $("#ai_base").value, key: kVal }, "PUT");
-            let ok = null, why = "";
-            try { ok = await send("/api/ai/test"); } catch (err) { why = err.message; }
-            S.status = await api("/api/status"); drawShell(); await drawSettings();
-            if (a === "aisave") {
-              if (ok) toast(`Saved. ${ok.model} answered, so the AI is ready.`, "ok");
-              else toast(`Saved, but the test failed. ${why}`, "bad");
-            } else {
-              if (ok) toast(`AI test succeeded. ${ok.model} answered.`, "ok");
-              else toast(`AI test failed: ${why}`, "bad");
+            if (a === "go") { closePops(); return go(d.v, d.tab); }
+            if (a === "pickmodel") {
+              const mInput = $("#ai_model");
+              if (mInput) {
+                mInput.value = d.m;
+                renderModelChips($("#ai_provider")?.value, d.m);
+                mInput.focus();
+              }
+              return;
             }
-          } finally { b.disabled = false; }
-          return;
-        }
-        if (a === "menu") return $("#app").classList.toggle("open");
-        if (a === "collapse") { const m = $("#app").classList.toggle("mini"); try { localStorage.setItem("mini", m ? "1" : ""); } catch { } return; }
-        if (a === "toggleopts") { const p = $(".composer-opts"), open = !p.classList.contains("open"); p.classList.toggle("open", open); p.inert = !open; b.classList.toggle("on", open); b.setAttribute("aria-expanded", String(open)); return; }
-        if (a === "focusurl") return $("#url")?.focus();
-        if (a === "step") {
-          const t = d.to;
-          if (t === "newcreator") return $('[data-act="newcreator"]').click();
-          if (t === "focusurl") return $("#url")?.focus();
-          const [, v1, v2, tab] = t.split(":");
-          return v1 === "c" ? go("c:" + v2, tab) : go(v1);
-        }
-        if (a === "tab") return setTab(d.t);
-        if (a === "pickfile") return $("#file").click();
-        if (a === "addmore") { const u = $("#url"); return u && !u.value ? (u.focus(), toast("Paste another link, or drop a file anywhere on the box.")) : $("#file").click(); }
-        if (a === "closedlg") return $("#clipdlg").close();
-        if (a === "openclip") return openClip(d.j, d.c);
-        if (a === "newcreator") {
-          const dlg = $("#formdlg");
-          dlg.innerHTML = `<form method="dialog" class="dlg"><h2>New creator</h2><p class="help">Each creator gets their own workspace, folder, settings and accounts.</p>
+            if (a === "aimodels") {
+              const btn = b;
+              btn.disabled = true;
+              const oldText = btn.textContent;
+              btn.textContent = "Finding…";
+              const prov = $("#ai_provider").value;
+              const keyVal = $("#ai_key").value.trim();
+              const pv = S.ai?.providers?.find(x => x.id === prov);
+
+              try {
+                if (!keyVal && pv?.needs_key && !S.ai?.has_key) {
+                  toast(`Paste your ${pv?.label || "AI"} key first, or pick a recommended model below.`, "warn");
+                  $("#ai_key").focus();
+                  return;
+                }
+                const r = await send("/api/ai/models", { provider: prov, base_url: $("#ai_base").value, key: keyVal });
+                if (r.models && r.models.length) {
+                  $("#ai_models").innerHTML = r.models.map(m => `<option value="${esc(m)}">`).join("");
+                  const best = r.models.find(m => m.includes("2.5-flash")) || r.models.find(m => m.includes("flash")) || r.models[0];
+                  if (!$("#ai_model").value.trim() || !r.models.includes($("#ai_model").value.trim())) {
+                    $("#ai_model").value = best;
+                  }
+                  const dynamicList = r.models.slice(0, 12).map(m => ({
+                    id: m,
+                    label: m,
+                    badge: m.includes("flash") ? "Fast" : m.includes("pro") ? "Pro" : ""
+                  }));
+                  POPULAR_MODELS[prov] = dynamicList;
+                  renderModelChips(prov, $("#ai_model").value);
+                  toast(`Found ${r.models.length} models for ${pv?.label || prov}. Selected ${$("#ai_model").value}.`, "ok");
+                } else {
+                  toast("The service listed no models. You can pick one of the recommended models below.", "");
+                }
+              } catch (err) {
+                toast(`Could not query service models: ${err.message}. You can use the recommended models below.`, "bad");
+                if (!$("#ai_model").value.trim() && pv?.example) {
+                  $("#ai_model").value = pv.example;
+                }
+                renderModelChips(prov, $("#ai_model").value);
+              } finally {
+                btn.disabled = false;
+                btn.textContent = oldText;
+              }
+              return;
+            }
+            if (a === "aisave" || a === "aitest") {
+              b.disabled = true;
+              try {
+                const prov = $("#ai_provider").value;
+                const pv = S.ai?.providers?.find(x => x.id === prov);
+                let mVal = $("#ai_model").value.trim();
+                if (!mVal) {
+                  mVal = pv?.example || POPULAR_MODELS[prov]?.[0]?.id || "gemini-2.5-flash";
+                  $("#ai_model").value = mVal;
+                }
+                const kVal = $("#ai_key").value.trim();
+                if (!kVal && pv?.needs_key && !S.ai?.has_key && a === "aisave") {
+                  toast(`Please paste your ${pv?.label || "AI"} key first.`, "bad");
+                  $("#ai_key").focus();
+                  return;
+                }
+                if (a === "aisave") await send("/api/ai", { provider: prov, models: mVal, base_url: $("#ai_base").value, key: kVal }, "PUT");
+                let ok = null, why = "";
+                try { ok = await send("/api/ai/test"); } catch (err) { why = err.message; }
+                S.status = await api("/api/status"); drawShell(); await drawSettings();
+                if (a === "aisave") {
+                  if (ok) toast(`Saved. ${ok.model} answered, so the AI is ready.`, "ok");
+                  else toast(`Saved, but the test failed. ${why}`, "bad");
+                } else {
+                  if (ok) toast(`AI test succeeded. ${ok.model} answered.`, "ok");
+                  else toast(`AI test failed: ${why}`, "bad");
+                }
+              } finally { b.disabled = false; }
+              return;
+            }
+            if (a === "menu") return $("#app").classList.toggle("open");
+            if (a === "collapse") { const m = $("#app").classList.toggle("mini"); try { localStorage.setItem("mini", m ? "1" : ""); } catch { } return; }
+            if (a === "toggleopts") { const p = $(".composer-opts"), open = !p.classList.contains("open"); p.classList.toggle("open", open); p.inert = !open; b.classList.toggle("on", open); b.setAttribute("aria-expanded", String(open)); return; }
+            if (a === "focusurl") return $("#url")?.focus();
+            if (a === "step") {
+              const t = d.to;
+              if (t === "newcreator") return $('[data-act="newcreator"]').click();
+              if (t === "focusurl") return $("#url")?.focus();
+              const [, v1, v2, tab] = t.split(":");
+              return v1 === "c" ? go("c:" + v2, tab) : go(v1);
+            }
+            if (a === "tab") return setTab(d.t);
+            if (a === "pickfile") return $("#file").click();
+            if (a === "addmore") { const u = $("#url"); return u && !u.value ? (u.focus(), toast("Paste another link, or drop a file anywhere on the box.")) : $("#file").click(); }
+            if (a === "closedlg") return $("#clipdlg").close();
+            if (a === "openclip") return openClip(d.j, d.c);
+            if (a === "newcreator") {
+              const dlg = $("#formdlg");
+              dlg.innerHTML = `<form method="dialog" class="dlg"><h2>New creator</h2><p class="help">Each creator gets their own workspace, folder, settings and accounts.</p>
         <label class="f">Channel link<input id="nc_chan" placeholder="https://www.youtube.com/@name, twitch.tv/name or kick.com/name" autofocus></label>
         <div id="nc_prev"></div>
         <label class="f">Name<input id="nc_name" placeholder="Filled in from the channel, or type one" required></label>
         <div class="dlg-foot"><button class="btn" value="no" formnovalidate>Cancel</button><button class="btn primary" value="yes">Create workspace</button></div></form>`;
-          dlg.onclose = async () => {
-            if (dlg.returnValue !== "yes") return;
-            try { const c = await send("/api/creators", { name: $("#nc_name").value, channel: $("#nc_chan").value }); await tick(); go("c:" + c.id, c.channel ? "clips" : "setup"); toast("Workspace created", "ok"); }
-            catch (err) { toast(err.message, "bad"); }
-          };
-          let seq = 0, timer = 0, auto = "";
-          $("#nc_chan").addEventListener("input", e => {
-            clearTimeout(timer); const u = e.target.value.trim(), me = ++seq, box = $("#nc_prev");
-            if (!u) { box.innerHTML = ""; return; }
-            box.innerHTML = `<div class="chprev"><span class="ph"></span><div><span class="sk"></span><span class="sk" style="width:80px"></span></div></div>`;
-            timer = setTimeout(async () => {
+              dlg.onclose = async () => {
+                if (dlg.returnValue !== "yes") return;
+                try { const c = await send("/api/creators", { name: $("#nc_name").value, channel: $("#nc_chan").value }); await tick(); go("c:" + c.id, c.channel ? "clips" : "setup"); toast("Workspace created", "ok"); }
+                catch (err) { toast(err.message, "bad"); }
+              };
+              let seq = 0, timer = 0, auto = "";
+              $("#nc_chan").addEventListener("input", e => {
+                clearTimeout(timer); const u = e.target.value.trim(), me = ++seq, box = $("#nc_prev");
+                if (!u) { box.innerHTML = ""; return; }
+                box.innerHTML = `<div class="chprev"><span class="ph"></span><div><span class="sk"></span><span class="sk" style="width:80px"></span></div></div>`;
+                timer = setTimeout(async () => {
+                  try {
+                    const p = await api("/api/channel-preview?url=" + encodeURIComponent(u)); if (me !== seq) return;
+                    box.innerHTML = `<div class="chprev">${p.pic ? `<img src="${p.pic}" alt="">` : `<span class="ph"></span>`}<div><b>${esc(p.name)}</b><span>${esc([p.platform, p.followers].filter(Boolean).join(" · "))}</span></div></div>`;
+                    const n = $("#nc_name"); if (!n.value.trim() || n.value === auto) { n.value = auto = p.name; }
+                  } catch (err) { if (me === seq) box.innerHTML = `<div class="chprev bad">${esc(err.message)}</div>`; }
+                }, 400);
+              });
+              dlg.returnValue = "no"; return dlg.showModal();
+            }
+            if (a === "copy") {
+              const c = jobOf(d.j).clips.find(x => x.id === d.c);
+              await navigator.clipboard.writeText(`${c.title}\n\n${c.description}\n\n${(c.hashtags || []).map(h => "#" + h).join(" ")}`); return toast("Post text copied", "ok");
+            }
+            if (a === "logout") { await api("/api/auth/logout", { method: "POST" }); location.href = "/"; return; }
+            if (a === "pwsave") {
+              await send("/api/auth/password", { current: $("#pw_cur")?.value || "", new: $("#pw_new").value });
+              toast("Password changed. Other devices were signed out.", "ok"); return drawSettings();
+            }
+            if (a === "delclip") {
+              if (!await ask("Delete this clip?", "The clip is removed for good. The video and its other clips stay.", "Delete clip", true)) return;
+              await api(`/api/jobs/${d.j}/clips/${encodeURIComponent(d.c)}`, { method: "DELETE" });
+              const j = jobOf(d.j); if (j) j.clips = j.clips.filter(c => c.id !== d.c);
+              render(); toast("Clip deleted", "ok"); return tick();
+            }
+            if (a === "dlall") return zipDownload((jobOf(d.j)?.clips || []).filter(c => c.status === "done").map(c => d.j + "." + c.id));
+            if (a === "seldl") return zipDownload(selClips());
+            if (a === "selclear") { sel().clear(); return render(); }
+            if (a === "selall") {
+              const cid = creatorId();
+              (cid ? S.jobs.filter(j => j.creator === cid) : S.jobs).forEach(j => { if (!["queued", "running", "live"].includes(j.status)) { sel().add("j:" + j.id); j.clips.forEach(c => sel().delete(`c:${j.id}:${c.id}`)); } });
+              return render();
+            }
+            if (a === "seldel") {
+              const { jobsSel, clipsSel } = selParts();
+              const what = [jobsSel.length ? (jobsSel.length === 1 ? "1 video with all its clips" : `${jobsSel.length} videos with all their clips`) : "", clipsSel.length ? `${clipsSel.length} clip${clipsSel.length === 1 ? "" : "s"}` : ""].filter(Boolean).join(" and ");
+              if (!await ask("Delete what you selected?", `This removes ${what} for good. It cannot be undone.`, "Delete", true)) return;
+              const r = await send("/api/bulk/delete", { videos: jobsSel, clips: clipsSel });
+              sel().clear(); await tick(); render();
+              return toast(`Deleted ${r.videos} video${r.videos === 1 ? "" : "s"} and ${r.clips} clip${r.clips === 1 ? "" : "s"}` + (r.skipped ? `. ${r.skipped} still being made were left alone.` : ""), "ok");
+            }
+            if (a === "delcreator") {
+              const c = creator(); if (!c) return;
+              const n = S.jobs.filter(j => j.creator === c.id).length;
+              if (!await askTyped(`Delete ${c.name}?`, `This removes the creator, their settings${n ? `, and their ${n} video${n === 1 ? "" : "s"} with all the clips` : ""} for good. It cannot be undone.`, c.name, "Delete creator")) return;
+              await api(`/api/creators/${encodeURIComponent(c.id)}`, { method: "DELETE" });
+              S.creators = S.creators.filter(x => x.id !== c.id); S.jobs = S.jobs.filter(j => j.creator !== c.id);
+              go("overview"); toast("Creator deleted", "ok"); return tick();
+            }
+            if (a === "delaccount") {
+              const me = S.status.user;
+              const typed = await askTyped("Delete your account?", `This removes your account and everything in it for good: creators, recordings, videos, clips, connected accounts and history.`, me.email, "Delete my account");
+              if (!typed) return;
+              await send("/api/account/delete", { confirm: typed });
+              location.href = "/"; return;
+            }
+            if (a === "deljob") {
+              if (!await ask("Delete this video?", "The video and all of its clips are permanently deleted. This cannot be undone.", "Delete", true)) return;
+              await api(`/api/jobs/${d.j}`, { method: "DELETE" }); toast("Deleted"); return tick();
+            }
+            if (a === "chadd") {
+              const k = d.p, v = $("#chan_" + k)?.value.trim();
+              if (!v) { $("#chan_" + k)?.focus(); return toast(`Paste their ${PLAT[k].name} channel link.`, "bad"); }
+              const full = /^https?:\/\//.test(v) ? v : "https://" + v;
+              return saveChannels({ ...creator().channels, [k]: full });
+            }
+            if (a === "chdel") { const chs = { ...creator().channels }; delete chs[d.p]; return saveChannels(chs); }
+            if (a === "spick") { S.spick = { ...S.spick, [creatorId()]: d.p }; return drawStream(); }
+            if (a === "chmain") return saveChannels(creator().channels, creator().channels[d.p]);
+            if (a === "golive") {
+              if (!creator().channel) { setTab("setup"); return toast("Connect one of their channels first, then press Start recording.", "bad"); }
+              b.disabled = true; const was = b.innerHTML; b.innerHTML = `<span class="rdot"></span>Starting…`;
               try {
                 const p = await api("/api/channel-preview?url=" + encodeURIComponent(u)); if (me !== seq) return;
                 box.innerHTML = `<div class="chprev">${p.pic ? `<img src="${p.pic}" alt="">` : `<span class="ph"></span>`}<div><b>${esc(p.name)}</b><span>${esc([p.platform, p.followers].filter(Boolean).join(" · "))}</span></div></div>`;
                 const n = $("#nc_name"); if (!n.value.trim() || n.value === auto) { n.value = auto = p.name; }
               } catch (err) { if (me === seq) box.innerHTML = `<div class="chprev bad">${esc(err.message)}</div>`; }
             }, 400);
-          });
-          dlg.returnValue = "no"; return dlg.showModal();
-        }
-        if (a === "copy") {
-          const c = jobOf(d.j).clips.find(x => x.id === d.c);
-          await navigator.clipboard.writeText(`${c.title}\n\n${c.description}\n\n${(c.hashtags || []).map(h => "#" + h).join(" ")}`); return toast("Post text copied", "ok");
-        }
-        if (a === "logout") { await api("/api/auth/logout", { method: "POST" }); location.href = "/"; return; }
-        if (a === "pwsave") {
-          await send("/api/auth/password", { current: $("#pw_cur")?.value || "", new: $("#pw_new").value });
-          toast("Password changed. Other devices were signed out.", "ok"); return drawSettings();
-        }
-        if (a === "delclip") {
-          if (!await ask("Delete this clip?", "The clip is removed for good. The video and its other clips stay.", "Delete clip", true)) return;
-          await api(`/api/jobs/${d.j}/clips/${encodeURIComponent(d.c)}`, { method: "DELETE" });
-          const j = jobOf(d.j); if (j) j.clips = j.clips.filter(c => c.id !== d.c);
-          render(); toast("Clip deleted", "ok"); return tick();
-        }
-        if (a === "dlall") return zipDownload((jobOf(d.j)?.clips || []).filter(c => c.status === "done").map(c => d.j + "." + c.id));
-        if (a === "seldl") return zipDownload(selClips());
-        if (a === "selclear") { sel().clear(); return render(); }
-        if (a === "selall") {
-          const cid = creatorId();
-          (cid ? S.jobs.filter(j => j.creator === cid) : S.jobs).forEach(j => { if (!["queued", "running", "live"].includes(j.status)) { sel().add("j:" + j.id); j.clips.forEach(c => sel().delete(`c:${j.id}:${c.id}`)); } });
-          return render();
-        }
-        if (a === "seldel") {
-          const { jobsSel, clipsSel } = selParts();
-          const what = [jobsSel.length ? (jobsSel.length === 1 ? "1 video with all its clips" : `${jobsSel.length} videos with all their clips`) : "", clipsSel.length ? `${clipsSel.length} clip${clipsSel.length === 1 ? "" : "s"}` : ""].filter(Boolean).join(" and ");
-          if (!await ask("Delete what you selected?", `This removes ${what} for good. It cannot be undone.`, "Delete", true)) return;
-          const r = await send("/api/bulk/delete", { videos: jobsSel, clips: clipsSel });
-          sel().clear(); await tick(); render();
-          return toast(`Deleted ${r.videos} video${r.videos === 1 ? "" : "s"} and ${r.clips} clip${r.clips === 1 ? "" : "s"}` + (r.skipped ? `. ${r.skipped} still being made were left alone.` : ""), "ok");
-        }
-        if (a === "delcreator") {
-          const c = creator(); if (!c) return;
-          const n = S.jobs.filter(j => j.creator === c.id).length;
-          if (!await askTyped(`Delete ${c.name}?`, `This removes the creator, their settings${n ? `, and their ${n} video${n === 1 ? "" : "s"} with all the clips` : ""} for good. It cannot be undone.`, c.name, "Delete creator")) return;
-          await api(`/api/creators/${encodeURIComponent(c.id)}`, { method: "DELETE" });
-          S.creators = S.creators.filter(x => x.id !== c.id); S.jobs = S.jobs.filter(j => j.creator !== c.id);
-          go("overview"); toast("Creator deleted", "ok"); return tick();
-        }
-        if (a === "delaccount") {
-          const me = S.status.user;
-          const typed = await askTyped("Delete your account?", `This removes your account and everything in it for good: creators, recordings, videos, clips, connected accounts and history.`, me.email, "Delete my account");
-          if (!typed) return;
-          await send("/api/account/delete", { confirm: typed });
-          location.href = "/"; return;
-        }
-        if (a === "deljob") {
-          if (!await ask("Delete this video?", "The video and all of its clips are permanently deleted. This cannot be undone.", "Delete", true)) return;
-          await api(`/api/jobs/${d.j}`, { method: "DELETE" }); toast("Deleted"); return tick();
-        }
-        if (a === "chadd") {
-          const k = d.p, v = $("#chan_" + k)?.value.trim();
-          if (!v) { $("#chan_" + k)?.focus(); return toast(`Paste their ${PLAT[k].name} channel link.`, "bad"); }
-          const full = /^https?:\/\//.test(v) ? v : "https://" + v;
-          return saveChannels({ ...creator().channels, [k]: full });
-        }
-        if (a === "chdel") { const chs = { ...creator().channels }; delete chs[d.p]; return saveChannels(chs); }
-        if (a === "spick") { S.spick = { ...S.spick, [creatorId()]: d.p }; return drawStream(); }
-        if (a === "chmain") return saveChannels(creator().channels, creator().channels[d.p]);
-        if (a === "golive") {
-          if (!creator().channel) { setTab("setup"); return toast("Connect one of their channels first, then press Start recording.", "bad"); }
-          b.disabled = true; const was = b.innerHTML; b.innerHTML = `<span class="rdot"></span>Starting…`;
-          try {
-            const p = await api("/api/channel-preview?url=" + encodeURIComponent(u)); if (me !== seq) return;
-            box.innerHTML = `<div class="chprev">${p.pic ? `<img src="${p.pic}" alt="">` : `<span class="ph"></span>`}<div><b>${esc(p.name)}</b><span>${esc([p.platform, p.followers].filter(Boolean).join(" · "))}</span></div></div>`;
-            const n = $("#nc_name"); if (!n.value.trim() || n.value === auto) { n.value = auto = p.name; }
-          } catch (err) { if (me === seq) box.innerHTML = `<div class="chprev bad">${esc(err.message)}</div>`; }
-        }, 400);
       });
       dlg.returnValue = "no"; return dlg.showModal();
     }
@@ -10188,14 +11232,14 @@ async function tick() {
       const c = jobOf(d.j).clips.find(x => x.id === d.c);
       await navigator.clipboard.writeText(`${c.title}\n\n${c.description}\n\n${(c.hashtags || []).map(h => "#" + h).join(" ")}`); return toast("Post text copied", "ok");
     }
-    if (a === "logout") { await api("/api/auth/logout", {method:"POST"}); location.href = "/"; return; }
+    if (a === "logout") { await api("/api/auth/logout", { method: "POST" }); location.href = "/"; return; }
     if (a === "pwsave") {
-      await send("/api/auth/password", {current:$("#pw_cur")?.value || "", new:$("#pw_new").value});
+      await send("/api/auth/password", { current: $("#pw_cur")?.value || "", new: $("#pw_new").value });
       toast("Password changed. Other devices were signed out.", "ok"); return drawSettings();
     }
     if (a === "delclip") {
       if (!await ask("Delete this clip?", "The clip is removed for good. The video and its other clips stay.", "Delete clip", true)) return;
-      await api(`/api/jobs/${d.j}/clips/${encodeURIComponent(d.c)}`, {method:"DELETE"});
+      await api(`/api/jobs/${d.j}/clips/${encodeURIComponent(d.c)}`, { method: "DELETE" });
       const j = jobOf(d.j); if (j) j.clips = j.clips.filter(c => c.id !== d.c);
       render(); toast("Clip deleted", "ok"); return tick();
     }
@@ -10208,10 +11252,10 @@ async function tick() {
       return render();
     }
     if (a === "seldel") {
-      const {jobsSel, clipsSel} = selParts();
+      const { jobsSel, clipsSel } = selParts();
       const what = [jobsSel.length ? (jobsSel.length === 1 ? "1 video with all its clips" : `${jobsSel.length} videos with all their clips`) : "", clipsSel.length ? `${clipsSel.length} clip${clipsSel.length === 1 ? "" : "s"}` : ""].filter(Boolean).join(" and ");
       if (!await ask("Delete what you selected?", `This removes ${what} for good. It cannot be undone.`, "Delete", true)) return;
-      const r = await send("/api/bulk/delete", {videos: jobsSel, clips: clipsSel});
+      const r = await send("/api/bulk/delete", { videos: jobsSel, clips: clipsSel });
       sel().clear(); await tick(); render();
       return toast(`Deleted ${r.videos} video${r.videos === 1 ? "" : "s"} and ${r.clips} clip${r.clips === 1 ? "" : "s"}` + (r.skipped ? `. ${r.skipped} still being made were left alone.` : ""), "ok");
     }
@@ -10219,7 +11263,7 @@ async function tick() {
       const c = creator(); if (!c) return;
       const n = S.jobs.filter(j => j.creator === c.id).length;
       if (!await askTyped(`Delete ${c.name}?`, `This removes the creator, their settings${n ? `, and their ${n} video${n === 1 ? "" : "s"} with all the clips` : ""} for good. It cannot be undone.`, c.name, "Delete creator")) return;
-      await api(`/api/creators/${encodeURIComponent(c.id)}`, {method:"DELETE"});
+      await api(`/api/creators/${encodeURIComponent(c.id)}`, { method: "DELETE" });
       S.creators = S.creators.filter(x => x.id !== c.id); S.jobs = S.jobs.filter(j => j.creator !== c.id);
       go("overview"); toast("Creator deleted", "ok"); return tick();
     }
@@ -10227,21 +11271,21 @@ async function tick() {
       const me = S.status.user;
       const typed = await askTyped("Delete your account?", `This removes your account and everything in it for good: creators, recordings, videos, clips, connected accounts and history.`, me.email, "Delete my account");
       if (!typed) return;
-      await send("/api/account/delete", {confirm: typed});
+      await send("/api/account/delete", { confirm: typed });
       location.href = "/"; return;
     }
     if (a === "deljob") {
       if (!await ask("Delete this video?", "The video and all of its clips are permanently deleted. This cannot be undone.", "Delete", true)) return;
-      await api(`/api/jobs/${d.j}`, {method:"DELETE"}); toast("Deleted"); return tick();
+      await api(`/api/jobs/${d.j}`, { method: "DELETE" }); toast("Deleted"); return tick();
     }
     if (a === "chadd") {
       const k = d.p, v = $("#chan_" + k)?.value.trim();
       if (!v) { $("#chan_" + k)?.focus(); return toast(`Paste their ${PLAT[k].name} channel link.`, "bad"); }
       const full = /^https?:\/\//.test(v) ? v : "https://" + v;
-      return saveChannels({...creator().channels, [k]: full});
+      return saveChannels({ ...creator().channels, [k]: full });
     }
-    if (a === "chdel") { const chs = {...creator().channels}; delete chs[d.p]; return saveChannels(chs); }
-    if (a === "spick") { S.spick = {...S.spick, [creatorId()]: d.p}; return drawStream(); }
+    if (a === "chdel") { const chs = { ...creator().channels }; delete chs[d.p]; return saveChannels(chs); }
+    if (a === "spick") { S.spick = { ...S.spick, [creatorId()]: d.p }; return drawStream(); }
     if (a === "chmain") return saveChannels(creator().channels, creator().channels[d.p]);
     if (a === "golive") {
       if (!creator().channel) { setTab("setup"); return toast("Connect one of their channels first, then press Start recording.", "bad"); }
@@ -10250,7 +11294,7 @@ async function tick() {
         // The creator is fixed before asking: starting can take a few seconds, and the person may open another
         // creator meanwhile. The recording must stay with the one whose button was pressed.
         const cid0 = creatorId();
-        const j = await send(`/api/creators/${cid0}/live`, d.url ? {channel: d.url} : {});
+        const j = await send(`/api/creators/${cid0}/live`, d.url ? { channel: d.url } : {});
         if (j?.id) { const c = S.creators.find(x => x.id === cid0); if (c) c.live_job = j.id; if (!jobOf(j.id)) S.jobs.unshift(j); render(); }
         const still = creatorId() === cid0;
         toast(still ? "Recording started. Clips appear below as they're made." : `Recording started for ${S.creators.find(x => x.id === cid0)?.name || "that creator"}.`, "ok");
@@ -10263,16 +11307,16 @@ async function tick() {
       const j = jobOf(d.j); if (j) { j.status = "done"; j.stage = "Stopped by you"; }
       S.creators.forEach(c => { if (c.live_job === d.j) c.live_job = null; }); render();
       toast("Recording stopped. Clips already made are kept.", "ok");
-      api(`/api/live/${d.j}/stop`, {method:"POST"}).catch(e => toast(e.message, "bad")).finally(tick); return;
+      api(`/api/live/${d.j}/stop`, { method: "POST" }).catch(e => toast(e.message, "bad")).finally(tick); return;
     }
-    if (a === "clipnow") { await send(`/api/live/${d.j}/clip`, {seconds:Number(d.s)}); return toast(`Clipping the last ${d.s} seconds…`, "ok"); }
+    if (a === "clipnow") { await send(`/api/live/${d.j}/clip`, { seconds: Number(d.s) }); return toast(`Clipping the last ${d.s} seconds…`, "ok"); }
     if (a === "ms_add") {
       const inp = $("#ms_url");
       const val = (inp ? inp.value : "").trim();
       if (!val) return toast("Paste a YouTube, Twitch, or Kick live stream link.", "bad");
       b.disabled = true; const was = b.innerHTML; b.innerHTML = "Connecting…";
       try {
-        await send("/api/live/watch", {url: val});
+        await send("/api/live/watch", { url: val });
         if (inp) inp.value = "";
         toast("Live stream connected! Watch and clip started.", "ok");
       } catch (e) {
@@ -10305,7 +11349,7 @@ async function tick() {
         try {
           await send(`/api/creators/${c.id}/live`, {});
           started++;
-        } catch {}
+        } catch { }
       }
       toast(`Started ${started} live stream(s)!`, "ok");
       return tick();
@@ -10325,15 +11369,17 @@ async function tick() {
     }
     if (a === "resendverify") {
       b.disabled = true;
-      try { const r = await send("/api/auth/resend-verification"); if (r.verified) { S.status = await api("/api/status"); drawShell(); return toast("Your email is already confirmed.", "ok"); }
-        toast(r.mail_ready ? `New link sent to ${S.status.user.email}. Check your spam folder too.` : "Email isn't set up on this server yet, so the link was written to the server log.", r.mail_ready ? "ok" : "bad"); }
+      try {
+        const r = await send("/api/auth/resend-verification"); if (r.verified) { S.status = await api("/api/status"); drawShell(); return toast("Your email is already confirmed.", "ok"); }
+        toast(r.mail_ready ? `New link sent to ${S.status.user.email}. Check your spam folder too.` : "Email isn't set up on this server yet, so the link was written to the server log.", r.mail_ready ? "ok" : "bad");
+      }
       catch (e) { toast(e.message, "bad"); }
       b.disabled = false; return;
     }
     if (a === "tour") return startTour();
     if (a === "settab") { e.preventDefault(); S.stab = d.k; remember("settings", d.k); return drawSettings(); }
     if (a === "updhow") return updateHow();
-    if (a === "updlater") { try { localStorage.setItem("cutit_update_seen", S.status.update?.latest || ""); } catch {} return drawShell(); }
+    if (a === "updlater") { try { localStorage.setItem("cutit_update_seen", S.status.update?.latest || ""); } catch { } return drawShell(); }
     if (a === "storopen") { await send("/api/storage/open"); return; }
     if (a === "storchange") { S.storOpen = !S.storOpen; S.storNew = ""; return drawSettings(); }
     if (a === "storpick") {
@@ -10342,14 +11388,14 @@ async function tick() {
       return;
     }
     if (a === "storsave") {
-      const s = await send("/api/storage", {path: $("#stor_new").value, move: $("#stor_move").checked}, "PUT");
+      const s = await send("/api/storage", { path: $("#stor_new").value, move: $("#stor_move").checked }, "PUT");
       S.storOpen = false; toast("Saved. Close Cut it by Ai With Atif and start it again to switch to the new folder.", "ok"); return drawSettings();
     }
-    if (a === "storcancel") { await send("/api/storage", {cancel: true}, "PUT"); toast("Kept the current folder", "ok"); return drawSettings(); }
+    if (a === "storcancel") { await send("/api/storage", { cancel: true }, "PUT"); toast("Kept the current folder", "ok"); return drawSettings(); }
     if (a === "appsetup") { S.setupOpen = d.p && S.setupOpen !== d.p ? d.p : ""; return drawSettings(); }
     if (a === "copytext") { await navigator.clipboard.writeText(d.t); return toast("Copied", "ok"); }
     if (a === "appsave") {
-      await send("/api/apps", {platform: d.p, client_id: $("#app_id").value, client_secret: $("#app_secret").value}, "PUT");
+      await send("/api/apps", { platform: d.p, client_id: $("#app_id").value, client_secret: $("#app_secret").value }, "PUT");
       S.setupOpen = ""; S.status = await api("/api/status"); toast("Saved. People can connect now.", "ok"); return drawSettings();
     }
     if (a === "bell") return openBell();
@@ -10360,17 +11406,17 @@ async function tick() {
     if (a === "ntgo") { closePops(); const l = d.link || ""; if (l.startsWith("/app")) { const [v, tab] = fromPath(l); return go(v, tab); } if (l.startsWith("/")) location.href = l; return; }
     if (a === "csave") return void await saveCreator();
     if (a === "cdiscard") { drawCreatorForm(); return toast("Changes discarded"); }
-    if (a === "pause") { await send("/api/settings", {paused:!S.overview.paused}, "PUT"); return loadOverview(); }
-    if (a === "pcancel" || a === "pretry") { await api(`/api/posts/${d.id}/${a === "pcancel" ? "cancel" : "retry"}`, {method:"POST"}); return loadOverview(); }
+    if (a === "pause") { await send("/api/settings", { paused: !S.overview.paused }, "PUT"); return loadOverview(); }
+    if (a === "pcancel" || a === "pretry") { await api(`/api/posts/${d.id}/${a === "pcancel" ? "cancel" : "retry"}`, { method: "POST" }); return loadOverview(); }
     if (a === "ssave") { await saveSettings(); toast("Saved", "ok"); return drawSettings(); }
     if (a === "plansave") {
       const p = {}; $$("#sform [data-plan]").forEach(i => { (p[i.dataset.plan] ??= {})[i.dataset.f] = Number(i.value); });
-      await send("/api/settings", {plans:p}, "PUT"); S.status = await api("/api/status"); toast("Plans saved", "ok"); return drawSettings();
+      await send("/api/settings", { plans: p }, "PUT"); S.status = await api("/api/status"); toast("Plans saved", "ok"); return drawSettings();
     }
-    if (a === "testalert") { await saveSettings(); await api("/api/alerts/test", {method:"POST"}); return toast("Test message sent. Check your phone.", "ok"); }
+    if (a === "testalert") { await saveSettings(); await api("/api/alerts/test", { method: "POST" }); return toast("Test message sent. Check your phone.", "ok"); }
     if (a === "accremove") {
       if (!await ask("Disconnect this account?", "Posts still waiting for it will fail.", "Disconnect", true)) return;
-      await api(`/api/accounts/${d.id}`, {method:"DELETE"}); await tick(); return drawSettings();
+      await api(`/api/accounts/${d.id}`, { method: "DELETE" }); await tick(); return drawSettings();
     }
     if (a === "remake") {
       const body = {}; $$("#clipdlg [data-f]").forEach(i => body[i.dataset.f] = i.type === "checkbox" ? i.checked : (i.type === "number" ? Number(i.value) : i.value));
@@ -10380,7 +11426,7 @@ async function tick() {
       const accs = $$("#clipdlg [data-pacc]:checked").map(i => i.value);
       if (!accs.length) return toast("Tick at least one account first.", "bad");
       if (a === "postnow" && !await ask("Post now?", `This clip goes to ${accs.length} account${accs.length > 1 ? "s" : ""} straight away.`, "Post now")) return;
-      await send("/api/posts", {job:D.jid, clip:D.cid, accounts:accs, now:a === "postnow"});
+      await send("/api/posts", { job: D.jid, clip: D.cid, accounts: accs, now: a === "postnow" });
       toast(a === "postnow" ? "Posting now" : "Added to the queue", "ok"); return tick();
     }
   } catch (err) { b.disabled = false; toast(err.message, "bad"); }

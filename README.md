@@ -13,17 +13,18 @@ creator's live stream and clip the highlights while the stream is still running 
 
 ## What it does
 
-- **Clips from any video.** Transcribes the audio, asks an AI which moments would hold a stranger's attention, and
-  renders each one with captions in one of three styles.
-- **Live clipping.** Records a stream into a rolling buffer and clips as it happens, using loudness, chat activity
-  and the transcript.
+- **Clips from any video.** Transcribes the audio, asks an AI which moments would hold a stranger's attention, and renders each one with captions in customizable font and animation styles.
+- **11 Video Layouts & Multi-Aspect Ratio.** Render in `stack` (facecam top / game bottom), `bottom`, `circle` (circular facecam with real-time dynamic alpha mask), `side`, `blur`, `fill`, `game`, and 4 PiP corners (`pip_tl`, `pip_tr`, `pip_bl`, `pip_br`). Export in 9:16 vertical, 1:1 square, 4:5 portrait, 16:9 landscape, or 3:4.
+- **Gaming Shout & Excitement Scoring.** Real-time detection of high-energy streamer moments in Hindi, Hinglish, and English (*"let's go"*, *"bhaago"*, *"arre yaar"*, *"goli"*, *"dhamaka"*, *"insane"*, *"omg"*) blended with volume surges.
+- **Curated Profiles & Focus Briefs.** Choose `balanced`, `action`, or `dialogue` curation profiles, or pass custom focus briefs with keyword inclusion and exclusion filters.
+- **AI Facecam Auto-Detection.** Automatically locates streamer facecams using local YuNet ONNX neural detection, with skin-tone/edge quadrant fallback.
+- **Subtitle Import & Export.** 1-click SRT and WebVTT downloads for every clip, plus custom subtitle track uploads with word-level timing interpolation.
+- **Social Cards & Branding.** Social post cards (`x_light`, `x_dark`, `tiktok_hook`, `breaking_news`), watermark corner placement, outro ribbons, and saved caption branding presets.
+- **Live clipping & Multi-Stream.** Records live streams (YouTube, Twitch, Kick) into a rolling buffer and clips as it happens, with real-time chat spike detection and multi-stream concurrent watching.
 - **Workspaces per creator.** Channels, clip settings, posting rules and an activity log for each creator you clip.
-- **Posting.** Connect YouTube, Instagram and TikTok in one click, then queue or auto-post finished clips, with
-  spacing and daily caps (see [DEPLOY.md](DEPLOY.md#connecting-youtube-instagram-and-tiktok) for the one-time setup).
-- **No sign-in on your own computer.** It opens straight into the dashboard. On a shared server, switch accounts on
-  (`PEAKCUT_ACCOUNTS=1`) for email or Google sign-in and an admin dashboard.
-- **Your own AI.** Gemini, OpenAI, Grok, Groq, OpenRouter, Claude, a local model through Ollama, or anything that
-  speaks the OpenAI chat format. No key at all also works: clips are then picked by loudness.
+- **Posting.** Connect YouTube, Instagram and TikTok in one click, then queue or auto-post finished clips, with spacing and daily caps (see [DEPLOY.md](DEPLOY.md#connecting-youtube-instagram-and-tiktok) for the one-time setup).
+- **No sign-in on your own computer.** It opens straight into the dashboard. On a shared server, switch accounts on (`PEAKCUT_ACCOUNTS=1`) for email or Google sign-in and an admin dashboard.
+- **Your own AI.** Gemini, OpenAI, Grok, Groq, OpenRouter, Claude, a local model through Ollama, or anything that speaks the OpenAI chat format. No key at all also works: clips are then picked by loudness.
 
 ## 🚀 Quick Start & Installation Guide
 
@@ -200,14 +201,47 @@ has, opens it in one click, and lets you move it to another drive: choose the ne
 everything there the next time it starts. If the drive is nearly full, PeakCut says so and stops taking new videos
 until there is room. (`PEAKCUT_DATA` in `.env` still works and takes priority.)
 
-## Updating
+## Updating Your Existing Installation
 
-PeakCut checks GitHub once a minute while it runs. When a newer version is out, the dashboard shows a notice
-within a minute or two (no restart needed), with what changed
-and how to update: ask your AI coding assistant to do it (the notice has a sentence to paste), or run
-`git pull && pip install -r requirements.txt` in the PeakCut folder and restart it (with Docker:
-`git pull && docker compose up -d --build`). Your `.env`, keys and clips are not touched. Only the two commit ids
-are sent to GitHub; set `PEAKCUT_UPDATE_CHECK=0` to turn the check off.
+If you already have a previous version installed, upgrading to include all NeonClipping layouts, excite scoring, subtitle export/import, and multi-stream capabilities is completely seamless. Your `.env`, AI keys, clips, and database are **never** touched or overwritten.
+
+### Method 1: Git Pull (Standard Update)
+
+1. Open a terminal or PowerShell in your `Cut-It-By-Ai-With-Atif` directory:
+   ```powershell
+   git pull origin main
+   ```
+
+2. Activate your virtual environment and install updated packages:
+   ```powershell
+   # Windows:
+   .venv\Scripts\activate
+   pip install -r requirements.txt
+
+   # macOS / Linux:
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   ```
+   *(Optional: to enable high-accuracy YuNet neural facecam detection, you can run `pip install opencv-python-headless`)*
+
+3. Restart your server:
+   ```powershell
+   # Windows one-click start:
+   .\start.bat
+
+   # Or manual command:
+   python -m studio.server
+   ```
+
+### Method 2: Docker Update
+
+If you run Cut it by Ai With Atif via Docker:
+```bash
+git pull origin main
+docker compose up -d --build
+```
+
+---
 
 ## Deploy
 

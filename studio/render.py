@@ -6,7 +6,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from . import config, roman
+from . import config, layouts, roman, styling
 from .media import NO_WINDOW, run
 
 W, H = config.OUT_W, config.OUT_H
@@ -89,6 +89,17 @@ LAYOUTS = {
     "split_br": "Split: Creator Bottom-Right + Gameplay",
     "split_bl": "Split: Creator Bottom-Left + Gameplay",
     "split_top": "Split: Creator Center + Gameplay",
+    # NeonClipping 11 Native layouts
+    "stack": "Stack: Camera above gameplay",
+    "bottom": "Bottom: Camera below gameplay",
+    "fill": "Fill screen (full frame centre crop)",
+    "game": "Gameplay only (game crop)",
+    "pip_tl": "Floating PiP: Camera top-left",
+    "pip_tr": "Floating PiP: Camera top-right",
+    "pip_bl": "Floating PiP: Camera bottom-left",
+    "pip_br": "Floating PiP: Camera bottom-right",
+    "circle": "Circle camera (round facecam above game)",
+    "side": "Side by side (camera and game columns)",
 }
 
 
@@ -156,10 +167,12 @@ def detect_cam_quadrant(src_path: Path, start: float = 0.0, end: float = 2.0) ->
 
 def geometry(src_w, src_h, layout):
     """Where the video sits in the 1080x1920 frame, and where hook and captions go."""
-    if src_h >= src_w and layout != "crop" and not layout.startswith("split"):
+    if src_h >= src_w and layout != "crop" and not layout.startswith("split") and layout not in ('stack', 'bottom', 'side'):
         layout = "crop"  # already vertical or square: nothing to gain from a blurred fill
-    if layout.startswith("split"):
+    if layout.startswith("split") or layout in ('stack', 'bottom', 'side', 'circle', 'pip_tl', 'pip_tr', 'pip_bl', 'pip_br'):
         return layout, H, 200, 880
+    if layout in ("crop", "fill"):
+        return layout, H, 300, 1380
     if layout == "blur":
         fg_h = min(H, int(round(W * src_h / src_w / 2)) * 2)
     elif layout == "zoom":
@@ -167,8 +180,6 @@ def geometry(src_w, src_h, layout):
     else:
         fg_h = H
     top = (H - fg_h) // 2
-    if layout == "crop":
-        return layout, fg_h, 300, 1380
     return layout, fg_h, max(230, top - 190), min(1640, top + fg_h + 180)
 
 
@@ -276,8 +287,10 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 
 
 def _filter(layout, fg_h, cam_pos="tr"):
-    if layout == "crop":
+    if layout in ("crop", "fill"):
         return f"[0:v]setpts=PTS-STARTPTS,fps={config.OUT_FPS},scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1[v0];"
+    if layout in ('stack', 'bottom', 'circle', 'side', 'pip_tl', 'pip_tr', 'pip_bl', 'pip_br', 'game'):
+        return layouts.render_graph(layout, top=0.38, width=W, height=H, fps=config.OUT_FPS)
     if layout.startswith("split"):
         if layout == "split_tl":
             cam = "tl"
@@ -351,12 +364,14 @@ def render_clip(src: Path, out_dir: Path, name: str, clip: dict, words: list, sr
     # break the filter syntax).
     work = Path(tempfile.mkdtemp(prefix="pk"))
     try:
-        return _render_in(work, src, out_dir, name, start, end, layout, fg_h, ass, bool(clip.get("watermark")), cam_pos=cam_pos)
+        wm_pos = clip.get("watermark_pos", "br")
+        wm_size = int(clip.get("watermark_size", 96))
+        return _render_in(work, src, out_dir, name, start, end, layout, fg_h, ass, bool(clip.get("watermark")), cam_pos=cam_pos, wm_pos=wm_pos, wm_size=wm_size)
     finally:
         shutil.rmtree(work, ignore_errors=True)
 
 
-def _render_in(work: Path, src: Path, out_dir: Path, name: str, start, end, layout, fg_h, ass: str, watermark: bool = False, cam_pos: str = "tr") -> dict:
+def _render_in(work: Path, src: Path, out_dir: Path, name: str, start, end, layout, fg_h, ass: str, watermark: bool = False, cam_pos: str = "tr", wm_pos: str = "br", wm_size: int = 96) -> dict:
     global _qsv_ok, _nvenc_ok, _vt_ok
     src_path = _safe_path(src)
     (work / f"{name}.ass").write_text(ass, encoding="utf-8")
@@ -371,7 +386,8 @@ def _render_in(work: Path, src: Path, out_dir: Path, name: str, start, end, layo
     if has_wm:
         try:
             shutil.copyfile(wm_png, work / "wm.png")
-            fc = _filter(layout, fg_h, cam_pos) + f"[v0]ass={name}.ass:fontsdir=f[v_sub];[1:v]scale=96:96[wm];[v_sub][wm]overlay=W-w-48:H-h-48:format=auto[v]"
+            wm_x, wm_y = styling.watermark_coordinates(wm_pos, wm_size, W, H)
+            fc = _filter(layout, fg_h, cam_pos) + f"[v0]ass={name}.ass:fontsdir=f[v_sub];[1:v]scale={wm_size}:{wm_size}[wm];[v_sub][wm]overlay={wm_x}:{wm_y}:format=auto[v]"
             inputs = ["ffmpeg", "-y", "-v", "error", "-accurate_seek", "-ss", f"{start:.2f}", "-t", f"{end - start:.2f}", "-i", src_path, "-i", "wm.png"]
         except OSError:
             has_wm = False
