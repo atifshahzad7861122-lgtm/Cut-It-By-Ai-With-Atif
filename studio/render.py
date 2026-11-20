@@ -79,7 +79,17 @@ def install_fonts():
             shutil.copyfile(f, config.FONTS_DIR / f.name)
 
 
-LAYOUTS = {"blur": "Full frame + blurred fill", "zoom": "Zoomed in + blurred fill", "crop": "Fill the screen (centre crop)"}
+LAYOUTS = {
+    "blur": "Full frame + blurred fill",
+    "zoom": "Zoomed in + blurred fill",
+    "crop": "Fill the screen (centre crop)",
+    "split": "Split: Creator top + Gameplay bottom (Auto)",
+    "split_tr": "Split: Creator Top-Right + Gameplay",
+    "split_tl": "Split: Creator Top-Left + Gameplay",
+    "split_br": "Split: Creator Bottom-Right + Gameplay",
+    "split_bl": "Split: Creator Bottom-Left + Gameplay",
+    "split_top": "Split: Creator Center + Gameplay",
+}
 
 
 def _ts(t):
@@ -109,10 +119,47 @@ def _groups(words, per):
     return out
 
 
+def detect_cam_quadrant(src_path: Path, start: float = 0.0, end: float = 2.0) -> str:
+    """Detect whether streamer facecam is located in Top-Right, Top-Left, Bottom-Right, Bottom-Left or Center."""
+    try:
+        import io
+        from PIL import Image
+        import numpy as np
+        t = start + min(1.0, max(0.2, (end - start) / 2))
+        cmd = ["ffmpeg", "-y", "-v", "error", "-ss", f"{t:.2f}", "-i", str(src_path), "-frames:v", "1", "-f", "image2pipe", "-vcodec", "ppm", "-"]
+        p = subprocess.run(cmd, capture_output=True, timeout=5, creationflags=NO_WINDOW)
+        if p.returncode != 0 or not p.stdout:
+            return "tr"
+        img = Image.open(io.BytesIO(p.stdout)).convert("RGB")
+        arr = np.array(img)
+        h, w, _ = arr.shape
+        if h < 50 or w < 50:
+            return "tr"
+        r, g, b = arr[:, :, 0], arr[:, :, 1], arr[:, :, 2]
+        skin = ((r > 95) & (g > 40) & (b > 20) &
+                (np.maximum(np.maximum(r, g), b) - np.minimum(np.minimum(r, g), b) > 15) &
+                (np.abs(r.astype(int) - g.astype(int)) > 15) & (r > g) & (r > b))
+        counts = {
+            "tr": int(np.sum(skin[0:int(h * 0.55), int(w * 0.55):w])),
+            "tl": int(np.sum(skin[0:int(h * 0.55), 0:int(w * 0.45)])),
+            "br": int(np.sum(skin[int(h * 0.45):h, int(w * 0.55):w])),
+            "bl": int(np.sum(skin[int(h * 0.45):h, 0:int(w * 0.45)])),
+            "top": int(np.sum(skin[0:int(h * 0.55), int(w * 0.25):int(w * 0.75)])),
+        }
+        best = max(counts, key=counts.get)
+        if counts[best] > 300:
+            return best
+        return "tr"
+    except Exception:
+        return "tr"
+
+
 def geometry(src_w, src_h, layout):
     """Where the video sits in the 1080x1920 frame, and where hook and captions go."""
-    if src_h >= src_w and layout != "crop":
+    if src_h >= src_w and layout != "crop" and not layout.startswith("split"):
         layout = "crop"  # already vertical or square: nothing to gain from a blurred fill
+    if layout.startswith("split"):
+        return layout, H, 200, 880
     if layout == "blur":
         fg_h = min(H, int(round(W * src_h / src_w / 2)) * 2)
     elif layout == "zoom":
@@ -228,9 +275,42 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
     return head + "\n".join(ev) + "\n"
 
 
-def _filter(layout, fg_h):
+def _filter(layout, fg_h, cam_pos="tr"):
     if layout == "crop":
         return f"[0:v]setpts=PTS-STARTPTS,fps={config.OUT_FPS},scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1[v0];"
+    if layout.startswith("split"):
+        if layout == "split_tl":
+            cam = "tl"
+        elif layout == "split_tr":
+            cam = "tr"
+        elif layout == "split_bl":
+            cam = "bl"
+        elif layout == "split_br":
+            cam = "br"
+        elif layout in ("split_top", "split_center"):
+            cam = "top"
+        else:
+            cam = cam_pos or "tr"
+
+        if cam == "tl":
+            crop_cam = "crop=w=iw*0.42:h=ih*0.58:x=0:y=0"
+        elif cam == "br":
+            crop_cam = "crop=w=iw*0.42:h=ih*0.58:x=iw-ow:y=ih-oh"
+        elif cam == "bl":
+            crop_cam = "crop=w=iw*0.42:h=ih*0.58:x=0:y=ih-oh"
+        elif cam == "top":
+            crop_cam = "crop=w=iw*0.55:h=ih*0.70:x=(iw-ow)/2:y=0"
+        else:  # "tr" default
+            crop_cam = "crop=w=iw*0.42:h=ih*0.58:x=iw-ow:y=0"
+
+        h_top = 860
+        h_bot = H - h_top
+        return (
+            f"[0:v]setpts=PTS-STARTPTS,fps={config.OUT_FPS},split=2[cam_in][game_in];"
+            f"[cam_in]{crop_cam},scale={W}:{h_top}:force_original_aspect_ratio=increase,crop={W}:{h_top}[top_v];"
+            f"[game_in]scale={W}:{h_bot}:force_original_aspect_ratio=increase,crop={W}:{h_bot}[bot_v];"
+            f"[top_v][bot_v]vstack=inputs=2,drawbox=x=0:y={h_top - 2}:w={W}:h=4:color=0xFF8B33@0.9:t=fill,setsar=1[v0];"
+        )
     return (f"[0:v]setpts=PTS-STARTPTS,fps={config.OUT_FPS},split=2[a][b];"
             f"[a]scale=270:480:force_original_aspect_ratio=increase,crop=270:480,boxblur=6:2,"
             f"scale={W}:{H},eq=brightness=-0.14:saturation=1.15[bg];"
@@ -260,18 +340,23 @@ def render_clip(src: Path, out_dir: Path, name: str, clip: dict, words: list, sr
     layout, fg_h, hook_y, cap_y = geometry(src_w, src_h, clip.get("layout", "blur"))
     ass = build_ass(words, start, end, clip.get("hook", ""), clip.get("style", "bounce"),
                     clip.get("highlight_words", []), hook_y, cap_y)
+    cam_pos = clip.get("cam_pos")
+    if layout == "split" and not cam_pos:
+        cam_pos = detect_cam_quadrant(src, start, end)
+    elif layout.startswith("split_"):
+        cam_pos = layout.split("_", 1)[1]
     # The clip is made in a short work folder and moved into place afterwards. The caption step of ffmpeg cannot
     # open files whose full path is longer than 260 characters on Windows, which a data folder deep inside other
     # folders easily reaches. Inside the work folder every name is short and relative (a drive colon would also
     # break the filter syntax).
     work = Path(tempfile.mkdtemp(prefix="pk"))
     try:
-        return _render_in(work, src, out_dir, name, start, end, layout, fg_h, ass, bool(clip.get("watermark")))
+        return _render_in(work, src, out_dir, name, start, end, layout, fg_h, ass, bool(clip.get("watermark")), cam_pos=cam_pos)
     finally:
         shutil.rmtree(work, ignore_errors=True)
 
 
-def _render_in(work: Path, src: Path, out_dir: Path, name: str, start, end, layout, fg_h, ass: str, watermark: bool = False) -> dict:
+def _render_in(work: Path, src: Path, out_dir: Path, name: str, start, end, layout, fg_h, ass: str, watermark: bool = False, cam_pos: str = "tr") -> dict:
     global _qsv_ok, _nvenc_ok, _vt_ok
     src_path = _safe_path(src)
     (work / f"{name}.ass").write_text(ass, encoding="utf-8")
@@ -286,12 +371,12 @@ def _render_in(work: Path, src: Path, out_dir: Path, name: str, start, end, layo
     if has_wm:
         try:
             shutil.copyfile(wm_png, work / "wm.png")
-            fc = _filter(layout, fg_h) + f"[v0]ass={name}.ass:fontsdir=f[v_sub];[1:v]scale=96:96[wm];[v_sub][wm]overlay=W-w-48:H-h-48:format=auto[v]"
+            fc = _filter(layout, fg_h, cam_pos) + f"[v0]ass={name}.ass:fontsdir=f[v_sub];[1:v]scale=96:96[wm];[v_sub][wm]overlay=W-w-48:H-h-48:format=auto[v]"
             inputs = ["ffmpeg", "-y", "-v", "error", "-accurate_seek", "-ss", f"{start:.2f}", "-t", f"{end - start:.2f}", "-i", src_path, "-i", "wm.png"]
         except OSError:
             has_wm = False
     if not has_wm:
-        fc = _filter(layout, fg_h) + f"[v0]ass={name}.ass:fontsdir=f[v]"
+        fc = _filter(layout, fg_h, cam_pos) + f"[v0]ass={name}.ass:fontsdir=f[v]"
         inputs = ["ffmpeg", "-y", "-v", "error", "-accurate_seek", "-ss", f"{start:.2f}", "-t", f"{end - start:.2f}", "-i", src_path]
     af = "asetpts=PTS-STARTPTS,aresample=async=1000:min_hard_comp=0.100000:first_pts=0,loudnorm=I=-14:TP=-1.5:LRA=11"
     base = inputs + ["-filter_complex", fc, "-map", "[v]", "-map", "0:a:0", "-af", af,
