@@ -76,7 +76,6 @@ def _startup():
     updates.start()                  # looks for a newer PeakCut every minute, in the background
 
 
-
 # ================================================================ the gate: who is asking, and are they allowed
 class Gate:
     """Runs before every request: finds the signed-in user, blocks what needs sign-in, blocks cross-site form
@@ -1236,6 +1235,82 @@ def go_live(cid: str, body: dict = Body(default={})):
         return jobs.public(live.start_session(c, url))
     except ValueError as e:
         raise HTTPException(400, str(e))
+
+
+@app.get("/api/live/active")
+def active_live_streams():
+    out = []
+    for s in live.active_mine():
+        j = s.job
+        plat, embed = s._platform_info()
+        elapsed = s.samples / live.SR
+        sec = int(elapsed)
+        last_db = s.db[-1] if s.db else -100.0
+        recent_chat = sum(s.chat.get(t, 0) for t in range(max(0, sec - 10), sec)) / 10.0 if (s.chat_on or s.chat_total) else 0.0
+        c_obj = creators.get(j.get("creator", ""))
+        out.append({
+            "job_id": j["id"],
+            "creator_id": j.get("creator"),
+            "creator_name": c_obj["name"] if c_obj else (j.get("uploader") or "Live Streamer"),
+            "title": j.get("title") or j.get("name") or "Live Stream",
+            "uploader": j.get("uploader") or "",
+            "url": j.get("source", {}).get("url", ""),
+            "platform": plat,
+            "embed": embed,
+            "elapsed": round(elapsed),
+            "level": round(last_db, 1),
+            "chat_rate": round(recent_chat, 2),
+            "chat_total": s.chat_total,
+            "chat_on": s.chat_on,
+            "spikes": s.spikes,
+            "checks": s.checks,
+            "clips_count": len(j.get("clips", [])),
+            "status": j.get("status", "live"),
+            "verdicts": list(reversed(s.verdicts[:3]))
+        })
+    return {"streams": out, "count": len(out), "max_allowed": 6}
+
+
+@app.post("/api/live/watch")
+def watch_stream(body: dict = Body(...)):
+    _need_verified()
+    urls = body.get("urls")
+    if not urls and body.get("url"):
+        urls = [body.get("url")]
+    if not urls or not isinstance(urls, list):
+        raise HTTPException(400, "Provide at least one stream URL (YouTube, Twitch, or Kick).")
+    if len(urls) > 6:
+        raise HTTPException(400, "You can watch up to 6 streams simultaneously.")
+    current_active = len(live.active_mine())
+    if current_active + len(urls) > 6:
+        raise HTTPException(400, f"You are already recording {current_active} stream(s). You can run at most 6 streams at once.")
+    started_jobs = []
+    errors = []
+    for u in urls:
+        u_str = str(u or "").strip()
+        if not u_str:
+            continue
+        try:
+            job = live.start_stream_url(u_str, creator_id=body.get("creator_id"))
+            started_jobs.append(jobs.public(job))
+        except ValueError as e:
+            errors.append(f"{u_str}: {e}")
+        except Exception as e:
+            errors.append(f"{u_str}: {e}")
+    if not started_jobs and errors:
+        raise HTTPException(400, "; ".join(errors))
+    ctx.bump()
+    return {"started": started_jobs, "count": len(started_jobs), "errors": errors}
+
+
+@app.post("/api/live/stop-all")
+def stop_all_live():
+    count = 0
+    for s in live.active_mine():
+        s.stop()
+        count += 1
+    ctx.bump()
+    return {"ok": True, "stopped": count}
 
 
 @app.post("/api/live/{jid}/stop")

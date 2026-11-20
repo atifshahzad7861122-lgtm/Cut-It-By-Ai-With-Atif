@@ -122,7 +122,6 @@ USERS_DIR = DATA_DIR / "users"          # users/<user id>/{creators,jobs,account
 MODELS_DIR = Path(env("PEAKCUT_MODELS") or DATA_DIR / "models")
 TMP_DIR = DATA_DIR / "tmp"
 FONTS_DIR = DATA_DIR / "fonts"          # caption fonts, copied from studio/fonts so every server renders the same
-WEB_DIR = ROOT / "web"
 # YouTube already has a word-by-word transcript of most videos. With this on, that is what the AI reads to find the
 # clips (seconds instead of transcribing hours), and our own model is run only on the clips themselves.
 YT_TRANSCRIPT = env("PEAKCUT_YT_TRANSCRIPT", "1") != "0"
@@ -182,7 +181,7 @@ UPLOAD_PART_MB = max(5, int(env("PEAKCUT_UPLOAD_PART_MB", "40")))
 # The most videos that may ever run at once. How many actually run is decided by how busy the machine is (load.py).
 JOB_WORKERS = int(env("PEAKCUT_JOB_WORKERS") or max(2, os.cpu_count() or 4))
 MAX_ACTIVE_JOBS_PER_USER = int(_limit("PEAKCUT_MAX_JOBS_PER_USER", "5"))    # videos sent and worked on at once
-MAX_LIVE_TOTAL = int(env("PEAKCUT_MAX_LIVE") or max(4, 2 * (os.cpu_count() or 4)))   # ceiling; real load decides below it
+MAX_LIVE_TOTAL = int(env("PEAKCUT_MAX_LIVE") or max(8, 2 * (os.cpu_count() or 4)))   # ceiling; real load decides below it
 MAX_LIVE_PER_USER = int(_limit("PEAKCUT_MAX_LIVE_PER_USER"))     # streams one person records at once
 MAX_VIDEO_HOURS = _limit("PEAKCUT_MAX_VIDEO_HOURS")              # longest video (or chosen part of one) that is processed
 MAX_LIVE_HOURS = _limit("PEAKCUT_MAX_LIVE_HOURS")                # a recording stops by itself after this long

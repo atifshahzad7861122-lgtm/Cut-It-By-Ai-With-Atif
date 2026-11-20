@@ -591,16 +591,35 @@ class Session:
             raise ValueError("Nothing has been recorded yet.")
         self.manual.append({"start": max(0.0, end - seconds), "end": end})
 
+    def _platform_info(self) -> tuple:
+        url = self.job.get("source", {}).get("url", "")
+        if "twitch.tv" in url:
+            m = re.search(r"twitch\.tv/([A-Za-z0-9_]+)", url)
+            return "twitch", (m.group(1).lower() if m else "")
+        if "kick.com" in url:
+            m = re.search(r"kick\.com/([A-Za-z0-9_]+)", url)
+            return "kick", (m.group(1).lower() if m else "")
+        if "youtube.com" in url or "youtu.be" in url or media.is_youtube(url):
+            vid = self.video_id
+            if not vid:
+                m = re.search(r"(?:v=|/live/|youtu\.be/)([A-Za-z0-9_-]{11})", url)
+                vid = m.group(1) if m else ""
+            return "youtube", vid
+        return "video", ""
+
     def _publish(self):
         elapsed = self.samples / SR
         lines = brain.make_lines([w for w in self.words if w["s"] >= self.t_done - 45])[-5:]
+        plat, embed = self._platform_info()
         with self.lock:
             sec = int(elapsed)
             self.job.update(
                 duration=elapsed,
                 live={"elapsed": round(elapsed), "buffer_sec": round(self.segments[-1][2] - self.segments[0][1]) if self.segments else 0,
+                      "platform": plat, "embed": embed,
                       "lines": [l["text"] for l in lines], "level": [round(x) for x in self.db[-60:]],
                       "chat": [self.chat.get(t, 0) for t in range(max(0, sec - 60), sec)] if self.chat_on or self.chat_total else None,
+                      "chat_total": self.chat_total, "chat_on": self.chat_on, "spikes": self.spikes,
                       "checks": self.checks, "skipped": self.skipped, "tokens": self.tokens, "words": len(self.words),
                       "rejected": self.rejected, "verdicts": list(reversed(self.verdicts)),
                       "every_min": int(self.settings.get("ai_every_min", 3)) or 3,
@@ -720,7 +739,7 @@ def start_session(creator: dict, url=None) -> dict:
                                   "Twitch and Kick streams still work. YouTube"))
     if len(active_mine()) >= config.MAX_LIVE_PER_USER:
         raise ValueError(f"You're already recording {len(active_mine())} streams, the most this server allows at once. Stop one first.")
-    if len(active()) >= config.MAX_LIVE_TOTAL or (active() and load.busy()):
+    if len(active()) >= config.MAX_LIVE_TOTAL or (len(active()) >= 6 and load.busy()):
         raise ValueError("PeakCut is recording as many streams as it can right now. Try again in a little while.")
     from . import tools
     if tools.missing():
@@ -731,6 +750,58 @@ def start_session(creator: dict, url=None) -> dict:
     jobs.save(job)
     Session(job, creator).start()
     return job
+
+
+def start_stream_url(url: str, creator_id: str = None) -> dict:
+    """Start watching and recording a stream URL directly. Reuses or creates a creator if needed."""
+    url = normalize(url)
+    if not re.match(r"^https?://[^/]+\.[^/]+/", url + "/"):
+        raise ValueError("Invalid stream link.")
+    if not media.site_allowed(url):
+        raise ValueError("Stream links must be from YouTube, Twitch or Kick.")
+    for s in active_mine():
+        if s.job.get("source", {}).get("url") == url:
+            raise ValueError("This stream is already being recorded.")
+
+    c = None
+    if creator_id:
+        c = creators.get(creator_id)
+        if c and active_for(c["id"]):
+            c = None
+    if not c:
+        for ex in creators.all_creators():
+            if (ex.get("channel") == url or any(ch == url for ch in (ex.get("channels") or {}).values())) and not active_for(ex["id"]):
+                c = ex
+                break
+    if not c:
+        name = "Live Stream"
+        m_tw = re.search(r"twitch\.tv/([A-Za-z0-9_]+)", url)
+        m_kc = re.search(r"kick\.com/([A-Za-z0-9_]+)", url)
+        m_yt = re.search(r"@([A-Za-z0-9_.-]+)", url)
+        if m_tw:
+            name = m_tw.group(1)
+        elif m_kc:
+            name = m_kc.group(1)
+        elif m_yt:
+            name = m_yt.group(1)
+        plat = "youtube" if ("youtube.com" in url or "youtu.be" in url) else "twitch" if "twitch.tv" in url else "kick" if "kick.com" in url else "video"
+        try:
+            info = resolve(url)
+            if info.get("uploader"):
+                name = info["uploader"]
+            elif info.get("title"):
+                name = info["title"][:40]
+        except Exception:
+            pass
+        if len(creators.all_creators()) < config.MAX_CREATORS:
+            c = creators.create({"name": name, "channel": url, "channels": {plat: url}})
+        else:
+            idle = [x for x in creators.all_creators() if not active_for(x["id"])]
+            if idle:
+                c = idle[0]
+            else:
+                raise ValueError("All creator slots are currently recording. Stop one first.")
+    return start_session(c, url)
 
 
 def _watch_user(uid):

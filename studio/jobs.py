@@ -812,4 +812,5 @@ def start():
     for _ in range(max(1, config.JOB_WORKERS)):
         threading.Thread(target=_worker, daemon=True).start()
     threading.Thread(target=_worker, args=(True,), daemon=True).start()   # re-making a single clip never waits behind whole videos
-    threading.Thread(target=_live_worker, daemon=True).start()
+    for _ in range(3):
+        threading.Thread(target=_live_worker, daemon=True).start()
