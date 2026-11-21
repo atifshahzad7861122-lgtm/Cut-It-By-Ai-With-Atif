@@ -17,7 +17,25 @@ import httpx
 
 from . import config
 
-REPO = (config.env("PEAKCUT_UPDATE_REPO") or "cutitbyai/cutit").strip().strip("/")
+def _detect_repo() -> str:
+    env_repo = config.env("PEAKCUT_UPDATE_REPO", "").strip().strip("/")
+    if env_repo:
+        return env_repo
+    g = config.ROOT / ".git"
+    try:
+        if g.is_file():
+            g = (config.ROOT / g.read_text(encoding="utf-8").split(":", 1)[1].strip()).resolve()
+        cfg = g / "config"
+        if cfg.is_file():
+            m = re.search(r"github\.com[:/]([\w.\-]+/[\w.\-]+?)(?:\.git)?$", cfg.read_text(encoding="utf-8"), re.M)
+            if m:
+                return m.group(1)
+    except Exception:
+        pass
+    return "atifshahzad7861122-lgtm/Cut-It-By-Ai-With-Atif"
+
+
+REPO = _detect_repo()
 BRANCH = (config.env("PEAKCUT_UPDATE_BRANCH") or "main").strip()
 ON = config.env("PEAKCUT_UPDATE_CHECK", "1") != "0" and bool(re.fullmatch(r"[\w.\-]+/[\w.\-]+", REPO))
 EVERY = 60
