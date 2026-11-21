@@ -9811,8 +9811,6 @@
         }
       });
     }
-  });
-}
     let linkTimer = 0;
     function onLink(input) {
       clearTimeout(linkTimer);
@@ -10896,26 +10894,7 @@
       D.sig = sig;
       put($("#dposts"), postPills(c));
     }
-    $("#clipdlg").addEventListener("close", () => { $("#clipdlg").innerHTML = ""; D.jid = null; });
-    $("#clipdlg").addEventListener("click", e => { if (e.target === e.currentTarget) e.currentTarget.close(); });
-
-    /* ============================================================ render + polling */
-    function render() {
-      drawShell(); drawJobs(); drawStream(); drawSelBar();
-      if (S.view === "overview") drawOverview();
-      if (S.view === "multistream") drawMultiStream();
-      if ($("#clog")) drawLog();
-      if (D.jid) drawClipDlg(false);
-    }
-    async function tick() {
-      try {
-        const got = await api("/api/sync?v=" + encodeURIComponent(S.syncV || ""));
-        const fresh = !!got.jobs, stale = Date.now() - (S.ovAt || 0) > 20000;
-        S.syncV = got.v;
-        if (!fresh) {                                   // nothing of ours changed on the server
-          if (S.view === "overview" && stale) { S.overview = await api("/api/overview"); S.ovAt = Date.now(); render(); }
-          return;
-        }
+    
         $("#clipdlg").addEventListener("close", () => { $("#clipdlg").innerHTML = ""; D.jid = null; });
         $("#clipdlg").addEventListener("click", e => { if (e.target === e.currentTarget) e.currentTarget.close(); });
 
@@ -10923,6 +10902,7 @@
         function render() {
           drawShell(); drawJobs(); drawStream(); drawSelBar();
           if (S.view === "overview") drawOverview();
+          if (S.view === "multistream") drawMultiStream();
           if ($("#clog")) drawLog();
           if (D.jid) drawClipDlg(false);
         }
@@ -11217,16 +11197,24 @@
             if (a === "spick") { S.spick = { ...S.spick, [creatorId()]: d.p }; return drawStream(); }
             if (a === "chmain") return saveChannels(creator().channels, creator().channels[d.p]);
             if (a === "golive") {
-              if (!creator().channel) { setTab("setup"); return toast("Connect one of their channels first, then press Start recording.", "bad"); }
-              b.disabled = true; const was = b.innerHTML; b.innerHTML = `<span class="rdot"></span>Starting…`;
-              try {
-                const p = await api("/api/channel-preview?url=" + encodeURIComponent(u)); if (me !== seq) return;
-                box.innerHTML = `<div class="chprev">${p.pic ? `<img src="${p.pic}" alt="">` : `<span class="ph"></span>`}<div><b>${esc(p.name)}</b><span>${esc([p.platform, p.followers].filter(Boolean).join(" · "))}</span></div></div>`;
-                const n = $("#nc_name"); if (!n.value.trim() || n.value === auto) { n.value = auto = p.name; }
-              } catch (err) { if (me === seq) box.innerHTML = `<div class="chprev bad">${esc(err.message)}</div>`; }
-            }, 400);
-      });
-      dlg.returnValue = "no"; return dlg.showModal();
+      if (!creator().channel) { setTab("setup"); return toast("Connect one of their channels first, then press Start recording.", "bad"); }
+      b.disabled = true; const was = b.innerHTML; b.innerHTML = `<span class="rdot"></span>Starting…`;
+      try {
+        const cid0 = creatorId();
+        const j = await send(`/api/creators/${cid0}/live`, d.url ? { channel: d.url } : {});
+        if (j?.id) { const c = S.creators.find(x => x.id === cid0); if (c) c.live_job = j.id; if (!jobOf(j.id)) S.jobs.unshift(j); render(); }
+        const still = creatorId() === cid0;
+        toast(still ? "Recording started. Clips appear below as they're made." : `Recording started for ${S.creators.find(x => x.id === cid0)?.name || "that creator"}.`, "ok");
+        if (still) setTab("clips");
+      } catch (e) { b.disabled = false; b.innerHTML = was; throw e; }
+      return tick();
+    }
+    if (a === "stoplive") {
+      if (!await ask("Stop recording?", "Clips already made are kept. The rest of the buffer is cleared.", "Stop recording", true)) return;
+      const j = jobOf(d.j); if (j) { j.status = "done"; j.stage = "Stopped by you"; }
+      S.creators.forEach(c => { if (c.live_job === d.j) c.live_job = null; }); render();
+      toast("Recording stopped. Clips already made are kept.", "ok");
+      api(`/api/live/${d.j}/stop`, { method: "POST" }).catch(e => toast(e.message, "bad")).finally(tick); return;
     }
     if (a === "copy") {
       const c = jobOf(d.j).clips.find(x => x.id === d.c);
