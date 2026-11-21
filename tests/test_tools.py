@@ -57,7 +57,7 @@ def model_bytes():
         t.add(src, arcname=config.ASR_MODEL_NAME)
     return out.getvalue()
 seen = {}
-def fake_open(req, timeout=None):
+def fake_open(req, timeout=None, context=None):
     seen["timeout"] = timeout
     return Stream(model_bytes())
 fetch_model.urllib.request.urlopen = fake_open
@@ -67,7 +67,7 @@ check("the model is downloaded by itself and put in place whole", (fetch_model.r
 check("nothing is left over from the download", sorted(p.name for p in config.MODELS_DIR.iterdir()), [config.ASR_MODEL_NAME])
 check("the download gives up on a silent connection instead of waiting forever", seen["timeout"], lambda t: t is not None and 0 < t <= 120)
 shutil.rmtree(d)
-def no_internet(req, timeout=None):
+def no_internet(req, timeout=None, context=None):
     raise OSError("getaddrinfo failed")
 fetch_model.urllib.request.urlopen = no_internet
 try:
@@ -77,7 +77,7 @@ except RuntimeError as e:
 check("no internet: said in plain words, and no half model left behind", ("internet" in said, fetch_model.ready(), d.exists()), (True, False, False))
 check("the real reason is shown too, so it can be fixed", "getaddrinfo failed" in said, True)
 check("and so is how to try again by hand", "python -m studio.fetch_model" in said, True)
-fetch_model.urllib.request.urlopen = lambda req, timeout=None: Stream(model_bytes(), stall=True)
+fetch_model.urllib.request.urlopen = lambda req, timeout=None, context=None: Stream(model_bytes(), stall=True)
 try:
     fetch_model.ensure(); said = ""
 except RuntimeError as e:

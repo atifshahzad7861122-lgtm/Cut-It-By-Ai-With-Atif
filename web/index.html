@@ -9392,6 +9392,7 @@
     const navIc = (n, v) => ic(S.view === v && I[n + "_f"] ? n + "_f" : n);
     const fmt = s => { s = Math.max(0, Math.round(s)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60); return (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(s % 60).padStart(2, "0"); };
     const clock = t => new Date(t * 1000).toLocaleString([], { weekday: "short", hour: "2-digit", minute: "2-digit" });
+    const postWhen = t => new Date(t * 1000).toLocaleString([], { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
     const when = t => new Date(t * 1000).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
     const opts = (map, val) => Object.entries(map).map(([k, v]) => `<option value="${esc(k)}"${String(k) === String(val) ? " selected" : ""}>${esc(v)}</option>`).join("");
 
@@ -9499,6 +9500,19 @@
       loaded: false
     };
 
+    function matchCat(campaignCat, targetCat) {
+      if (!targetCat || targetCat === "All") return true;
+      const c = (campaignCat || "").toLowerCase().trim();
+      const t = targetCat.toLowerCase().trim();
+      if (c === t || c.includes(t) || t.includes(c)) return true;
+      if (t.includes("podcast") && (c.includes("podcast") || c.includes("talk") || c.includes("interview"))) return true;
+      if (t.includes("business") && (c.includes("business") || c.includes("tech") || c.includes("startup") || c.includes("agency") || c.includes("ai"))) return true;
+      if (t.includes("fitness") && (c.includes("fitness") || c.includes("gym") || c.includes("lifting") || c.includes("health"))) return true;
+      if (t.includes("gaming") && (c.includes("gaming") || c.includes("irl") || c.includes("stream"))) return true;
+      if (t.includes("crypto") && (c.includes("crypto") || c.includes("finance") || c.includes("trading") || c.includes("money"))) return true;
+      return false;
+    }
+
     async function loadWhopCampaigns(force = false) {
       if (S_whop.loading || (S_whop.loaded && !force)) {
         drawWhopCampaigns();
@@ -9508,7 +9522,7 @@
       drawWhopCampaigns();
       try {
         const [cData, eData] = await Promise.all([
-          api(`/api/whop/campaigns?category=${encodeURIComponent(S_whop.category)}&q=${encodeURIComponent(S_whop.query)}`),
+          api("/api/whop/campaigns"),
           api("/api/whop/earnings")
         ]);
         S_whop.campaigns = cData.campaigns || [];
@@ -9531,11 +9545,11 @@
 
       let filtered = S_whop.campaigns;
       if (S_whop.category && S_whop.category !== "All") {
-        filtered = filtered.filter(c => c.category === S_whop.category);
+        filtered = filtered.filter(c => matchCat(c.category, S_whop.category));
       }
       if (S_whop.query) {
-        const q = S_whop.query.toLowerCase();
-        filtered = filtered.filter(c => (c.name || "").toLowerCase().includes(q) || (c.creator || "").toLowerCase().includes(q) || (c.brand || "").toLowerCase().includes(q));
+        const q = S_whop.query.toLowerCase().trim();
+        filtered = filtered.filter(c => (c.name || "").toLowerCase().includes(q) || (c.creator || "").toLowerCase().includes(q) || (c.brand || "").toLowerCase().includes(q) || (c.category || "").toLowerCase().includes(q) || (c.rules || "").toLowerCase().includes(q));
       }
 
       box.innerHTML = `
@@ -9785,7 +9799,7 @@
     /* ============================================================ state */
     const S = {
       status: { styles: {}, layouts: {} }, jobs: [], creators: [], accounts: [], overview: null, settings: null,
-      view: "overview", ctab: "clips", liveAutopost: null
+      view: "overview", ctab: "clips", liveAutopost: null, postTab: "upcoming"
     };
     const D = { jid: null, cid: null, sig: "" };
     const creatorId = () => S.view.startsWith("c:") ? S.view.slice(2) : null;
@@ -10959,6 +10973,36 @@
 
     /* ============================================================ overview */
     async function loadOverview() { try { S.overview = await api("/api/overview"); } catch { return; } drawOverview(); }
+    function editPostTime(p) {
+      const d = $("#formdlg"), date = new Date(p.due_at * 1000);
+      const localTime = value => new Date(value.getTime() - value.getTimezoneOffset() * 60000).toISOString().slice(0, 19);
+      d.innerHTML = `<form class="dlg"><h2>Edit post time</h2><p class="help">${esc(p.title)} · ${esc(p.account_name)}</p>
+        <div class="row" style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0;"><button class="btn sm" type="button" data-post-minutes="1">Today (+1 min)</button>
+          <button class="btn sm" type="button" data-post-minutes="60">+1 hour</button>
+          <button class="btn sm" type="button" data-post-minutes="180">+3 hours</button>
+          <button class="btn sm" type="button" data-post-minutes="300">+5 hours</button></div>
+        <label class="f">Publish date and time<input id="post_due" type="datetime-local" step="1" value="${localTime(date)}" required></label>
+        <div class="dlg-foot"><button class="btn" type="button" id="post_edit_cancel">Cancel</button><button class="btn primary" type="submit">Save</button></div></form>`;
+      d.returnValue = "no";
+      d.onclose = null;
+      $("#post_edit_cancel").onclick = () => d.close();
+      d.querySelectorAll("[data-post-minutes]").forEach(button => button.onclick = () => {
+        $("#post_due").value = localTime(new Date(Date.now() + Number(button.dataset.postMinutes) * 60000));
+      });
+      d.querySelector("form").onsubmit = async e => {
+        e.preventDefault();
+        const due = new Date($("#post_due").value).getTime() / 1000;
+        if (!Number.isFinite(due) || due <= Date.now() / 1000) return toast("Choose a future date and time.", "bad");
+        const save = d.querySelector('[type="submit"]'); save.disabled = true;
+        try {
+          await send(`/api/posts/${p.id}/schedule`, {due_at:due, expected_due_at:p.due_at}, "PUT");
+          d.close(); p.due_at = due;
+          S.overview.posts.sort((a, b) => a.due_at - b.due_at);
+          drawOverview(); loadOverview(); toast("Post time saved", "ok");
+        } catch (err) { toast(err.message, "bad"); save.disabled = false; loadOverview(); }
+      };
+      d.showModal();
+    }
     function barChart(daily) {
       const W = 720, H = 230, pl = 30, pb = 28, pt = 12, n = daily.length, ch = H - pt - pb;
       const peak = Math.max(1, ...daily.map(d => Math.max(d.clips, d.posted)));
@@ -11047,9 +11091,11 @@
 
     function drawOverview() {
       const o = S.overview, box = $("#ov"); if (!o || !box) return;
+      const posts = (o.posts || []).filter(p => p.status === (S.postTab === "posted" ? "posted" : "scheduled"))
+        .sort((a, b) => S.postTab === "posted" ? (b.posted_at || 0) - (a.posted_at || 0) : a.due_at - b.due_at);
       const sum = k => (o.creators || []).reduce((a, r) => a + (r[k] || 0), 0);
       const d14 = k => (o.daily || []).reduce((a, d) => a + (d[k] || 0), 0);
-      const pst = p => p.status === "posted" ? `<span class="pill ok">Posted</span>` : p.status === "failed" ? `<span class="pill bad">Failed</span>` : p.status === "posting" ? `<span class="pill warn">Posting now</span>` : `<span class="pill warn">${clock(p.due_at)}</span>`;
+      const pst = p => p.status === "posted" ? `<span class="pill ok">Posted</span> <span class="sub">${postWhen(p.posted_at || p.due_at)}</span>` : `<span class="pill warn">${postWhen(p.due_at)}</span>`;
       const state = r => r.state === "recording" ? `<span class="pill live"><span class="dot"></span>Recording</span>` : r.state === "waiting" ? `<span class="pill warn">Waiting for live</span>` : `<span class="pill">Idle</span>`;
       const steps = nextSteps(o);
 
@@ -11347,10 +11393,13 @@
           : `<div class="empty"><img src="/brand/favicon.svg" alt=""><b>No channels yet</b>Add YouTube, Twitch or Kick channels to start automatic clipping.</div>`}</div>
     <div class="card sedela-card"><div class="card-head"><div><h2>Post Queue</h2><p class="sub">${o.paused ? "Paused. Recording and clipping carry on; nothing is posted." : "Queued clips go out at their scheduled time."}</p></div>
         <button class="btn ${o.paused ? "primary" : ""}" data-act="pause">${ic(o.paused ? "play" : "pause")}${o.paused ? "Resume posting" : "Pause all posting"}</button></div>
-      ${o.posts.length ? `<div class="scroll"><table class="stack"><tr><th>When</th><th>Clip</th><th>Channel</th><th>Account</th><th class="num">Views</th><th></th></tr>
-      ${o.posts.map(p => `<tr><td data-l="Status">${pst(p)}</td><td data-l="Clip" class="c-main">${p.url ? `<a class="lnk" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>` : esc(p.title)}${p.error ? `<div class="err" style="margin:2px 0 0">${esc(p.error)}</div>` : ""}</td><td data-l="Channel">${esc(p.creator_name || "None")}</td><td data-l="Account">${esc(p.account_name)}</td><td data-l="Views" class="num">${p.views ?? "–"}</td>
-        <td class="c-act" style="text-align:right">${p.status === "scheduled" ? `<button class="btn sm" data-act="pcancel" data-id="${p.id}">Cancel</button>` : p.status === "failed" ? `<button class="btn sm" data-act="pretry" data-id="${p.id}">Retry</button>` : ""}</td></tr>`).join("")}</table></div>`
-          : `<p class="help">Nothing queued or posted yet.</p>`}</div>
+      <div class="tabs" role="tablist" aria-label="Post queue" style="margin-bottom:12px;">
+        <button class="tabbtn ${S.postTab === "upcoming" ? "on" : ""}" data-act="posttab" data-t="upcoming" role="tab" aria-selected="${S.postTab === "upcoming"}">Upcoming</button>
+        <button class="tabbtn ${S.postTab === "posted" ? "on" : ""}" data-act="posttab" data-t="posted" role="tab" aria-selected="${S.postTab === "posted"}">Posted</button></div>
+      ${posts.length ? `<div class="scroll"><table class="stack"><tr><th>When</th><th>Clip</th><th>Channel</th><th>Account</th><th class="num">Views</th><th></th></tr>
+      ${posts.map(p => `<tr><td data-l="Status">${pst(p)}</td><td data-l="Clip" class="c-main">${p.url ? `<a class="lnk" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>` : esc(p.title)}${p.error ? `<div class="err" style="margin:2px 0 0">${esc(p.error)}</div>` : ""}</td><td data-l="Channel">${esc(p.creator_name || "None")}</td><td data-l="Account">${esc(p.account_name)}</td><td data-l="Views" class="num">${p.views ?? "–"}</td>
+        <td class="c-act" style="text-align:right">${p.status === "scheduled" ? `${p.due_at > Date.now() / 1000 ? `<button class="btn sm" data-act="pedit" data-id="${p.id}">Edit</button> ` : ""}<button class="btn sm" data-act="pcancel" data-id="${p.id}">Cancel</button>` : p.status === "failed" ? `<button class="btn sm" data-act="pretry" data-id="${p.id}">Retry</button>` : ""}</td></tr>`).join("")}</table></div>`
+          : `<p class="help">${S.postTab === "posted" ? "No posted videos yet." : "No upcoming posts."}</p>`}</div>
   `);
     }
 
@@ -11827,8 +11876,14 @@
         renderModelChips($("#ai_provider")?.value, e.target.value);
       }
       if (e.target.id === "whopSearchInput") {
-        S_whop.query = e.target.value.trim();
+        S_whop.query = e.target.value;
+        const pos = e.target.selectionStart;
         drawWhopCampaigns();
+        const inp = $("#whopSearchInput");
+        if (inp) {
+          inp.focus();
+          inp.setSelectionRange(pos, pos);
+        }
       }
     });
 
@@ -12254,6 +12309,8 @@
         if (a === "csave") return void await saveCreator();
         if (a === "cdiscard") { drawCreatorForm(); return toast("Changes discarded"); }
         if (a === "pause") { await send("/api/settings", { paused: !S.overview.paused }, "PUT"); return loadOverview(); }
+        if (a === "posttab") { S.postTab = d.t === "posted" ? "posted" : "upcoming"; return drawOverview(); }
+        if (a === "pedit") { const p = (S.overview?.posts || []).find(x => x.id === d.id); if (p && p.status === "scheduled" && p.due_at > Date.now() / 1000) return editPostTime(p); return loadOverview(); }
         if (a === "pcancel" || a === "pretry") { await api(`/api/posts/${d.id}/${a === "pcancel" ? "cancel" : "retry"}`, { method: "POST" }); return loadOverview(); }
         if (a === "ssave") { await saveSettings(); toast("Saved", "ok"); return drawSettings(); }
         if (a === "plansave") {

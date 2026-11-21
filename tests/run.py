@@ -77,6 +77,7 @@ def main() -> int:
                 ("live recording stops and empty stream URLs", ["tests/test_live.py"]),
                 ("exact moments, YouTube heatmap and profanity clean", ["tests/test_moments.py"]),
                 ("Whop campaigns integration and earnings", ["tests/test_whop.py"]),
+                ("post queue: change schedule and keep the right order", ["tests/test_post_schedule.py"]),
                 ("multi-stream studio watching and clipping", ["tests/test_multistream.py"]),
                 ("neon split-screen layout and branding", ["tests/test_neon_features.py"])]
         for name, args in runs:

@@ -656,6 +656,40 @@ def _facecam(job) -> list | None:
     return job["facecam"]
 
 
+class HandedToLive(Exception):
+    """A pasted link turned out to be a live stream: it is now being recorded and clipped live instead."""
+
+
+def _start_live_from_link(job, url, meta) -> str:
+    """Start live clipping for a pasted live-stream link, the same as pressing Start recording on a creator.
+    The creator is found by name (or made, named after the channel) and the options chosen for this video
+    become its clip settings. Returns the creator id."""
+    from . import live
+    name = (meta.get("uploader") or "").strip() or "Live stream"
+    o = job["options"]
+    wanted = {k: o[k] for k in ("min_len", "max_len", "max_clips", "style", "layout", "captions", "hook_text", "description_text")
+              if o.get(k) not in (None, "")}
+    if job.get("game"):
+        wanted["game"] = job["game"]
+    c = None
+    if job.get("creator"):
+        c = creators.get(job["creator"])
+    if not c:
+        c = next((x for x in creators.all_creators() if x["name"].strip().lower() == name.lower()), None)
+    if not c:
+        c = creators.create({"name": name, "channel": url, **wanted})
+        creators.log(c["id"], "Made from a pasted live link")
+    else:
+        c = creators.update(c["id"], wanted)
+    if live.active_for(c["id"]):
+        raise RuntimeError(f"{c['name']} is already being recorded and clipped live. Open the creator to watch it.")
+    try:
+        live.start_session(c, url)
+    except ValueError as e:
+        raise RuntimeError(f"Could not start live clipping: {e}") from e
+    return c["id"]
+
+
 def _check_stop(job):
     if job.get("stop"):
         raise Stopped()
@@ -908,8 +942,7 @@ def _run_job(job):
         if ((o["range_end"] or meta["duration"]) - (o["range_start"] or 0)) > config.MAX_VIDEO_HOURS * 3600:
             raise RuntimeError(f"That is longer than {config.MAX_VIDEO_HOURS:g} hours. Choose a shorter part of it under Options.")
         if meta["is_live"]:
-            raise RuntimeError("This link is a live stream, so it would never finish downloading. Open the creator, "
-                               "put this link under Setup, and press Start recording instead.")
+            raise HandedToLive(_start_live_from_link(job, src["url"], meta))
         _set(job, title=meta["title"], uploader=meta["uploader"], duration=meta["duration"])
         if not job.get("thumb") and media.save_thumb(d, url=src["url"]):
             _set(job, thumb=True)
@@ -1185,6 +1218,8 @@ def _worker(quick_only=False):
                     save(job)
                     ctx.bump()
                     raise
+        except HandedToLive:
+            delete(job["id"])     # the live recording takes its place, so the empty video card goes away
         except Stopped:
             job.pop("stop", None)
             for c in job.get("clips", []):

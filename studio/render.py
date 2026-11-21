@@ -302,7 +302,7 @@ def _filter(layout, fg_h, facecam=None, cam_pos="tr"):
         fx, fy, fw, fh = (int(v) for v in facecam)
         if fw > 8 and fh > 8:
             pip_h = max(2, int(round(PIP_W * fh / fw)))
-            return (f"[0:v]fps={config.OUT_FPS},split=2[base][fc];"
+            return (f"[0:v]setpts=PTS-STARTPTS,fps={config.OUT_FPS},split=2[base][fc];"
                     f"[base]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1[b];"
                     f"[fc]crop={fw}:{fh}:{fx}:{fy},scale={PIP_W}:{pip_h},setsar=1[p];"
                     f"[b][p]overlay={W - PIP_W - PIP_MARGIN}:{PIP_MARGIN}[v0];")

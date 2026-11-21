@@ -35,6 +35,12 @@ PROVIDERS = {
 ALIASES = {"google": "gemini", "grok": "xai", "claude": "anthropic", "local": "ollama"}
 NO_KEY = {"ollama", "custom"}       # a model running on your own machine needs no key
 
+# How much a model may say about one picture. The answer itself is one short line ("CAM x=..% y=..%"), so
+# the room here is for a model that thinks before it answers: a thinking model can spend a few hundred
+# tokens working out what it is looking at, and a limit set just above the visible answer cuts the answer
+# off entirely, leaving no text at all for the caller to read.
+SEE_TOKENS = 3000
+
 # ---------------------------------------------------------------- the settings in use
 _lock = threading.Lock()
 _saved = {"at": None, "data": {}}
@@ -358,7 +364,7 @@ def see(prompt: str, image: bytes, timeout: float | None = None) -> tuple[str, i
         sent = int(u.get("promptTokenCount") or 0)
         return text, sent, max(0, int(u.get("totalTokenCount") or 0) - sent)
     if how == "anthropic":
-        body = {"model": model, "max_tokens": 300, "messages": [{"role": "user", "content": [
+        body = {"model": model, "max_tokens": SEE_TOKENS, "messages": [{"role": "user", "content": [
             {"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": b64}},
             {"type": "text", "text": prompt}]}]}
         r = httpx.post(f"{base_url()}/messages", json=body, timeout=timeout or 120,
@@ -387,6 +393,17 @@ def _gem(model: str) -> str:
     return model.removeprefix("models/")
 
 
+_GEMINI_SCHEMA_ERRORS = (
+    "schema",
+    "responsemimetype",
+    "response_mime_type",
+    "json mode",
+    "json_mode",
+    "application/json",
+    "controlled generation",
+)
+
+
 def _gemini(model, prompt, schema, timeout=None):
     url = f"{base_url()}/{_gem(model)}:generateContent"
     headers = {"x-goog-api-key": key()}
@@ -394,8 +411,9 @@ def _gemini(model, prompt, schema, timeout=None):
             "generationConfig": {"temperature": 0.4, "responseMimeType": "application/json", "responseSchema": schema}}
     r = httpx.post(url, json=body, headers=headers, timeout=timeout or 120)
     used_plain = False
-    if r.status_code in (400, 422) and "api key" not in r.text.lower() and "api_key" not in r.text.lower():
-        # Models like Gemma in the Gemini list support generateContent without responseSchema.
+    low = (r.text or "").lower() if r.status_code in (400, 422) else ""
+    if low and any(t in low for t in _GEMINI_SCHEMA_ERRORS):
+        # Models like Gemma in the Gemini list support generateContent without responseSchema or JSON mode.
         plain = {"contents": [{"role": "user", "parts": [{"text": _wrapped(prompt, schema)}]}]}
         r = httpx.post(url, json=plain, headers=headers, timeout=timeout or 120)
         used_plain = True
