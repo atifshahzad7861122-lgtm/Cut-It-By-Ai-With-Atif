@@ -12,7 +12,7 @@ from pathlib import Path
 
 import numpy as np
 
-from . import alerts, auth, brain, config, creators, ctx, jobs, load, media, transcribe, usage
+from . import alerts, auth, brain, config, creators, ctx, excite, jobs, load, media, transcribe, usage
 
 SESSIONS: dict = {}
 SEG_SEC = 6           # length of each buffer piece
@@ -403,7 +403,7 @@ class Session:
         must = st["must_clip_min"] > 0 and time.time() - last_clip >= st["must_clip_min"] * 60
         verdict = {"t": round(now), "transcript": None, "reaction": None, "trigger": why}
         if len(win) < 8:
-            if not (why and "jump" in why.lower()):
+            if not why:
                 self.skipped += 1
                 return self._verdict(verdict, "Skipped: nobody talking")
         if len(recent) >= st["live_per_hour"] and not must:
@@ -416,24 +416,40 @@ class Session:
                                                 n=1 if every <= 2 else 2, must=must)  # Auto (0) asks for one
         except Exception as e:  # noqa: BLE001
             self.job["ai"]["last_error"] = str(e)[-200:]
-            if not (why and "jump" in why.lower()):
-                return self._verdict(verdict, "AI error: " + str(e)[-80:])
-            cands, tok = [], 0
+            if not why:
+                try:
+                    db_win = self.db[int(ws): int(now) + 1]
+                    picks = brain.fallback_by_loudness(db_win, win, 1, st.get("max_len", 60), now - ws)
+                    if picks:
+                        p = picks[0]
+                        p["start"] = round(p["start"] + ws, 2)
+                        p["end"] = round(p["end"] + ws, 2)
+                        p["score"] = 75
+                        p["judges"] = {"words": 75, "reaction": 75, "why": "Loudness highlight"}
+                        p["reason"] = "Live highlight detected by loudness"
+                        cands = [p]
+                        tok = 0
+                    else:
+                        return self._verdict(verdict, "AI error: " + str(e)[-80:])
+                except Exception:
+                    return self._verdict(verdict, "AI error: " + str(e)[-80:])
+            else:
+                cands, tok = [], 0
         self.checks += 1
         self.tokens += tok
         keep = [c for c in cands if c["score"] >= (40 if must else st["min_score"])]
         verdict["transcript"] = max((c["score"] for c in cands), default=0)
         if not keep:
-            if why and "jump" in why.lower():
+            if why:
                 text = " ".join(w["w"] for w in win)
                 usage.set_context(self.job["creator"], self.job["title"] or "Live stream")
                 try:
                     c = brain.describe(text, self.job["title"], self.job["uploader"])
                 except Exception:
-                    c = {"hook": "HIGHLIGHT", "title": f"Live {why}", "description": "", "hashtags": [], "highlight_words": [], "reason": why}
+                    c = {"hook": "HIGHLIGHT", "title": f"Live Highlight - {self.job.get('uploader') or 'Stream'}", "description": "", "hashtags": ["gaming", "live", "viral"], "highlight_words": [], "reason": why}
                 c.update(start=round(ws, 2), end=round(min(now, self.samples / SR), 2), score=80,
                          judges={"words": None, "reaction": 80, "why": why},
-                         reason=f"Spike triggered ({why.lower()})")
+                         reason=f"Highlight triggered ({why.lower()})")
                 if not any(abs(c["start"] - k["start"]) < st["min_gap_min"] * 60 for k in self.job["clips"]):
                     self._add_clip(c)
                     self._verdict(verdict, "Clipped: " + why.lower())
@@ -454,8 +470,8 @@ class Session:
             match = [m for m in sig if m["end"] >= c["start"] - 10 and m["start"] <= c["end"] + 10 and m["score"] >= 50]
             rs = max((m["score"] for m in match), default=0)
             verdict["reaction"] = rs
-            both = bool(match) or bool(why and "jump" in why.lower())
-            ok = both or (st["decide_mode"] == "either" and c["score"] >= st.get("min_score", 70)) or (must and added == 0)
+            both = bool(match) or bool(why)
+            ok = both or (st.get("decide_mode", "either") in ("either", "words", "reaction")) or (must and added == 0)
             if not ok:
                 self.rejected += 1
                 self._verdict(verdict, "Reaction judge said no, not clipped")
@@ -463,8 +479,8 @@ class Session:
             if any(abs(c["start"] - k["start"]) < st["min_gap_min"] * 60 for k in self.job["clips"]):
                 self._verdict(verdict, "Too close to the last clip")
                 continue
-            why_txt = "Both judges agreed" if bool(match) else ("Chat/loudness jump" if (why and "jump" in why.lower()) else ("Words judge was confident" if st["decide_mode"] == "either" else "Forced: no clip for a while"))
-            c["judges"] = {"words": c["score"], "reaction": rs or (80 if (why and "jump" in why.lower()) else None), "why": why_txt}
+            why_txt = "Both judges agreed" if bool(match) else (f"Triggered: {why}" if why else ("Words judge was confident" if st.get("decide_mode") == "either" else "Forced: no clip for a while"))
+            c["judges"] = {"words": c["score"], "reaction": rs or (80 if why else None), "why": why_txt}
             c["reason"] = f"{c['reason']} ({why_txt.lower()}.)"
             self._add_clip(c)
             self._verdict(verdict, "Clipped: " + why_txt.lower())
@@ -481,14 +497,25 @@ class Session:
     SAID_BEFORE, SAID_AFTER, SAID_GAP = 60, 15, 45
 
     def _triggers(self, new_words):
-        """Built in: when someone says "clip" ("clip it", "clip that"), the AI looks at that moment as soon as its
-        transcript is ready; people say it right after something worth clipping. Then the creator's own trigger
-        phrases from Setup, which clip straight away with no AI check."""
+        """Built in: when someone says "clip" ("clip it", "clip that"), or gaming excitement words (Hindi, Hinglish, English),
+        the AI looks at that moment as soon as its transcript is ready. Then the creator's trigger phrases."""
         for w in new_words or []:
-            if self.CLIP_WORDS.search(re.sub(r"[^a-z' ]", "", w["w"].lower())) and w["s"] - self.last_said > self.SAID_GAP \
+            text_w = w.get("w", "")
+            if self.CLIP_WORDS.search(re.sub(r"[^a-z' ]", "", text_w.lower())) and w["s"] - self.last_said > self.SAID_GAP \
                     and not self.said:
                 self.said = {"t": w["s"], "why": 'Someone said "clip"'}
                 self.last_said = w["s"]
+            elif not self.said and w["s"] - self.last_said > self.SAID_GAP:
+                matched, why_hype = excite.match_hype(text_w)
+                if matched:
+                    self.said = {"t": w["s"], "why": f"Hype: {why_hype}"}
+                    self.last_said = w["s"]
+        if not self.said and new_words and new_words[-1]["s"] - self.last_said > self.SAID_GAP:
+            phrase_text = " ".join(w.get("w", "") for w in new_words[-6:])
+            matched, why_hype = excite.match_hype(phrase_text)
+            if matched:
+                self.said = {"t": new_words[-1]["s"], "why": f"Hype: {why_hype}"}
+                self.last_said = new_words[-1]["s"]
         phrases = [p.strip().lower() for p in self.settings.get("trigger_words", "").split(",") if p.strip()]
         if not phrases or not new_words:
             return
@@ -752,8 +779,38 @@ def start_session(creator: dict, url=None) -> dict:
     return job
 
 
-def start_stream_url(url: str, creator_id: str = None) -> dict:
-    """Start watching and recording a stream URL directly. Reuses or creates a creator if needed."""
+def get_live_autopost(uid: str = None) -> dict:
+    u = uid or ctx.uid()
+    f = config.user_dir(u) / "live_autopost.json"
+    if not f.exists():
+        return {"autopost": False, "accounts": [], "min_score": 70}
+    try:
+        return json.loads(f.read_text(encoding="utf-8"))
+    except Exception:
+        return {"autopost": False, "accounts": [], "min_score": 70}
+
+
+def set_live_autopost(data: dict, uid: str = None) -> dict:
+    u = uid or ctx.uid()
+    f = config.user_dir(u) / "live_autopost.json"
+    cur = get_live_autopost(u)
+    if "autopost" in data:
+        cur["autopost"] = bool(data["autopost"])
+    if "accounts" in data and isinstance(data["accounts"], list):
+        cur["accounts"] = [str(a) for a in data["accounts"]]
+    if "min_score" in data:
+        cur["min_score"] = max(0, min(100, int(data["min_score"])))
+    f.parent.mkdir(parents=True, exist_ok=True)
+    tmp = f.with_suffix(".tmp")
+    tmp.write_text(json.dumps(cur, indent=1), encoding="utf-8")
+    tmp.replace(f)
+    return cur
+
+
+def start_stream_url(url: str, creator_id: str = None, autopost: bool = None, accounts: list = None,
+                     style: str = None, layout: str = None) -> dict:
+    """Start watching and recording a stream URL directly. Reuses or creates a creator if needed,
+    configuring auto-clipping and multi-stream auto-posting."""
     url = normalize(url)
     if not re.match(r"^https?://[^/]+\.[^/]+/", url + "/"):
         raise ValueError("Invalid stream link.")
@@ -762,6 +819,33 @@ def start_stream_url(url: str, creator_id: str = None) -> dict:
     for s in active_mine():
         if s.job.get("source", {}).get("url") == url:
             raise ValueError("This stream is already being recorded.")
+
+    # Resolve autopost preferences
+    pref = get_live_autopost()
+    if autopost is None:
+        autopost = pref.get("autopost", False)
+    if accounts is None:
+        accounts = pref.get("accounts", [])
+    if autopost and not accounts:
+        try:
+            from . import accounts as acc_mod
+            accounts = [a["id"] for a in acc_mod.list_accounts()]
+        except Exception:
+            accounts = []
+
+    c_cfg = {
+        "decide_mode": "either",
+        "ai_only_on_spike": False,
+        "ai_every_min": 2,
+        "min_score": 70,
+        "post_min_score": 70,
+        "autopost": bool(autopost),
+        "accounts": list(accounts),
+    }
+    if style:
+        c_cfg["style"] = style
+    if layout:
+        c_cfg["layout"] = layout
 
     c = None
     if creator_id:
@@ -793,14 +877,21 @@ def start_stream_url(url: str, creator_id: str = None) -> dict:
                 name = info["title"][:40]
         except Exception:
             pass
+        init_data = {"name": name, "channel": url, "channels": {plat: url}, **c_cfg}
         if len(creators.all_creators()) < config.MAX_CREATORS:
-            c = creators.create({"name": name, "channel": url, "channels": {plat: url}})
+            c = creators.create(init_data)
         else:
             idle = [x for x in creators.all_creators() if not active_for(x["id"])]
             if idle:
                 c = idle[0]
+                c = creators.update(c["id"], init_data)
             else:
                 raise ValueError("All creator slots are currently recording. Stop one first.")
+    else:
+        try:
+            c = creators.update(c["id"], c_cfg)
+        except Exception:
+            c.update(c_cfg)
     return start_session(c, url)
 
 

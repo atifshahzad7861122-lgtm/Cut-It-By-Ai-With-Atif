@@ -1355,9 +1355,75 @@ def active_live_streams():
             "checks": s.checks,
             "clips_count": len(j.get("clips", [])),
             "status": j.get("status", "live"),
+            "autopost": bool(s.settings.get("autopost")),
+            "accounts": list(s.settings.get("accounts", [])),
             "verdicts": list(reversed(s.verdicts[:3]))
         })
-    return {"streams": out, "count": len(out), "max_allowed": 6}
+    return {"streams": out, "count": len(out), "max_allowed": 6, "autopost_pref": live.get_live_autopost()}
+
+
+@app.get("/api/live/autopost")
+def get_live_autopost():
+    _need_verified()
+    return live.get_live_autopost()
+
+
+@app.post("/api/live/autopost")
+def set_live_autopost(body: dict = Body(...)):
+    _need_verified()
+    res = live.set_live_autopost(body)
+    for s in live.active_mine():
+        if "autopost" in body:
+            s.settings["autopost"] = bool(body["autopost"])
+        if "accounts" in body and isinstance(body["accounts"], list):
+            s.settings["accounts"] = [str(a) for a in body["accounts"]]
+        if s.job.get("creator"):
+            try:
+                creators.update(s.job["creator"], {
+                    "autopost": s.settings.get("autopost", False),
+                    "accounts": s.settings.get("accounts", []),
+                    "decide_mode": "either",
+                    "ai_only_on_spike": False
+                })
+            except Exception:
+                pass
+    ctx.bump()
+    return res
+
+
+@app.post("/api/live/post-all")
+def post_all_live_clips(body: dict = Body(default={})):
+    """Auto-post all finished clips across all active/recent live streams."""
+    _need_verified()
+    target_accounts = body.get("accounts")
+    if not target_accounts:
+        pref = live.get_live_autopost()
+        target_accounts = pref.get("accounts", [])
+    if not target_accounts:
+        target_accounts = [a["id"] for a in accounts.list_accounts()]
+    if not target_accounts:
+        raise HTTPException(400, "No connected social accounts found. Connect YouTube, Instagram or TikTok first.")
+
+    queued_total = 0
+    clips_processed = 0
+
+    all_live_jobs = [s.job for s in live.active_mine()]
+    for j in jobs.list_jobs():
+        if j.get("type") == "live" and j["id"] not in [x["id"] for x in all_live_jobs]:
+            all_live_jobs.append(j)
+
+    for j in all_live_jobs:
+        for c in j.get("clips", []):
+            if c.get("status") == "done":
+                clips_processed += 1
+                try:
+                    made = posting.enqueue(j, c, target_accounts, now=True)
+                    queued_total += len(made)
+                except Exception:
+                    pass
+
+    ctx.bump()
+    return {"ok": True, "queued": queued_total, "clips_count": clips_processed}
 
 
 @app.post("/api/live/watch")
@@ -1375,12 +1441,23 @@ def watch_stream(body: dict = Body(...)):
         raise HTTPException(400, f"You are already recording {current_active} stream(s). You can run at most 6 streams at once.")
     started_jobs = []
     errors = []
+    autopost = body.get("autopost")
+    accounts_list = body.get("accounts")
+    style = body.get("style")
+    layout = body.get("layout")
     for u in urls:
         u_str = str(u or "").strip()
         if not u_str:
             continue
         try:
-            job = live.start_stream_url(u_str, creator_id=body.get("creator_id"))
+            job = live.start_stream_url(
+                u_str,
+                creator_id=body.get("creator_id"),
+                autopost=autopost,
+                accounts=accounts_list,
+                style=style,
+                layout=layout
+            )
             started_jobs.append(jobs.public(job))
         except ValueError as e:
             errors.append(f"{u_str}: {e}")

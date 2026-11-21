@@ -708,6 +708,128 @@
       font-size: 13px
     }
 
+    .ms-autopost-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: #17110E;
+      border: 1px solid rgba(255, 139, 51, .25);
+      border-radius: 14px;
+      padding: 10px 16px;
+    }
+
+    .ms-ap-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .ms-pill-tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, .15);
+      color: #10B981;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .ms-switch-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      user-select: none;
+    }
+
+    .ms-switch-label input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #FF8B33;
+      cursor: pointer;
+    }
+
+    .ms-accts-picker {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .ms-acct-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, .15);
+      background: rgba(255, 255, 255, .04);
+      color: #B9A597;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .ms-acct-pill:hover {
+      background: rgba(255, 255, 255, .08);
+      color: #fff;
+    }
+
+    .ms-acct-pill.on {
+      border-color: #FF8B33;
+      background: rgba(255, 139, 51, .15);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .ms-link-btn {
+      font-size: 12px;
+      color: #FF8B33;
+      text-decoration: underline;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .ms-clip-tile .c-badge {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(0,0,0,.7);
+    }
+
+    .ms-clip-tile .c-badge.ok {
+      background: #10B981;
+      color: #fff;
+    }
+
+    .ms-clip-tile .c-badge.pending {
+      background: #F59E0B;
+      color: #fff;
+    }
+
+    .ms-clip-tile .post-btn {
+      margin-top: 6px;
+      width: 100%;
+      font-size: 11px;
+      padding: 4px 8px;
+    }
+
     .ms-grid {
       display: grid;
       gap: 14px;
@@ -3758,59 +3880,156 @@
     }
 
     .lay-prev.stack .ph i {
-      left: 0; right: 0; top: 0; height: 44%;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 44%;
       background: linear-gradient(135deg, #FF8B33, #FFB27A);
-      border-bottom: 2px solid #1E1612; border-radius: 4px 4px 0 0; transform: none; z-index: 2
+      border-bottom: 2px solid #1E1612;
+      border-radius: 4px 4px 0 0;
+      transform: none;
+      z-index: 2
     }
+
     .lay-prev.stack .ph::after {
-      content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 54%;
-      background: linear-gradient(135deg, #38576e, #1a2936); border-radius: 0 0 4px 4px; z-index: 1
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 54%;
+      background: linear-gradient(135deg, #38576e, #1a2936);
+      border-radius: 0 0 4px 4px;
+      z-index: 1
     }
+
     .lay-prev.bottom .ph i {
-      left: 0; right: 0; bottom: 0; top: auto; height: 44%;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: auto;
+      height: 44%;
       background: linear-gradient(135deg, #FF8B33, #FFB27A);
-      border-top: 2px solid #1E1612; border-radius: 0 0 4px 4px; transform: none; z-index: 2
+      border-top: 2px solid #1E1612;
+      border-radius: 0 0 4px 4px;
+      transform: none;
+      z-index: 2
     }
+
     .lay-prev.bottom .ph::after {
-      content: ""; position: absolute; left: 0; right: 0; top: 0; height: 54%;
-      background: linear-gradient(135deg, #38576e, #1a2936); border-radius: 4px 4px 0 0; z-index: 1
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 54%;
+      background: linear-gradient(135deg, #38576e, #1a2936);
+      border-radius: 4px 4px 0 0;
+      z-index: 1
     }
+
     .lay-prev.side .ph i {
-      left: 0; width: 50%; right: auto; top: 0; height: 100%;
-      background: #FF8B33; transform: none; border-right: 2px solid #1E1612; z-index: 2
+      left: 0;
+      width: 50%;
+      right: auto;
+      top: 0;
+      height: 100%;
+      background: #FF8B33;
+      transform: none;
+      border-right: 2px solid #1E1612;
+      z-index: 2
     }
+
     .lay-prev.side .ph::after {
-      content: ""; position: absolute; right: 0; left: 50%; top: 0; bottom: 0;
-      background: #2b3d4a; z-index: 1
+      content: "";
+      position: absolute;
+      right: 0;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      background: #2b3d4a;
+      z-index: 1
     }
+
     .lay-prev.circle .ph i {
-      left: auto; right: 3px; top: 4px; width: 14px; height: 14px;
-      border-radius: 50%; background: #FF8B33; transform: none; z-index: 2
+      left: auto;
+      right: 3px;
+      top: 4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #FF8B33;
+      transform: none;
+      z-index: 2
     }
+
     .lay-prev.circle .ph::after {
-      content: ""; position: absolute; inset: 0; background: #2b3d4a; z-index: 1
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: #2b3d4a;
+      z-index: 1
     }
+
     .lay-prev.pip_tr .ph i {
-      left: auto; right: 2px; top: 3px; width: 12px; height: 10px;
-      background: #FF8B33; border-radius: 2px; transform: none; z-index: 2
+      left: auto;
+      right: 2px;
+      top: 3px;
+      width: 12px;
+      height: 10px;
+      background: #FF8B33;
+      border-radius: 2px;
+      transform: none;
+      z-index: 2
     }
+
     .lay-prev.pip_tl .ph i {
-      left: 2px; right: auto; top: 3px; width: 12px; height: 10px;
-      background: #FF8B33; border-radius: 2px; transform: none; z-index: 2
+      left: 2px;
+      right: auto;
+      top: 3px;
+      width: 12px;
+      height: 10px;
+      background: #FF8B33;
+      border-radius: 2px;
+      transform: none;
+      z-index: 2
     }
+
     .lay-prev.pip_br .ph i {
-      left: auto; right: 2px; bottom: 3px; top: auto; width: 12px; height: 10px;
-      background: #FF8B33; border-radius: 2px; transform: none; z-index: 2
+      left: auto;
+      right: 2px;
+      bottom: 3px;
+      top: auto;
+      width: 12px;
+      height: 10px;
+      background: #FF8B33;
+      border-radius: 2px;
+      transform: none;
+      z-index: 2
     }
+
     .lay-prev.pip_bl .ph i {
-      left: 2px; right: auto; bottom: 3px; top: auto; width: 12px; height: 10px;
-      background: #FF8B33; border-radius: 2px; transform: none; z-index: 2
+      left: 2px;
+      right: auto;
+      bottom: 3px;
+      top: auto;
+      width: 12px;
+      height: 10px;
+      background: #FF8B33;
+      border-radius: 2px;
+      transform: none;
+      z-index: 2
     }
+
     .lay-prev.pip_tr .ph::after,
     .lay-prev.pip_tl .ph::after,
     .lay-prev.pip_br .ph::after,
     .lay-prev.pip_bl .ph::after {
-      content: ""; position: absolute; inset: 0; background: #2b3d4a; z-index: 1
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: #2b3d4a;
+      z-index: 1
     }
 
     .seg {
@@ -9100,7 +9319,7 @@
     /* ============================================================ state */
     const S = {
       status: { styles: {}, layouts: {} }, jobs: [], creators: [], accounts: [], overview: null, settings: null,
-      view: "overview", ctab: "clips"
+      view: "overview", ctab: "clips", liveAutopost: null
     };
     const D = { jid: null, cid: null, sig: "" };
     const creatorId = () => S.view.startsWith("c:") ? S.view.slice(2) : null;
@@ -9172,10 +9391,31 @@
     const streamPlatform = u => !u ? "video" : /twitch\.tv/i.test(u) ? "twitch" : /kick\.com/i.test(u) ? "kick" : /youtu/i.test(u) ? "youtube" : "video";
     function drawMultiStream() {
       const box = $("#mstream"); if (!box) return;
+      if (!S.liveAutopost && S.status.user) {
+        api("/api/live/autopost").then(d => { S.liveAutopost = d; render(); }).catch(() => {});
+      }
       const liveJobs = S.jobs.filter(j => j.status === "live");
       const liveCount = liveJobs.length;
       const idleCreators = S.creators.filter(c => !c.live_job && (c.channel || (c.channels && Object.keys(c.channels).length)));
       const anyLiveCreators = S.creators.filter(c => !c.live_job && liveOn(c).length > 0);
+
+      const allClips = [];
+      for (const j of liveJobs) {
+        for (const c of (j.clips || [])) {
+          allClips.push({ ...c, jid: j.id, stream_title: j.title || j.name, uploader: j.uploader });
+        }
+      }
+      for (const j of S.jobs) {
+        if (j.type === "live" && j.status !== "live") {
+          for (const c of (j.clips || [])) {
+            if (!allClips.some(x => x.jid === j.id && x.id === c.id)) {
+              allClips.push({ ...c, jid: j.id, stream_title: j.title || j.name, uploader: j.uploader });
+            }
+          }
+        }
+      }
+      allClips.sort((a, b) => (b.made_at || 0) - (a.made_at || 0));
+      const allReadyClips = allClips.filter(c => c.status === "done");
 
       let html = `<div class="ms-wrap">
     <div class="ms-banner">
@@ -9184,8 +9424,29 @@
         <span class="badge ${liveCount ? 'live' : ''}">${liveCount ? `<i></i>${liveCount} / 6 Streams Active` : "0 / 6 Streams Active"}</span>
       </div>
       <div class="actions">
+        ${allReadyClips.length > 0 ? `<button class="btn primary sm" data-act="ms_post_all">${ic("paperplane")} Auto-Post All Clips (${allReadyClips.length})</button>` : ""}
         ${liveCount > 0 ? `<button class="btn danger sm" data-act="stopalllive">${ic("stop")}Stop all streams</button>` : ""}
         ${anyLiveCreators.length > 0 && liveCount < 6 ? `<button class="btn primary sm" data-act="startalllive">${ic("play")}Start all live (${anyLiveCreators.length})</button>` : ""}
+      </div>
+    </div>
+
+    <div class="ms-autopost-bar">
+      <div class="ms-ap-left">
+        <span class="ms-pill-tag">⚡ Auto-Clip: ON</span>
+        <label class="ms-switch-label">
+          <input type="checkbox" id="ms_autopost_chk" ${S.liveAutopost?.autopost ? 'checked' : ''} data-act="ms_autopost_toggle">
+          <span>Auto-Post Stream Clips</span>
+        </label>
+        <div class="ms-accts-picker">
+          ${S.accounts.length ? S.accounts.map(a => `
+            <button class="ms-acct-pill ${(S.liveAutopost?.accounts || []).includes(a.id) ? 'on' : ''}" data-act="ms_acct_toggle" data-aid="${esc(a.id)}" title="${(S.liveAutopost?.accounts || []).includes(a.id) ? 'Posting active' : 'Click to enable posting'}">
+              ${platLogo(a.platform)} <span>${esc(a.name || a.label || a.platform)}</span>
+            </button>
+          `).join("") : `<a href="/app/settings" data-act="go" data-v="settings" data-tab="accounts" class="ms-link-btn">${ic("plus")} Connect YouTube / Instagram / TikTok</a>`}
+        </div>
+      </div>
+      <div class="ms-ap-right">
+        ${allReadyClips.length > 0 ? `<button class="btn primary sm" data-act="ms_post_all" title="Instantly post all completed clips across streams">${ic("paperplane")} Auto-Post All Ready Clips (${allReadyClips.length})</button>` : `<span style="font-size:12px;color:#888">Clips auto-post when ready</span>`}
       </div>
     </div>
 
@@ -9245,6 +9506,10 @@
               <span>Clips Cut</span>
               <b>${(j.clips || []).length} clip${(j.clips || []).length === 1 ? '' : 's'}</b>
             </div>
+            <div class="ms-metric">
+              <span>Auto-Post</span>
+              <b>${(j.autopost || S.liveAutopost?.autopost) ? '<span style="color:#10B981">ON</span>' : '<span style="color:#888">OFF</span>'}</b>
+            </div>
           </div>
           <div class="ms-card-acts">
             <button class="btn sm" data-act="clipnow" data-j="${esc(j.id)}" data-s="30">${ic("scissors")}Clip 30s</button>
@@ -9257,30 +9522,31 @@
         html += `</div>`;
       }
 
-      const allClips = [];
-      for (const j of liveJobs) {
-        for (const c of (j.clips || [])) {
-          allClips.push({ ...c, jid: j.id, stream_title: j.title || j.name, uploader: j.uploader });
-        }
-      }
-      allClips.sort((a, b) => (b.made_at || 0) - (a.made_at || 0));
-
       if (allClips.length > 0) {
-        html += `<div class="ms-clips-head">
+        html += `<div class="ms-clips-head" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
       <h3>${ic("scissors")} Clips Generated from Live Streams (${allClips.length})</h3>
+      ${allReadyClips.length > 0 ? `<button class="btn primary sm" data-act="ms_post_all">${ic("paperplane")} Auto-Post All Ready Clips (${allReadyClips.length})</button>` : ""}
     </div>
     <div class="ms-clips-grid">
-      ${allClips.slice(0, 12).map(c => `
+      ${allClips.slice(0, 12).map(c => {
+        const posts = Object.values(c.posts || {});
+        const hasPosted = posts.some(p => p.status === "posted");
+        const isPosting = posts.some(p => p.status === "scheduled" || p.status === "posting");
+        return `
         <div class="ms-clip-tile" data-act="clipdlg" data-j="${esc(c.jid)}" data-cid="${esc(c.id)}">
           <div class="ms-clip-cover">
             ${c.cover ? `<img src="/api/jobs/${esc(c.jid)}/files/${esc(c.cover)}" alt="">` : `<div style="display:grid;place-items:center;height:100%;color:#888">${ic("film")}</div>`}
+            ${hasPosted ? `<span class="c-badge ok">✅ Posted</span>` : isPosting ? `<span class="c-badge pending">⏳ Posting…</span>` : ''}
           </div>
           <div class="ms-clip-info">
             <b>${esc(c.hook || c.title || 'Live Clip')}</b>
             <span>${esc(c.uploader || c.stream_title || 'Live Stream')}</span>
+            ${c.status === "done" && !hasPosted && !isPosting ? `
+              <button class="btn sm primary post-btn" data-act="ms_post_clip" data-j="${esc(c.jid)}" data-cid="${esc(c.id)}" onclick="event.stopPropagation()">${ic("paperplane")} Auto-Post</button>
+            ` : ""}
           </div>
         </div>
-      `).join("")}
+      `}).join("")}
     </div>`;
       }
 
@@ -10894,38 +11160,37 @@
       D.sig = sig;
       put($("#dposts"), postPills(c));
     }
-    
-        $("#clipdlg").addEventListener("close", () => { $("#clipdlg").innerHTML = ""; D.jid = null; });
-        $("#clipdlg").addEventListener("click", e => { if (e.target === e.currentTarget) e.currentTarget.close(); });
+    $("#clipdlg").addEventListener("close", () => { $("#clipdlg").innerHTML = ""; D.jid = null; });
+    $("#clipdlg").addEventListener("click", e => { if (e.target === e.currentTarget) e.currentTarget.close(); });
 
-        /* ============================================================ render + polling */
-        function render() {
-          drawShell(); drawJobs(); drawStream(); drawSelBar();
-          if (S.view === "overview") drawOverview();
-          if (S.view === "multistream") drawMultiStream();
-          if ($("#clog")) drawLog();
-          if (D.jid) drawClipDlg(false);
+    /* ============================================================ render + polling */
+    function render() {
+      drawShell(); drawJobs(); drawStream(); drawSelBar();
+      if (S.view === "overview") drawOverview();
+      if (S.view === "multistream") drawMultiStream();
+      if ($("#clog")) drawLog();
+      if (D.jid) drawClipDlg(false);
+    }
+    async function tick() {
+      try {
+        const got = await api("/api/sync?v=" + encodeURIComponent(S.syncV || ""));
+        const fresh = !!got.jobs, stale = Date.now() - (S.ovAt || 0) > 20000;
+        S.syncV = got.v;
+        if (!fresh) {                                   // nothing of ours changed on the server
+          if (S.view === "overview" && stale) { S.overview = await api("/api/overview"); S.ovAt = Date.now(); render(); }
+          return;
         }
-        async function tick() {
-          try {
-            const got = await api("/api/sync?v=" + encodeURIComponent(S.syncV || ""));
-            const fresh = !!got.jobs, stale = Date.now() - (S.ovAt || 0) > 20000;
-            S.syncV = got.v;
-            if (!fresh) {                                   // nothing of ours changed on the server
-              if (S.view === "overview" && stale) { S.overview = await api("/api/overview"); S.ovAt = Date.now(); render(); }
-              return;
-            }
-            const { jobs, creators, accounts } = got;
-            // a server from before multi-channel support sends only `channel`: show it as that platform's channel
-            creators.forEach(c => { if (!c.channels) { const u = c.channel || "", k = /youtu/i.test(u) ? "youtube" : /twitch/i.test(u) ? "twitch" : /kick/i.test(u) ? "kick" : ""; c.channels = k ? { [k]: u } : {}; } });
-            S.jobs = jobs; S.creators = creators; S.accounts = accounts;
-            if (got.ai) S.status.ai = got.ai;
-            if (got.unread != null) S.status.unread = got.unread;
-            if (S.view === "overview") { S.overview = await api("/api/overview"); S.ovAt = Date.now(); }
-            if (creatorId() && !creator()) return go("overview");
-            render();
-          } catch { }
-        }
+        const { jobs, creators, accounts } = got;
+        // a server from before multi-channel support sends only `channel`: show it as that platform's channel
+        creators.forEach(c => { if (!c.channels) { const u = c.channel || "", k = /youtu/i.test(u) ? "youtube" : /twitch/i.test(u) ? "twitch" : /kick/i.test(u) ? "kick" : ""; c.channels = k ? { [k]: u } : {}; } });
+        S.jobs = jobs; S.creators = creators; S.accounts = accounts;
+        if (got.ai) S.status.ai = got.ai;
+        if (got.unread != null) S.status.unread = got.unread;
+        if (S.view === "overview") { S.overview = await api("/api/overview"); S.ovAt = Date.now(); }
+        if (creatorId() && !creator()) return go("overview");
+        render();
+      } catch { }
+    }
         // Back on the tab (or window): ask straight away instead of waiting out the slow background timer, and put a
         // live player that fell behind while hidden back at the live edge.
         let hiddenAt = 0;
@@ -11196,85 +11461,6 @@
             if (a === "chdel") { const chs = { ...creator().channels }; delete chs[d.p]; return saveChannels(chs); }
             if (a === "spick") { S.spick = { ...S.spick, [creatorId()]: d.p }; return drawStream(); }
             if (a === "chmain") return saveChannels(creator().channels, creator().channels[d.p]);
-            if (a === "golive") {
-      if (!creator().channel) { setTab("setup"); return toast("Connect one of their channels first, then press Start recording.", "bad"); }
-      b.disabled = true; const was = b.innerHTML; b.innerHTML = `<span class="rdot"></span>Starting…`;
-      try {
-        const cid0 = creatorId();
-        const j = await send(`/api/creators/${cid0}/live`, d.url ? { channel: d.url } : {});
-        if (j?.id) { const c = S.creators.find(x => x.id === cid0); if (c) c.live_job = j.id; if (!jobOf(j.id)) S.jobs.unshift(j); render(); }
-        const still = creatorId() === cid0;
-        toast(still ? "Recording started. Clips appear below as they're made." : `Recording started for ${S.creators.find(x => x.id === cid0)?.name || "that creator"}.`, "ok");
-        if (still) setTab("clips");
-      } catch (e) { b.disabled = false; b.innerHTML = was; throw e; }
-      return tick();
-    }
-    if (a === "stoplive") {
-      if (!await ask("Stop recording?", "Clips already made are kept. The rest of the buffer is cleared.", "Stop recording", true)) return;
-      const j = jobOf(d.j); if (j) { j.status = "done"; j.stage = "Stopped by you"; }
-      S.creators.forEach(c => { if (c.live_job === d.j) c.live_job = null; }); render();
-      toast("Recording stopped. Clips already made are kept.", "ok");
-      api(`/api/live/${d.j}/stop`, { method: "POST" }).catch(e => toast(e.message, "bad")).finally(tick); return;
-    }
-    if (a === "copy") {
-      const c = jobOf(d.j).clips.find(x => x.id === d.c);
-      await navigator.clipboard.writeText(`${c.title}\n\n${c.description}\n\n${(c.hashtags || []).map(h => "#" + h).join(" ")}`); return toast("Post text copied", "ok");
-    }
-    if (a === "logout") { await api("/api/auth/logout", { method: "POST" }); location.href = "/"; return; }
-    if (a === "pwsave") {
-      await send("/api/auth/password", { current: $("#pw_cur")?.value || "", new: $("#pw_new").value });
-      toast("Password changed. Other devices were signed out.", "ok"); return drawSettings();
-    }
-    if (a === "delclip") {
-      if (!await ask("Delete this clip?", "The clip is removed for good. The video and its other clips stay.", "Delete clip", true)) return;
-      await api(`/api/jobs/${d.j}/clips/${encodeURIComponent(d.c)}`, { method: "DELETE" });
-      const j = jobOf(d.j); if (j) j.clips = j.clips.filter(c => c.id !== d.c);
-      render(); toast("Clip deleted", "ok"); return tick();
-    }
-    if (a === "dlall") return zipDownload((jobOf(d.j)?.clips || []).filter(c => c.status === "done").map(c => d.j + "." + c.id));
-    if (a === "seldl") return zipDownload(selClips());
-    if (a === "selclear") { sel().clear(); return render(); }
-    if (a === "selall") {
-      const cid = creatorId();
-      (cid ? S.jobs.filter(j => j.creator === cid) : S.jobs).forEach(j => { if (!["queued", "running", "live"].includes(j.status)) { sel().add("j:" + j.id); j.clips.forEach(c => sel().delete(`c:${j.id}:${c.id}`)); } });
-      return render();
-    }
-    if (a === "seldel") {
-      const { jobsSel, clipsSel } = selParts();
-      const what = [jobsSel.length ? (jobsSel.length === 1 ? "1 video with all its clips" : `${jobsSel.length} videos with all their clips`) : "", clipsSel.length ? `${clipsSel.length} clip${clipsSel.length === 1 ? "" : "s"}` : ""].filter(Boolean).join(" and ");
-      if (!await ask("Delete what you selected?", `This removes ${what} for good. It cannot be undone.`, "Delete", true)) return;
-      const r = await send("/api/bulk/delete", { videos: jobsSel, clips: clipsSel });
-      sel().clear(); await tick(); render();
-      return toast(`Deleted ${r.videos} video${r.videos === 1 ? "" : "s"} and ${r.clips} clip${r.clips === 1 ? "" : "s"}` + (r.skipped ? `. ${r.skipped} still being made were left alone.` : ""), "ok");
-    }
-    if (a === "delcreator") {
-      const c = creator(); if (!c) return;
-      const n = S.jobs.filter(j => j.creator === c.id).length;
-      if (!await askTyped(`Delete ${c.name}?`, `This removes the creator, their settings${n ? `, and their ${n} video${n === 1 ? "" : "s"} with all the clips` : ""} for good. It cannot be undone.`, c.name, "Delete creator")) return;
-      await api(`/api/creators/${encodeURIComponent(c.id)}`, { method: "DELETE" });
-      S.creators = S.creators.filter(x => x.id !== c.id); S.jobs = S.jobs.filter(j => j.creator !== c.id);
-      go("overview"); toast("Creator deleted", "ok"); return tick();
-    }
-    if (a === "delaccount") {
-      const me = S.status.user;
-      const typed = await askTyped("Delete your account?", `This removes your account and everything in it for good: creators, recordings, videos, clips, connected accounts and history.`, me.email, "Delete my account");
-      if (!typed) return;
-      await send("/api/account/delete", { confirm: typed });
-      location.href = "/"; return;
-    }
-    if (a === "deljob") {
-      if (!await ask("Delete this video?", "The video and all of its clips are permanently deleted. This cannot be undone.", "Delete", true)) return;
-      await api(`/api/jobs/${d.j}`, { method: "DELETE" }); toast("Deleted"); return tick();
-    }
-    if (a === "chadd") {
-      const k = d.p, v = $("#chan_" + k)?.value.trim();
-      if (!v) { $("#chan_" + k)?.focus(); return toast(`Paste their ${PLAT[k].name} channel link.`, "bad"); }
-      const full = /^https?:\/\//.test(v) ? v : "https://" + v;
-      return saveChannels({ ...creator().channels, [k]: full });
-    }
-    if (a === "chdel") { const chs = { ...creator().channels }; delete chs[d.p]; return saveChannels(chs); }
-    if (a === "spick") { S.spick = { ...S.spick, [creatorId()]: d.p }; return drawStream(); }
-    if (a === "chmain") return saveChannels(creator().channels, creator().channels[d.p]);
     if (a === "golive") {
       if (!creator().channel) { setTab("setup"); return toast("Connect one of their channels first, then press Start recording.", "bad"); }
       b.disabled = true; const was = b.innerHTML; b.innerHTML = `<span class="rdot"></span>Starting…`;
@@ -11304,9 +11490,76 @@
       if (!val) return toast("Paste a YouTube, Twitch, or Kick live stream link.", "bad");
       b.disabled = true; const was = b.innerHTML; b.innerHTML = "Connecting…";
       try {
-        await send("/api/live/watch", { url: val });
+        await send("/api/live/watch", {
+          url: val,
+          autopost: S.liveAutopost?.autopost,
+          accounts: S.liveAutopost?.accounts
+        });
         if (inp) inp.value = "";
-        toast("Live stream connected! Watch and clip started.", "ok");
+        toast("Live stream connected! Watch, auto-clip, and auto-post started.", "ok");
+      } catch (e) {
+        toast(e.message, "bad");
+      } finally {
+        b.disabled = false; b.innerHTML = was;
+      }
+      return tick();
+    }
+    if (a === "ms_autopost_toggle") {
+      const chk = $("#ms_autopost_chk");
+      const on = chk ? chk.checked : !S.liveAutopost?.autopost;
+      if (!S.liveAutopost) S.liveAutopost = { autopost: false, accounts: [], min_score: 70 };
+      S.liveAutopost.autopost = on;
+      if (on && (!S.liveAutopost.accounts || !S.liveAutopost.accounts.length)) {
+        S.liveAutopost.accounts = S.accounts.map(x => x.id);
+      }
+      try {
+        await send("/api/live/autopost", S.liveAutopost);
+        toast(on ? "Auto-post enabled! Real-time clips will be published to your accounts." : "Auto-post turned off.", "ok");
+      } catch (e) {
+        toast(e.message, "bad");
+      }
+      return tick();
+    }
+    if (a === "ms_acct_toggle") {
+      const aid = d.aid;
+      if (!aid) return;
+      if (!S.liveAutopost) S.liveAutopost = { autopost: false, accounts: [], min_score: 70 };
+      const accts = new Set(S.liveAutopost.accounts || []);
+      if (accts.has(aid)) accts.delete(aid);
+      else accts.add(aid);
+      S.liveAutopost.accounts = Array.from(accts);
+      try {
+        await send("/api/live/autopost", S.liveAutopost);
+        toast("Destination accounts updated.", "ok");
+      } catch (e) {
+        toast(e.message, "bad");
+      }
+      return render();
+    }
+    if (a === "ms_post_all") {
+      b.disabled = true; const was = b.innerHTML; b.innerHTML = "Auto-Posting…";
+      try {
+        const res = await send("/api/live/post-all", { accounts: S.liveAutopost?.accounts || [] });
+        toast(`Queued ${res.queued} auto-post action(s) for ${res.clips_count} ready stream clips!`, "ok");
+      } catch (e) {
+        toast(e.message, "bad");
+      } finally {
+        b.disabled = false; b.innerHTML = was;
+      }
+      return tick();
+    }
+    if (a === "ms_post_clip") {
+      e.stopPropagation();
+      const jid = d.j, cid = d.cid;
+      if (!jid || !cid) return;
+      const accts = (S.liveAutopost?.accounts && S.liveAutopost.accounts.length)
+        ? S.liveAutopost.accounts
+        : S.accounts.map(x => x.id);
+      if (!accts.length) return toast("Connect YouTube, Instagram, or TikTok in Settings first.", "bad");
+      b.disabled = true; const was = b.innerHTML; b.innerHTML = "Posting…";
+      try {
+        await send("/api/posts", { job: jid, clip: cid, accounts: accts, now: true });
+        toast("Clip queued for immediate auto-post!", "ok");
       } catch (e) {
         toast(e.message, "bad");
       } finally {

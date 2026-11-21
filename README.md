@@ -20,7 +20,7 @@ creator's live stream and clip the highlights while the stream is still running 
 - **AI Facecam Auto-Detection.** Automatically locates streamer facecams using local YuNet ONNX neural detection, with skin-tone/edge quadrant fallback.
 - **Subtitle Import & Export.** 1-click SRT and WebVTT downloads for every clip, plus custom subtitle track uploads with word-level timing interpolation.
 - **Social Cards & Branding.** Social post cards (`x_light`, `x_dark`, `tiktok_hook`, `breaking_news`), watermark corner placement, outro ribbons, and saved caption branding presets.
-- **Live clipping & Multi-Stream.** Records live streams (YouTube, Twitch, Kick) into a rolling buffer and clips as it happens, with real-time chat spike detection and multi-stream concurrent watching.
+- **Live clipping & Multi-Stream Studio.** Watch and record up to 6 live streams concurrently (YouTube, Twitch, Kick) into a rolling buffer. Automatically detects hype moments (Hindi/Hinglish/English gaming calls, chat surges, and loudness jumps), generates viral clips in real time, and auto-posts them directly to YouTube, Instagram, and TikTok with 1-click batch auto-posting.
 - **Workspaces per creator.** Channels, clip settings, posting rules and an activity log for each creator you clip.
 - **Posting.** Connect YouTube, Instagram and TikTok in one click, then queue or auto-post finished clips, with spacing and daily caps (see [DEPLOY.md](DEPLOY.md#connecting-youtube-instagram-and-tiktok) for the one-time setup).
 - **No sign-in on your own computer.** It opens straight into the dashboard. On a shared server, switch accounts on (`PEAKCUT_ACCOUNTS=1`) for email or Google sign-in and an admin dashboard.
