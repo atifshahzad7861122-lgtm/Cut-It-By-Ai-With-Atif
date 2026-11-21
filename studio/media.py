@@ -1,10 +1,8 @@
 """Getting video in: link download, probing, audio extraction, loudness."""
 import contextlib
 import json
-import math
 import re
 import subprocess
-import threading
 import time
 from pathlib import Path
 
@@ -22,7 +20,8 @@ NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 YT_PAUSE = 600
 _yt_refused_until = 0.0
 YT_BLOCKED = ("YouTube isn't letting Cut it by Ai With Atif download videos right now. Upload the video file instead, or use a "
-              "Twitch or Kick link. YouTube links will be tried again in a few minutes.")
+              "Twitch or Kick link. An admin can fix this by adding YouTube cookies under Settings, Connected apps. "
+              "YouTube links will be tried again in a few minutes.")
 _BOT_CHECK = re.compile(r"not a bot|confirm you.?re not|sign in to confirm(?! your age)", re.I)
 
 
@@ -97,12 +96,17 @@ class _Quiet:
     def error(self, m): pass
 
 
+def cookie_opts() -> dict:
+    """The YouTube cookies an admin saved (Settings, Connected apps), if any. yt-dlp only sends them to YouTube."""
+    return {"cookiefile": str(config.YT_COOKIES)} if config.YT_COOKIES.is_file() else {}
+
+
 def _ydl(opts):
     import yt_dlp
     # a channel or playlist link is answered as "a list" straight away, never walked video by video
     return yt_dlp.YoutubeDL({"noplaylist": True, "quiet": True, "no_warnings": True, "logger": _Quiet(),
                              "extract_flat": "in_playlist", "playlistend": 1, "socket_timeout": 20,
-                             "concurrent_fragment_downloads": 4, **opts})
+                             "concurrent_fragment_downloads": 4, **cookie_opts(), **opts})
 
 
 def _video_format(height):
@@ -135,9 +139,12 @@ def youtube_words(url: str):
     with _youtube_guard(url), _ydl({}) as ydl:
         i = ydl.extract_info(url, download=False)
         auto = i.get("automatic_captions") or {}
-        key = next((k for k in auto if k.endswith("-orig")), None)
-        if not key and i.get("language") in auto:
-            key = i["language"]
+        lang = str(i.get("language") or "").strip().lower()
+        base = lang.split("-")[0] if lang else ""
+        candidates = [f"{lang}-orig", lang, f"{base}-orig", base]
+        key = next((c for c in candidates if c and c in auto), None)
+        if not key:
+            key = next((k for k in auto if k.endswith("-orig")), None)
         track = next((f for f in auto.get(key) or [] if f.get("ext") == "json3" and f.get("url")), None) if key else None
         if not track:
             return None
@@ -175,33 +182,28 @@ def _caption_words(data: dict) -> list:
         timed = len(segs) > 1 or "tOffsetMs" in segs[0]
         for x in segs:
             parts = x["utf8"].split()
-            seg_dur = float(x.get("dDurationMs") or 0) if "dDurationMs" in x else (dur / max(1, len(parts)) if not timed else 0.0)
             for n, w in enumerate(parts):
                 if re.fullmatch(r"[\[(].*[\])]", w) or w in ("[", "]", "__"):
                     continue                      # [Music], [Applause], and words YouTube blanked out
                 # a line with no word timings: its words are spread evenly over the time the line was on screen
                 at = t0 + float(x.get("tOffsetMs") or 0) if timed else t0 + dur * n / max(1, len(parts))
-                part_dur = seg_dur / max(1, len(parts)) if seg_dur > 0 else 0.0
-                we = (at + part_dur) / 1000 if part_dur > 0 else (at / 1000 + 0.6)
-                out.append({"w": w, "s": round(at / 1000, 2), "e": round(we, 2)})
+                out.append({"w": w, "s": round(at / 1000, 2)})
     out.sort(key=lambda w: w["s"])
     for n, w in enumerate(out):
-        nxt = out[n + 1]["s"] if n + 1 < len(out) else w["e"] + 0.4
-        w["e"] = round(max(w["s"] + 0.08, min(nxt, max(w["e"], w["s"] + 0.6))), 2)
+        nxt = out[n + 1]["s"] if n + 1 < len(out) else w["s"] + 0.4
+        w["e"] = round(max(w["s"] + 0.08, min(nxt, w["s"] + 0.6)), 2)
     return out
 
 
 _PREVIEWS: dict = {}
-_previews_lock = threading.Lock()
 
 
 def preview(url: str) -> dict:
     """What the user will get from a link, checked before any work starts. The thumbnail comes back inline
     (the page may only load images from this site). Cached, so retyping a link costs nothing."""
     url = url.strip()
-    with _previews_lock:
-        if url in _PREVIEWS:
-            return _PREVIEWS[url]
+    if url in _PREVIEWS:
+        return _PREVIEWS[url]
     i = info(url)
     if i["kind"] != "video" or not i["title"]:
         raise ValueError("That link is a channel or playlist, not a single video.")
@@ -221,10 +223,9 @@ def preview(url: str) -> dict:
             thumb = ""
     out = {"title": i["title"][:200], "uploader": i["uploader"][:120], "duration": i["duration"],
            "is_live": i["is_live"], "thumb": thumb}
-    with _previews_lock:
-        if len(_PREVIEWS) > 300:
-            _PREVIEWS.pop(next(iter(_PREVIEWS)))
-        _PREVIEWS[url] = out
+    if len(_PREVIEWS) > 300:
+        _PREVIEWS.pop(next(iter(_PREVIEWS)))
+    _PREVIEWS[url] = out
     return out
 
 
@@ -271,13 +272,16 @@ def download(url: str, job_dir: Path, height=720) -> Path:
     return _biggest(job_dir, "source")
 
 
-def download_section(url: str, out_dir: Path, stem: str, start: float, end: float, height=720) -> Path:
-    """Just one stretch of the video. The cut lands on a keyframe, so find_offset() pins the true start."""
+def download_section(url: str, out_dir: Path, stem: str, start: float, end: float, height=720, exact=False) -> Path:
+    """Just one stretch of the video. The cut lands on a keyframe, so find_offset() pins the true start; with
+    exact=True the cut is made at exactly `start` instead (slower), for when there is nothing to match against."""
     from yt_dlp.utils import download_range_func
     out_dir.mkdir(parents=True, exist_ok=True)
-    with _youtube_guard(url), _ydl({"format": _video_format(height), "merge_output_format": "mp4",
-               "outtmpl": str(out_dir / (stem + ".%(ext)s")),
-               "download_ranges": download_range_func(None, [(max(0.0, start), end)])}) as ydl:
+    opts = {"format": _video_format(height), "merge_output_format": "mp4", "outtmpl": str(out_dir / (stem + ".%(ext)s")),
+            "download_ranges": download_range_func(None, [(max(0.0, start), end)])}
+    if exact:
+        opts["force_keyframes_at_cuts"] = True
+    with _youtube_guard(url), _ydl(opts) as ydl:
         ydl.download([url])
     return _biggest(out_dir, stem)
 
@@ -309,14 +313,7 @@ def probe(path: Path) -> dict:
     rot = str((v.get("side_data_list") or [{}])[0].get("rotation", "0"))
     if rot.lstrip("-") in ("90", "270"):
         w, h = h, w
-    dur = data.get("format", {}).get("duration") or v.get("duration") or 0.0
-    try:
-        dur = float(dur)
-        if not math.isfinite(dur) or dur < 0:
-            dur = 0.0
-    except (ValueError, TypeError):
-        dur = 0.0
-    return {"width": w, "height": h, "duration": dur}
+    return {"width": w, "height": h, "duration": float(data["format"]["duration"])}
 
 
 def extract_audio(src: Path, wav: Path):
@@ -332,11 +329,20 @@ def load_audio(wav: Path) -> np.ndarray:
     return data
 
 
+LOUDNESS_PIECE = 600       # seconds of audio worked out at a time
+
+
 def loudness_per_second(audio: np.ndarray) -> np.ndarray:
-    """RMS level in dB for each second of audio."""
+    """RMS level in dB for each second of audio.
+
+    Worked out ten minutes at a time. All at once, a day-long video needs a table of several gigabytes (one
+    float per sample), which most computers cannot find room for; this way it needs about 40 MB, whatever the length."""
     n = len(audio) // 16000
     if n == 0:
         return np.zeros(1, dtype=np.float32)
-    x = audio[: n * 16000].reshape(n, 16000).astype(np.float32) / 32768.0
-    rms = np.sqrt((x ** 2).mean(axis=1) + 1e-10)
-    return (20 * np.log10(rms)).astype(np.float32)
+    out = np.empty(n, dtype=np.float32)
+    for a in range(0, n, LOUDNESS_PIECE):
+        b = min(n, a + LOUDNESS_PIECE)
+        x = audio[a * 16000: b * 16000].reshape(b - a, 16000).astype(np.float32) / 32768.0
+        out[a:b] = 20 * np.log10(np.sqrt((x ** 2).mean(axis=1) + 1e-10))
+    return out

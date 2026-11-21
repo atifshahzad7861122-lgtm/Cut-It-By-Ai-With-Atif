@@ -810,7 +810,7 @@
       font-weight: 700;
       padding: 2px 6px;
       border-radius: 4px;
-      background: rgba(0,0,0,.7);
+      background: rgba(0, 0, 0, .7);
     }
 
     .ms-clip-tile .c-badge.ok {
@@ -9392,7 +9392,7 @@
     function drawMultiStream() {
       const box = $("#mstream"); if (!box) return;
       if (!S.liveAutopost && S.status.user) {
-        api("/api/live/autopost").then(d => { S.liveAutopost = d; render(); }).catch(() => {});
+        api("/api/live/autopost").then(d => { S.liveAutopost = d; render(); }).catch(() => { });
       }
       const liveJobs = S.jobs.filter(j => j.status === "live");
       const liveCount = liveJobs.length;
@@ -9529,10 +9529,10 @@
     </div>
     <div class="ms-clips-grid">
       ${allClips.slice(0, 12).map(c => {
-        const posts = Object.values(c.posts || {});
-        const hasPosted = posts.some(p => p.status === "posted");
-        const isPosting = posts.some(p => p.status === "scheduled" || p.status === "posting");
-        return `
+          const posts = Object.values(c.posts || {});
+          const hasPosted = posts.some(p => p.status === "posted");
+          const isPosting = posts.some(p => p.status === "scheduled" || p.status === "posting");
+          return `
         <div class="ms-clip-tile" data-act="clipdlg" data-j="${esc(c.jid)}" data-cid="${esc(c.id)}">
           <div class="ms-clip-cover">
             ${c.cover ? `<img src="/api/jobs/${esc(c.jid)}/files/${esc(c.cover)}" alt="">` : `<div style="display:grid;place-items:center;height:100%;color:#888">${ic("film")}</div>`}
@@ -11191,487 +11191,487 @@
         render();
       } catch { }
     }
-        // Back on the tab (or window): ask straight away instead of waiting out the slow background timer, and put a
-        // live player that fell behind while hidden back at the live edge.
-        let hiddenAt = 0;
-        document.addEventListener("visibilitychange", () => {
-          if (document.hidden) { hiddenAt = Date.now(); return; }
-          tick();
-          if (hiddenAt && Date.now() - hiddenAt > 60000) {   // away a while: jump back to the live moment
-            const pl = $("#stream .player"), f = pl?.querySelector("iframe");
-            if (f) { const src = f.src; f.src = "about:blank"; requestAnimationFrame(() => { f.src = src; }); }
-          }
-          hiddenAt = 0;
-        });
-        window.addEventListener("focus", () => { if (!document.hidden) tick(); });
-        function loop() {
-          const active = S.jobs.some(j => ["queued", "running", "live"].includes(j.status) || j.clips.some(c => c.status === "queued" || c.status === "rendering"));
-          // quick while something is being made, relaxed otherwise, and slow when the tab is in the background
-          const waiting = S.creators.some(c => (c.channels && Object.keys(c.channels).length && !c.profile?.pic) || c.live_job && !jobOf(c.live_job));
-          setTimeout(async () => { await tick(); loop(); }, document.hidden ? 20000 : waiting ? 1000 : active ? 2000 : 4000);
+    // Back on the tab (or window): ask straight away instead of waiting out the slow background timer, and put a
+    // live player that fell behind while hidden back at the live edge.
+    let hiddenAt = 0;
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) { hiddenAt = Date.now(); return; }
+      tick();
+      if (hiddenAt && Date.now() - hiddenAt > 60000) {   // away a while: jump back to the live moment
+        const pl = $("#stream .player"), f = pl?.querySelector("iframe");
+        if (f) { const src = f.src; f.src = "about:blank"; requestAnimationFrame(() => { f.src = src; }); }
+      }
+      hiddenAt = 0;
+    });
+    window.addEventListener("focus", () => { if (!document.hidden) tick(); });
+    function loop() {
+      const active = S.jobs.some(j => ["queued", "running", "live"].includes(j.status) || j.clips.some(c => c.status === "queued" || c.status === "rendering"));
+      // quick while something is being made, relaxed otherwise, and slow when the tab is in the background
+      const waiting = S.creators.some(c => (c.channels && Object.keys(c.channels).length && !c.profile?.pic) || c.live_job && !jobOf(c.live_job));
+      setTimeout(async () => { await tick(); loop(); }, document.hidden ? 20000 : waiting ? 1000 : active ? 2000 : 4000);
+    }
+
+    /* ============================================================ actions */
+    document.addEventListener("submit", e => { if (e.target.id === "addform") { e.preventDefault(); makeClips(); } });
+    $("#file").addEventListener("change", e => { attach(e.target.files); e.target.value = ""; });
+    document.addEventListener("dragover", e => { const a = $(".composer"); if (a) { e.preventDefault(); a.classList.add("over"); } });
+    document.addEventListener("dragleave", () => $(".composer")?.classList.remove("over"));
+    document.addEventListener("drop", e => { const a = $(".composer"); if (a) { e.preventDefault(); a.classList.remove("over"); attach(e.dataTransfer.files); } });
+    document.addEventListener("change", async e => {
+      const t = e.target;
+      if (t.id === "ai_provider") {
+        $("#ai_models").innerHTML = "";
+        const pv = S.ai?.providers?.find(x => x.id === t.value);
+        $("#ai_model").value = pv?.example || (POPULAR_MODELS[t.value]?.[0]?.id || "");
+        $("#ai_base").value = "";
+        return aiHints();
+      }
+      if (t.dataset.sel) {
+        const k = t.dataset.sel;
+        if (t.checked) sel().add(k); else sel().delete(k);
+        if (k.startsWith("j:")) (jobOf(k.slice(2))?.clips || []).forEach(c => sel().delete(`c:${k.slice(2)}:${c.id}`));   // the video covers its clips
+        return render();
+      }
+      if (t.dataset.every !== undefined) {
+        const cid = t.dataset.every; if (!cid) return toast("This recording isn't filed under a creator.", "bad");
+        try { await send(`/api/creators/${cid}`, { ai_every_min: Number(t.value) }, "PUT"); toast(`AI checks every ${t.value} min`, "ok"); tick(); }
+        catch (err) { toast(err.message, "bad"); }
+        return;
+      }
+      if (t.dataset.k === "ai_every_min" && $("#costhint")) $("#costhint").textContent = costHint(Number(t.value));
+      if (t.name === "mainch") return;  // saved by its own click handler
+      if (t.closest("#cform") && t.type === "radio") { $$("#cform .plan").forEach(l => l.classList.toggle("on", l.contains(t))); return saveCreator(true); }
+      if (!t.closest("#cform") || t.type !== "checkbox") return;
+      if (t.dataset.k === "autopost" && t.checked && !await ask("Turn on auto-posting?", "Clips that score high enough will be posted to the ticked accounts without you seeing them first.", "Turn on")) { t.checked = false; return; }
+      saveCreator(true);
+    });
+
+    document.addEventListener("input", e => {
+      if (e.target.id === "ai_model") {
+        renderModelChips($("#ai_provider")?.value, e.target.value);
+      }
+    });
+
+    document.addEventListener("click", async e => {
+      const b = e.target.closest("[data-act]"); if (!b) return;
+      const a = b.dataset.act, d = b.dataset;
+      if (b.tagName === "A") e.preventDefault();
+      try {
+        if (a === "themetoggle") {
+          closePops();
+          ThemeManager.cycle();
+          drawShell();
+          if (S.view === "settings" && S.stab === "appearance") drawSettings();
+          return;
         }
+        if (a === "settheme") {
+          const pref = d.pref || b.getAttribute("data-pref");
+          if (pref) {
+            ThemeManager.setTheme(pref);
+            toast(`Theme: ${ThemeManager.getLabel()}`);
+            drawSettings();
+            drawShell();
+          }
+          return;
+        }
+        if (a === "go") { closePops(); return go(d.v, d.tab); }
+        if (a === "pickmodel") {
+          const mInput = $("#ai_model");
+          if (mInput) {
+            mInput.value = d.m;
+            renderModelChips($("#ai_provider")?.value, d.m);
+            mInput.focus();
+          }
+          return;
+        }
+        if (a === "aimodels") {
+          const btn = b;
+          btn.disabled = true;
+          const oldText = btn.textContent;
+          btn.textContent = "Finding…";
+          const prov = $("#ai_provider").value;
+          const keyVal = $("#ai_key").value.trim();
+          const pv = S.ai?.providers?.find(x => x.id === prov);
 
-        /* ============================================================ actions */
-        document.addEventListener("submit", e => { if (e.target.id === "addform") { e.preventDefault(); makeClips(); } });
-        $("#file").addEventListener("change", e => { attach(e.target.files); e.target.value = ""; });
-        document.addEventListener("dragover", e => { const a = $(".composer"); if (a) { e.preventDefault(); a.classList.add("over"); } });
-        document.addEventListener("dragleave", () => $(".composer")?.classList.remove("over"));
-        document.addEventListener("drop", e => { const a = $(".composer"); if (a) { e.preventDefault(); a.classList.remove("over"); attach(e.dataTransfer.files); } });
-        document.addEventListener("change", async e => {
-          const t = e.target;
-          if (t.id === "ai_provider") {
-            $("#ai_models").innerHTML = "";
-            const pv = S.ai?.providers?.find(x => x.id === t.value);
-            $("#ai_model").value = pv?.example || (POPULAR_MODELS[t.value]?.[0]?.id || "");
-            $("#ai_base").value = "";
-            return aiHints();
-          }
-          if (t.dataset.sel) {
-            const k = t.dataset.sel;
-            if (t.checked) sel().add(k); else sel().delete(k);
-            if (k.startsWith("j:")) (jobOf(k.slice(2))?.clips || []).forEach(c => sel().delete(`c:${k.slice(2)}:${c.id}`));   // the video covers its clips
-            return render();
-          }
-          if (t.dataset.every !== undefined) {
-            const cid = t.dataset.every; if (!cid) return toast("This recording isn't filed under a creator.", "bad");
-            try { await send(`/api/creators/${cid}`, { ai_every_min: Number(t.value) }, "PUT"); toast(`AI checks every ${t.value} min`, "ok"); tick(); }
-            catch (err) { toast(err.message, "bad"); }
-            return;
-          }
-          if (t.dataset.k === "ai_every_min" && $("#costhint")) $("#costhint").textContent = costHint(Number(t.value));
-          if (t.name === "mainch") return;  // saved by its own click handler
-          if (t.closest("#cform") && t.type === "radio") { $$("#cform .plan").forEach(l => l.classList.toggle("on", l.contains(t))); return saveCreator(true); }
-          if (!t.closest("#cform") || t.type !== "checkbox") return;
-          if (t.dataset.k === "autopost" && t.checked && !await ask("Turn on auto-posting?", "Clips that score high enough will be posted to the ticked accounts without you seeing them first.", "Turn on")) { t.checked = false; return; }
-          saveCreator(true);
-        });
-
-        document.addEventListener("input", e => {
-          if (e.target.id === "ai_model") {
-            renderModelChips($("#ai_provider")?.value, e.target.value);
-          }
-        });
-
-        document.addEventListener("click", async e => {
-          const b = e.target.closest("[data-act]"); if (!b) return;
-          const a = b.dataset.act, d = b.dataset;
-          if (b.tagName === "A") e.preventDefault();
           try {
-            if (a === "themetoggle") {
-              closePops();
-              ThemeManager.cycle();
-              drawShell();
-              if (S.view === "settings" && S.stab === "appearance") drawSettings();
+            if (!keyVal && pv?.needs_key && !S.ai?.has_key) {
+              toast(`Paste your ${pv?.label || "AI"} key first, or pick a recommended model below.`, "warn");
+              $("#ai_key").focus();
               return;
             }
-            if (a === "settheme") {
-              const pref = d.pref || b.getAttribute("data-pref");
-              if (pref) {
-                ThemeManager.setTheme(pref);
-                toast(`Theme: ${ThemeManager.getLabel()}`);
-                drawSettings();
-                drawShell();
+            const r = await send("/api/ai/models", { provider: prov, base_url: $("#ai_base").value, key: keyVal });
+            if (r.models && r.models.length) {
+              $("#ai_models").innerHTML = r.models.map(m => `<option value="${esc(m)}">`).join("");
+              const best = r.models.find(m => m.includes("2.5-flash")) || r.models.find(m => m.includes("flash")) || r.models[0];
+              if (!$("#ai_model").value.trim() || !r.models.includes($("#ai_model").value.trim())) {
+                $("#ai_model").value = best;
               }
+              const dynamicList = r.models.slice(0, 12).map(m => ({
+                id: m,
+                label: m,
+                badge: m.includes("flash") ? "Fast" : m.includes("pro") ? "Pro" : ""
+              }));
+              POPULAR_MODELS[prov] = dynamicList;
+              renderModelChips(prov, $("#ai_model").value);
+              toast(`Found ${r.models.length} models for ${pv?.label || prov}. Selected ${$("#ai_model").value}.`, "ok");
+            } else {
+              toast("The service listed no models. You can pick one of the recommended models below.", "");
+            }
+          } catch (err) {
+            toast(`Could not query service models: ${err.message}. You can use the recommended models below.`, "bad");
+            if (!$("#ai_model").value.trim() && pv?.example) {
+              $("#ai_model").value = pv.example;
+            }
+            renderModelChips(prov, $("#ai_model").value);
+          } finally {
+            btn.disabled = false;
+            btn.textContent = oldText;
+          }
+          return;
+        }
+        if (a === "aisave" || a === "aitest") {
+          b.disabled = true;
+          try {
+            const prov = $("#ai_provider").value;
+            const pv = S.ai?.providers?.find(x => x.id === prov);
+            let mVal = $("#ai_model").value.trim();
+            if (!mVal) {
+              mVal = pv?.example || POPULAR_MODELS[prov]?.[0]?.id || "gemini-2.5-flash";
+              $("#ai_model").value = mVal;
+            }
+            const kVal = $("#ai_key").value.trim();
+            if (!kVal && pv?.needs_key && !S.ai?.has_key && a === "aisave") {
+              toast(`Please paste your ${pv?.label || "AI"} key first.`, "bad");
+              $("#ai_key").focus();
               return;
             }
-            if (a === "go") { closePops(); return go(d.v, d.tab); }
-            if (a === "pickmodel") {
-              const mInput = $("#ai_model");
-              if (mInput) {
-                mInput.value = d.m;
-                renderModelChips($("#ai_provider")?.value, d.m);
-                mInput.focus();
-              }
-              return;
+            if (a === "aisave") await send("/api/ai", { provider: prov, models: mVal, base_url: $("#ai_base").value, key: kVal }, "PUT");
+            let ok = null, why = "";
+            try { ok = await send("/api/ai/test"); } catch (err) { why = err.message; }
+            S.status = await api("/api/status"); drawShell(); await drawSettings();
+            if (a === "aisave") {
+              if (ok) toast(`Saved. ${ok.model} answered, so the AI is ready.`, "ok");
+              else toast(`Saved, but the test failed. ${why}`, "bad");
+            } else {
+              if (ok) toast(`AI test succeeded. ${ok.model} answered.`, "ok");
+              else toast(`AI test failed: ${why}`, "bad");
             }
-            if (a === "aimodels") {
-              const btn = b;
-              btn.disabled = true;
-              const oldText = btn.textContent;
-              btn.textContent = "Finding…";
-              const prov = $("#ai_provider").value;
-              const keyVal = $("#ai_key").value.trim();
-              const pv = S.ai?.providers?.find(x => x.id === prov);
-
-              try {
-                if (!keyVal && pv?.needs_key && !S.ai?.has_key) {
-                  toast(`Paste your ${pv?.label || "AI"} key first, or pick a recommended model below.`, "warn");
-                  $("#ai_key").focus();
-                  return;
-                }
-                const r = await send("/api/ai/models", { provider: prov, base_url: $("#ai_base").value, key: keyVal });
-                if (r.models && r.models.length) {
-                  $("#ai_models").innerHTML = r.models.map(m => `<option value="${esc(m)}">`).join("");
-                  const best = r.models.find(m => m.includes("2.5-flash")) || r.models.find(m => m.includes("flash")) || r.models[0];
-                  if (!$("#ai_model").value.trim() || !r.models.includes($("#ai_model").value.trim())) {
-                    $("#ai_model").value = best;
-                  }
-                  const dynamicList = r.models.slice(0, 12).map(m => ({
-                    id: m,
-                    label: m,
-                    badge: m.includes("flash") ? "Fast" : m.includes("pro") ? "Pro" : ""
-                  }));
-                  POPULAR_MODELS[prov] = dynamicList;
-                  renderModelChips(prov, $("#ai_model").value);
-                  toast(`Found ${r.models.length} models for ${pv?.label || prov}. Selected ${$("#ai_model").value}.`, "ok");
-                } else {
-                  toast("The service listed no models. You can pick one of the recommended models below.", "");
-                }
-              } catch (err) {
-                toast(`Could not query service models: ${err.message}. You can use the recommended models below.`, "bad");
-                if (!$("#ai_model").value.trim() && pv?.example) {
-                  $("#ai_model").value = pv.example;
-                }
-                renderModelChips(prov, $("#ai_model").value);
-              } finally {
-                btn.disabled = false;
-                btn.textContent = oldText;
-              }
-              return;
-            }
-            if (a === "aisave" || a === "aitest") {
-              b.disabled = true;
-              try {
-                const prov = $("#ai_provider").value;
-                const pv = S.ai?.providers?.find(x => x.id === prov);
-                let mVal = $("#ai_model").value.trim();
-                if (!mVal) {
-                  mVal = pv?.example || POPULAR_MODELS[prov]?.[0]?.id || "gemini-2.5-flash";
-                  $("#ai_model").value = mVal;
-                }
-                const kVal = $("#ai_key").value.trim();
-                if (!kVal && pv?.needs_key && !S.ai?.has_key && a === "aisave") {
-                  toast(`Please paste your ${pv?.label || "AI"} key first.`, "bad");
-                  $("#ai_key").focus();
-                  return;
-                }
-                if (a === "aisave") await send("/api/ai", { provider: prov, models: mVal, base_url: $("#ai_base").value, key: kVal }, "PUT");
-                let ok = null, why = "";
-                try { ok = await send("/api/ai/test"); } catch (err) { why = err.message; }
-                S.status = await api("/api/status"); drawShell(); await drawSettings();
-                if (a === "aisave") {
-                  if (ok) toast(`Saved. ${ok.model} answered, so the AI is ready.`, "ok");
-                  else toast(`Saved, but the test failed. ${why}`, "bad");
-                } else {
-                  if (ok) toast(`AI test succeeded. ${ok.model} answered.`, "ok");
-                  else toast(`AI test failed: ${why}`, "bad");
-                }
-              } finally { b.disabled = false; }
-              return;
-            }
-            if (a === "menu") return $("#app").classList.toggle("open");
-            if (a === "collapse") { const m = $("#app").classList.toggle("mini"); try { localStorage.setItem("mini", m ? "1" : ""); } catch { } return; }
-            if (a === "toggleopts") { const p = $(".composer-opts"), open = !p.classList.contains("open"); p.classList.toggle("open", open); p.inert = !open; b.classList.toggle("on", open); b.setAttribute("aria-expanded", String(open)); return; }
-            if (a === "focusurl") return $("#url")?.focus();
-            if (a === "step") {
-              const t = d.to;
-              if (t === "newcreator") return $('[data-act="newcreator"]').click();
-              if (t === "focusurl") return $("#url")?.focus();
-              const [, v1, v2, tab] = t.split(":");
-              return v1 === "c" ? go("c:" + v2, tab) : go(v1);
-            }
-            if (a === "tab") return setTab(d.t);
-            if (a === "pickfile") return $("#file").click();
-            if (a === "addmore") { const u = $("#url"); return u && !u.value ? (u.focus(), toast("Paste another link, or drop a file anywhere on the box.")) : $("#file").click(); }
-            if (a === "closedlg") return $("#clipdlg").close();
-            if (a === "openclip") return openClip(d.j, d.c);
-            if (a === "newcreator") {
-              const dlg = $("#formdlg");
-              dlg.innerHTML = `<form method="dialog" class="dlg"><h2>New creator</h2><p class="help">Each creator gets their own workspace, folder, settings and accounts.</p>
+          } finally { b.disabled = false; }
+          return;
+        }
+        if (a === "menu") return $("#app").classList.toggle("open");
+        if (a === "collapse") { const m = $("#app").classList.toggle("mini"); try { localStorage.setItem("mini", m ? "1" : ""); } catch { } return; }
+        if (a === "toggleopts") { const p = $(".composer-opts"), open = !p.classList.contains("open"); p.classList.toggle("open", open); p.inert = !open; b.classList.toggle("on", open); b.setAttribute("aria-expanded", String(open)); return; }
+        if (a === "focusurl") return $("#url")?.focus();
+        if (a === "step") {
+          const t = d.to;
+          if (t === "newcreator") return $('[data-act="newcreator"]').click();
+          if (t === "focusurl") return $("#url")?.focus();
+          const [, v1, v2, tab] = t.split(":");
+          return v1 === "c" ? go("c:" + v2, tab) : go(v1);
+        }
+        if (a === "tab") return setTab(d.t);
+        if (a === "pickfile") return $("#file").click();
+        if (a === "addmore") { const u = $("#url"); return u && !u.value ? (u.focus(), toast("Paste another link, or drop a file anywhere on the box.")) : $("#file").click(); }
+        if (a === "closedlg") return $("#clipdlg").close();
+        if (a === "openclip") return openClip(d.j, d.c);
+        if (a === "newcreator") {
+          const dlg = $("#formdlg");
+          dlg.innerHTML = `<form method="dialog" class="dlg"><h2>New creator</h2><p class="help">Each creator gets their own workspace, folder, settings and accounts.</p>
         <label class="f">Channel link<input id="nc_chan" placeholder="https://www.youtube.com/@name, twitch.tv/name or kick.com/name" autofocus></label>
         <div id="nc_prev"></div>
         <label class="f">Name<input id="nc_name" placeholder="Filled in from the channel, or type one" required></label>
         <div class="dlg-foot"><button class="btn" value="no" formnovalidate>Cancel</button><button class="btn primary" value="yes">Create workspace</button></div></form>`;
-              dlg.onclose = async () => {
-                if (dlg.returnValue !== "yes") return;
-                try { const c = await send("/api/creators", { name: $("#nc_name").value, channel: $("#nc_chan").value }); await tick(); go("c:" + c.id, c.channel ? "clips" : "setup"); toast("Workspace created", "ok"); }
-                catch (err) { toast(err.message, "bad"); }
-              };
-              let seq = 0, timer = 0, auto = "";
-              $("#nc_chan").addEventListener("input", e => {
-                clearTimeout(timer); const u = e.target.value.trim(), me = ++seq, box = $("#nc_prev");
-                if (!u) { box.innerHTML = ""; return; }
-                box.innerHTML = `<div class="chprev"><span class="ph"></span><div><span class="sk"></span><span class="sk" style="width:80px"></span></div></div>`;
-                timer = setTimeout(async () => {
-                  try {
-                    const p = await api("/api/channel-preview?url=" + encodeURIComponent(u)); if (me !== seq) return;
-                    box.innerHTML = `<div class="chprev">${p.pic ? `<img src="${p.pic}" alt="">` : `<span class="ph"></span>`}<div><b>${esc(p.name)}</b><span>${esc([p.platform, p.followers].filter(Boolean).join(" · "))}</span></div></div>`;
-                    const n = $("#nc_name"); if (!n.value.trim() || n.value === auto) { n.value = auto = p.name; }
-                  } catch (err) { if (me === seq) box.innerHTML = `<div class="chprev bad">${esc(err.message)}</div>`; }
-                }, 400);
-              });
-              dlg.returnValue = "no"; return dlg.showModal();
-            }
-            if (a === "copy") {
-              const c = jobOf(d.j).clips.find(x => x.id === d.c);
-              await navigator.clipboard.writeText(`${c.title}\n\n${c.description}\n\n${(c.hashtags || []).map(h => "#" + h).join(" ")}`); return toast("Post text copied", "ok");
-            }
-            if (a === "logout") { await api("/api/auth/logout", { method: "POST" }); location.href = "/"; return; }
-            if (a === "pwsave") {
-              await send("/api/auth/password", { current: $("#pw_cur")?.value || "", new: $("#pw_new").value });
-              toast("Password changed. Other devices were signed out.", "ok"); return drawSettings();
-            }
-            if (a === "delclip") {
-              if (!await ask("Delete this clip?", "The clip is removed for good. The video and its other clips stay.", "Delete clip", true)) return;
-              await api(`/api/jobs/${d.j}/clips/${encodeURIComponent(d.c)}`, { method: "DELETE" });
-              const j = jobOf(d.j); if (j) j.clips = j.clips.filter(c => c.id !== d.c);
-              render(); toast("Clip deleted", "ok"); return tick();
-            }
-            if (a === "dlall") return zipDownload((jobOf(d.j)?.clips || []).filter(c => c.status === "done").map(c => d.j + "." + c.id));
-            if (a === "seldl") return zipDownload(selClips());
-            if (a === "selclear") { sel().clear(); return render(); }
-            if (a === "selall") {
-              const cid = creatorId();
-              (cid ? S.jobs.filter(j => j.creator === cid) : S.jobs).forEach(j => { if (!["queued", "running", "live"].includes(j.status)) { sel().add("j:" + j.id); j.clips.forEach(c => sel().delete(`c:${j.id}:${c.id}`)); } });
-              return render();
-            }
-            if (a === "seldel") {
-              const { jobsSel, clipsSel } = selParts();
-              const what = [jobsSel.length ? (jobsSel.length === 1 ? "1 video with all its clips" : `${jobsSel.length} videos with all their clips`) : "", clipsSel.length ? `${clipsSel.length} clip${clipsSel.length === 1 ? "" : "s"}` : ""].filter(Boolean).join(" and ");
-              if (!await ask("Delete what you selected?", `This removes ${what} for good. It cannot be undone.`, "Delete", true)) return;
-              const r = await send("/api/bulk/delete", { videos: jobsSel, clips: clipsSel });
-              sel().clear(); await tick(); render();
-              return toast(`Deleted ${r.videos} video${r.videos === 1 ? "" : "s"} and ${r.clips} clip${r.clips === 1 ? "" : "s"}` + (r.skipped ? `. ${r.skipped} still being made were left alone.` : ""), "ok");
-            }
-            if (a === "delcreator") {
-              const c = creator(); if (!c) return;
-              const n = S.jobs.filter(j => j.creator === c.id).length;
-              if (!await askTyped(`Delete ${c.name}?`, `This removes the creator, their settings${n ? `, and their ${n} video${n === 1 ? "" : "s"} with all the clips` : ""} for good. It cannot be undone.`, c.name, "Delete creator")) return;
-              await api(`/api/creators/${encodeURIComponent(c.id)}`, { method: "DELETE" });
-              S.creators = S.creators.filter(x => x.id !== c.id); S.jobs = S.jobs.filter(j => j.creator !== c.id);
-              go("overview"); toast("Creator deleted", "ok"); return tick();
-            }
-            if (a === "delaccount") {
-              const me = S.status.user;
-              const typed = await askTyped("Delete your account?", `This removes your account and everything in it for good: creators, recordings, videos, clips, connected accounts and history.`, me.email, "Delete my account");
-              if (!typed) return;
-              await send("/api/account/delete", { confirm: typed });
-              location.href = "/"; return;
-            }
-            if (a === "deljob") {
-              if (!await ask("Delete this video?", "The video and all of its clips are permanently deleted. This cannot be undone.", "Delete", true)) return;
-              await api(`/api/jobs/${d.j}`, { method: "DELETE" }); toast("Deleted"); return tick();
-            }
-            if (a === "chadd") {
-              const k = d.p, v = $("#chan_" + k)?.value.trim();
-              if (!v) { $("#chan_" + k)?.focus(); return toast(`Paste their ${PLAT[k].name} channel link.`, "bad"); }
-              const full = /^https?:\/\//.test(v) ? v : "https://" + v;
-              return saveChannels({ ...creator().channels, [k]: full });
-            }
-            if (a === "chdel") { const chs = { ...creator().channels }; delete chs[d.p]; return saveChannels(chs); }
-            if (a === "spick") { S.spick = { ...S.spick, [creatorId()]: d.p }; return drawStream(); }
-            if (a === "chmain") return saveChannels(creator().channels, creator().channels[d.p]);
-    if (a === "golive") {
-      if (!creator().channel) { setTab("setup"); return toast("Connect one of their channels first, then press Start recording.", "bad"); }
-      b.disabled = true; const was = b.innerHTML; b.innerHTML = `<span class="rdot"></span>Starting…`;
-      try {
-        // The creator is fixed before asking: starting can take a few seconds, and the person may open another
-        // creator meanwhile. The recording must stay with the one whose button was pressed.
-        const cid0 = creatorId();
-        const j = await send(`/api/creators/${cid0}/live`, d.url ? { channel: d.url } : {});
-        if (j?.id) { const c = S.creators.find(x => x.id === cid0); if (c) c.live_job = j.id; if (!jobOf(j.id)) S.jobs.unshift(j); render(); }
-        const still = creatorId() === cid0;
-        toast(still ? "Recording started. Clips appear below as they're made." : `Recording started for ${S.creators.find(x => x.id === cid0)?.name || "that creator"}.`, "ok");
-        if (still) setTab("clips");
-      } catch (e) { b.disabled = false; b.innerHTML = was; throw e; }
-      return tick();
-    }
-    if (a === "stoplive") {
-      if (!await ask("Stop recording?", "Clips already made are kept. The rest of the buffer is cleared.", "Stop recording", true)) return;
-      const j = jobOf(d.j); if (j) { j.status = "done"; j.stage = "Stopped by you"; }
-      S.creators.forEach(c => { if (c.live_job === d.j) c.live_job = null; }); render();
-      toast("Recording stopped. Clips already made are kept.", "ok");
-      api(`/api/live/${d.j}/stop`, { method: "POST" }).catch(e => toast(e.message, "bad")).finally(tick); return;
-    }
-    if (a === "clipnow") { await send(`/api/live/${d.j}/clip`, { seconds: Number(d.s) }); return toast(`Clipping the last ${d.s} seconds…`, "ok"); }
-    if (a === "ms_add") {
-      const inp = $("#ms_url");
-      const val = (inp ? inp.value : "").trim();
-      if (!val) return toast("Paste a YouTube, Twitch, or Kick live stream link.", "bad");
-      b.disabled = true; const was = b.innerHTML; b.innerHTML = "Connecting…";
-      try {
-        await send("/api/live/watch", {
-          url: val,
-          autopost: S.liveAutopost?.autopost,
-          accounts: S.liveAutopost?.accounts
-        });
-        if (inp) inp.value = "";
-        toast("Live stream connected! Watch, auto-clip, and auto-post started.", "ok");
-      } catch (e) {
-        toast(e.message, "bad");
-      } finally {
-        b.disabled = false; b.innerHTML = was;
-      }
-      return tick();
-    }
-    if (a === "ms_autopost_toggle") {
-      const chk = $("#ms_autopost_chk");
-      const on = chk ? chk.checked : !S.liveAutopost?.autopost;
-      if (!S.liveAutopost) S.liveAutopost = { autopost: false, accounts: [], min_score: 70 };
-      S.liveAutopost.autopost = on;
-      if (on && (!S.liveAutopost.accounts || !S.liveAutopost.accounts.length)) {
-        S.liveAutopost.accounts = S.accounts.map(x => x.id);
-      }
-      try {
-        await send("/api/live/autopost", S.liveAutopost);
-        toast(on ? "Auto-post enabled! Real-time clips will be published to your accounts." : "Auto-post turned off.", "ok");
-      } catch (e) {
-        toast(e.message, "bad");
-      }
-      return tick();
-    }
-    if (a === "ms_acct_toggle") {
-      const aid = d.aid;
-      if (!aid) return;
-      if (!S.liveAutopost) S.liveAutopost = { autopost: false, accounts: [], min_score: 70 };
-      const accts = new Set(S.liveAutopost.accounts || []);
-      if (accts.has(aid)) accts.delete(aid);
-      else accts.add(aid);
-      S.liveAutopost.accounts = Array.from(accts);
-      try {
-        await send("/api/live/autopost", S.liveAutopost);
-        toast("Destination accounts updated.", "ok");
-      } catch (e) {
-        toast(e.message, "bad");
-      }
-      return render();
-    }
-    if (a === "ms_post_all") {
-      b.disabled = true; const was = b.innerHTML; b.innerHTML = "Auto-Posting…";
-      try {
-        const res = await send("/api/live/post-all", { accounts: S.liveAutopost?.accounts || [] });
-        toast(`Queued ${res.queued} auto-post action(s) for ${res.clips_count} ready stream clips!`, "ok");
-      } catch (e) {
-        toast(e.message, "bad");
-      } finally {
-        b.disabled = false; b.innerHTML = was;
-      }
-      return tick();
-    }
-    if (a === "ms_post_clip") {
-      e.stopPropagation();
-      const jid = d.j, cid = d.cid;
-      if (!jid || !cid) return;
-      const accts = (S.liveAutopost?.accounts && S.liveAutopost.accounts.length)
-        ? S.liveAutopost.accounts
-        : S.accounts.map(x => x.id);
-      if (!accts.length) return toast("Connect YouTube, Instagram, or TikTok in Settings first.", "bad");
-      b.disabled = true; const was = b.innerHTML; b.innerHTML = "Posting…";
-      try {
-        await send("/api/posts", { job: jid, clip: cid, accounts: accts, now: true });
-        toast("Clip queued for immediate auto-post!", "ok");
-      } catch (e) {
-        toast(e.message, "bad");
-      } finally {
-        b.disabled = false; b.innerHTML = was;
-      }
-      return tick();
-    }
-    if (a === "ms_add_creator" || a === "golive_c") {
-      const cid = d.cid || $("#ms_cid")?.value;
-      if (!cid) return toast("Choose a creator first.", "bad");
-      b.disabled = true; const was = b.innerHTML; b.innerHTML = "Starting…";
-      try {
-        await send(`/api/creators/${cid}/live`, {});
-        toast("Recording started for creator!", "ok");
-      } catch (e) {
-        toast(e.message, "bad");
-      } finally {
-        b.disabled = false; b.innerHTML = was;
-      }
-      return tick();
-    }
-    if (a === "startalllive") {
-      const anyLive = S.creators.filter(c => !c.live_job && liveOn(c).length > 0);
-      if (!anyLive.length) return toast("No other creators are currently live.", "bad");
-      let started = 0;
-      for (const c of anyLive) {
-        if (S.jobs.filter(j => j.status === "live").length >= 6) break;
-        try {
-          await send(`/api/creators/${c.id}/live`, {});
-          started++;
-        } catch { }
-      }
-      toast(`Started ${started} live stream(s)!`, "ok");
-      return tick();
-    }
-    if (a === "stopalllive") {
-      if (!await ask("Stop all live streams?", "All clips already made will be saved. Live recording will stop for all streams.", "Stop all streams", true)) return;
-      try {
-        await send("/api/live/stop-all", {});
-        S.jobs.filter(j => j.status === "live").forEach(j => { j.status = "done"; j.stage = "Stopped by you"; });
-        S.creators.forEach(c => { c.live_job = null; });
-        render();
-        toast("All live stream recordings stopped.", "ok");
-      } catch (e) {
-        toast(e.message, "bad");
-      }
-      return tick();
-    }
-    if (a === "resendverify") {
-      b.disabled = true;
-      try {
-        const r = await send("/api/auth/resend-verification"); if (r.verified) { S.status = await api("/api/status"); drawShell(); return toast("Your email is already confirmed.", "ok"); }
-        toast(r.mail_ready ? `New link sent to ${S.status.user.email}. Check your spam folder too.` : "Email isn't set up on this server yet, so the link was written to the server log.", r.mail_ready ? "ok" : "bad");
-      }
-      catch (e) { toast(e.message, "bad"); }
-      b.disabled = false; return;
-    }
-    if (a === "tour") return startTour();
-    if (a === "settab") { e.preventDefault(); S.stab = d.k; remember("settings", d.k); return drawSettings(); }
-    if (a === "updhow") return updateHow();
-    if (a === "updlater") { try { localStorage.setItem("cutit_update_seen", S.status.update?.latest || ""); } catch { } return drawShell(); }
-    if (a === "storopen") { await send("/api/storage/open"); return; }
-    if (a === "storchange") { S.storOpen = !S.storOpen; S.storNew = ""; return drawSettings(); }
-    if (a === "storpick") {
-      b.disabled = true;
-      try { const r = await send("/api/storage/pick"); if (r.path) { S.storNew = r.path; $("#stor_new").value = r.path; } } finally { b.disabled = false; }
-      return;
-    }
-    if (a === "storsave") {
-      const s = await send("/api/storage", { path: $("#stor_new").value, move: $("#stor_move").checked }, "PUT");
-      S.storOpen = false; toast("Saved. Close Cut it by Ai With Atif and start it again to switch to the new folder.", "ok"); return drawSettings();
-    }
-    if (a === "storcancel") { await send("/api/storage", { cancel: true }, "PUT"); toast("Kept the current folder", "ok"); return drawSettings(); }
-    if (a === "appsetup") { S.setupOpen = d.p && S.setupOpen !== d.p ? d.p : ""; return drawSettings(); }
-    if (a === "copytext") { await navigator.clipboard.writeText(d.t); return toast("Copied", "ok"); }
-    if (a === "appsave") {
-      await send("/api/apps", { platform: d.p, client_id: $("#app_id").value, client_secret: $("#app_secret").value }, "PUT");
-      S.setupOpen = ""; S.status = await api("/api/status"); toast("Saved. People can connect now.", "ok"); return drawSettings();
-    }
-    if (a === "bell") return openBell();
-    if (a === "feedback") return openFeedback("bug");
-    if (a === "report") return openFeedback("bug", d.ctx);
-    if (a === "acctmenu") return openAcct();
-    if (a === "bellread") { await markRead(); return openBell().then(openBell); }
-    if (a === "ntgo") { closePops(); const l = d.link || ""; if (l.startsWith("/app")) { const [v, tab] = fromPath(l); return go(v, tab); } if (l.startsWith("/")) location.href = l; return; }
-    if (a === "csave") return void await saveCreator();
-    if (a === "cdiscard") { drawCreatorForm(); return toast("Changes discarded"); }
-    if (a === "pause") { await send("/api/settings", { paused: !S.overview.paused }, "PUT"); return loadOverview(); }
-    if (a === "pcancel" || a === "pretry") { await api(`/api/posts/${d.id}/${a === "pcancel" ? "cancel" : "retry"}`, { method: "POST" }); return loadOverview(); }
-    if (a === "ssave") { await saveSettings(); toast("Saved", "ok"); return drawSettings(); }
-    if (a === "plansave") {
-      const p = {}; $$("#sform [data-plan]").forEach(i => { (p[i.dataset.plan] ??= {})[i.dataset.f] = Number(i.value); });
-      await send("/api/settings", { plans: p }, "PUT"); S.status = await api("/api/status"); toast("Plans saved", "ok"); return drawSettings();
-    }
-    if (a === "testalert") { await saveSettings(); await api("/api/alerts/test", { method: "POST" }); return toast("Test message sent. Check your phone.", "ok"); }
-    if (a === "accremove") {
-      if (!await ask("Disconnect this account?", "Posts still waiting for it will fail.", "Disconnect", true)) return;
-      await api(`/api/accounts/${d.id}`, { method: "DELETE" }); await tick(); return drawSettings();
-    }
-    if (a === "remake") {
-      const body = {}; $$("#clipdlg [data-f]").forEach(i => body[i.dataset.f] = i.type === "checkbox" ? i.checked : (i.type === "number" ? Number(i.value) : i.value));
-      await send(`/api/jobs/${D.jid}/clips/${D.cid}/render`, body); toast("Re-making the clip…", "ok"); return tick();
-    }
-    if (a === "postnow" || a === "postqueue") {
-      const accs = $$("#clipdlg [data-pacc]:checked").map(i => i.value);
-      if (!accs.length) return toast("Tick at least one account first.", "bad");
-      if (a === "postnow" && !await ask("Post now?", `This clip goes to ${accs.length} account${accs.length > 1 ? "s" : ""} straight away.`, "Post now")) return;
-      await send("/api/posts", { job: D.jid, clip: D.cid, accounts: accs, now: a === "postnow" });
-      toast(a === "postnow" ? "Posting now" : "Added to the queue", "ok"); return tick();
-    }
-  } catch (err) { b.disabled = false; toast(err.message, "bad"); }
-});
+          dlg.onclose = async () => {
+            if (dlg.returnValue !== "yes") return;
+            try { const c = await send("/api/creators", { name: $("#nc_name").value, channel: $("#nc_chan").value }); await tick(); go("c:" + c.id, c.channel ? "clips" : "setup"); toast("Workspace created", "ok"); }
+            catch (err) { toast(err.message, "bad"); }
+          };
+          let seq = 0, timer = 0, auto = "";
+          $("#nc_chan").addEventListener("input", e => {
+            clearTimeout(timer); const u = e.target.value.trim(), me = ++seq, box = $("#nc_prev");
+            if (!u) { box.innerHTML = ""; return; }
+            box.innerHTML = `<div class="chprev"><span class="ph"></span><div><span class="sk"></span><span class="sk" style="width:80px"></span></div></div>`;
+            timer = setTimeout(async () => {
+              try {
+                const p = await api("/api/channel-preview?url=" + encodeURIComponent(u)); if (me !== seq) return;
+                box.innerHTML = `<div class="chprev">${p.pic ? `<img src="${p.pic}" alt="">` : `<span class="ph"></span>`}<div><b>${esc(p.name)}</b><span>${esc([p.platform, p.followers].filter(Boolean).join(" · "))}</span></div></div>`;
+                const n = $("#nc_name"); if (!n.value.trim() || n.value === auto) { n.value = auto = p.name; }
+              } catch (err) { if (me === seq) box.innerHTML = `<div class="chprev bad">${esc(err.message)}</div>`; }
+            }, 400);
+          });
+          dlg.returnValue = "no"; return dlg.showModal();
+        }
+        if (a === "copy") {
+          const c = jobOf(d.j).clips.find(x => x.id === d.c);
+          await navigator.clipboard.writeText(`${c.title}\n\n${c.description}\n\n${(c.hashtags || []).map(h => "#" + h).join(" ")}`); return toast("Post text copied", "ok");
+        }
+        if (a === "logout") { await api("/api/auth/logout", { method: "POST" }); location.href = "/"; return; }
+        if (a === "pwsave") {
+          await send("/api/auth/password", { current: $("#pw_cur")?.value || "", new: $("#pw_new").value });
+          toast("Password changed. Other devices were signed out.", "ok"); return drawSettings();
+        }
+        if (a === "delclip") {
+          if (!await ask("Delete this clip?", "The clip is removed for good. The video and its other clips stay.", "Delete clip", true)) return;
+          await api(`/api/jobs/${d.j}/clips/${encodeURIComponent(d.c)}`, { method: "DELETE" });
+          const j = jobOf(d.j); if (j) j.clips = j.clips.filter(c => c.id !== d.c);
+          render(); toast("Clip deleted", "ok"); return tick();
+        }
+        if (a === "dlall") return zipDownload((jobOf(d.j)?.clips || []).filter(c => c.status === "done").map(c => d.j + "." + c.id));
+        if (a === "seldl") return zipDownload(selClips());
+        if (a === "selclear") { sel().clear(); return render(); }
+        if (a === "selall") {
+          const cid = creatorId();
+          (cid ? S.jobs.filter(j => j.creator === cid) : S.jobs).forEach(j => { if (!["queued", "running", "live"].includes(j.status)) { sel().add("j:" + j.id); j.clips.forEach(c => sel().delete(`c:${j.id}:${c.id}`)); } });
+          return render();
+        }
+        if (a === "seldel") {
+          const { jobsSel, clipsSel } = selParts();
+          const what = [jobsSel.length ? (jobsSel.length === 1 ? "1 video with all its clips" : `${jobsSel.length} videos with all their clips`) : "", clipsSel.length ? `${clipsSel.length} clip${clipsSel.length === 1 ? "" : "s"}` : ""].filter(Boolean).join(" and ");
+          if (!await ask("Delete what you selected?", `This removes ${what} for good. It cannot be undone.`, "Delete", true)) return;
+          const r = await send("/api/bulk/delete", { videos: jobsSel, clips: clipsSel });
+          sel().clear(); await tick(); render();
+          return toast(`Deleted ${r.videos} video${r.videos === 1 ? "" : "s"} and ${r.clips} clip${r.clips === 1 ? "" : "s"}` + (r.skipped ? `. ${r.skipped} still being made were left alone.` : ""), "ok");
+        }
+        if (a === "delcreator") {
+          const c = creator(); if (!c) return;
+          const n = S.jobs.filter(j => j.creator === c.id).length;
+          if (!await askTyped(`Delete ${c.name}?`, `This removes the creator, their settings${n ? `, and their ${n} video${n === 1 ? "" : "s"} with all the clips` : ""} for good. It cannot be undone.`, c.name, "Delete creator")) return;
+          await api(`/api/creators/${encodeURIComponent(c.id)}`, { method: "DELETE" });
+          S.creators = S.creators.filter(x => x.id !== c.id); S.jobs = S.jobs.filter(j => j.creator !== c.id);
+          go("overview"); toast("Creator deleted", "ok"); return tick();
+        }
+        if (a === "delaccount") {
+          const me = S.status.user;
+          const typed = await askTyped("Delete your account?", `This removes your account and everything in it for good: creators, recordings, videos, clips, connected accounts and history.`, me.email, "Delete my account");
+          if (!typed) return;
+          await send("/api/account/delete", { confirm: typed });
+          location.href = "/"; return;
+        }
+        if (a === "deljob") {
+          if (!await ask("Delete this video?", "The video and all of its clips are permanently deleted. This cannot be undone.", "Delete", true)) return;
+          await api(`/api/jobs/${d.j}`, { method: "DELETE" }); toast("Deleted"); return tick();
+        }
+        if (a === "chadd") {
+          const k = d.p, v = $("#chan_" + k)?.value.trim();
+          if (!v) { $("#chan_" + k)?.focus(); return toast(`Paste their ${PLAT[k].name} channel link.`, "bad"); }
+          const full = /^https?:\/\//.test(v) ? v : "https://" + v;
+          return saveChannels({ ...creator().channels, [k]: full });
+        }
+        if (a === "chdel") { const chs = { ...creator().channels }; delete chs[d.p]; return saveChannels(chs); }
+        if (a === "spick") { S.spick = { ...S.spick, [creatorId()]: d.p }; return drawStream(); }
+        if (a === "chmain") return saveChannels(creator().channels, creator().channels[d.p]);
+        if (a === "golive") {
+          if (!creator().channel) { setTab("setup"); return toast("Connect one of their channels first, then press Start recording.", "bad"); }
+          b.disabled = true; const was = b.innerHTML; b.innerHTML = `<span class="rdot"></span>Starting…`;
+          try {
+            // The creator is fixed before asking: starting can take a few seconds, and the person may open another
+            // creator meanwhile. The recording must stay with the one whose button was pressed.
+            const cid0 = creatorId();
+            const j = await send(`/api/creators/${cid0}/live`, d.url ? { channel: d.url } : {});
+            if (j?.id) { const c = S.creators.find(x => x.id === cid0); if (c) c.live_job = j.id; if (!jobOf(j.id)) S.jobs.unshift(j); render(); }
+            const still = creatorId() === cid0;
+            toast(still ? "Recording started. Clips appear below as they're made." : `Recording started for ${S.creators.find(x => x.id === cid0)?.name || "that creator"}.`, "ok");
+            if (still) setTab("clips");
+          } catch (e) { b.disabled = false; b.innerHTML = was; throw e; }
+          return tick();
+        }
+        if (a === "stoplive") {
+          if (!await ask("Stop recording?", "Clips already made are kept. The rest of the buffer is cleared.", "Stop recording", true)) return;
+          const j = jobOf(d.j); if (j) { j.status = "done"; j.stage = "Stopped by you"; }
+          S.creators.forEach(c => { if (c.live_job === d.j) c.live_job = null; }); render();
+          toast("Recording stopped. Clips already made are kept.", "ok");
+          api(`/api/live/${d.j}/stop`, { method: "POST" }).catch(e => toast(e.message, "bad")).finally(tick); return;
+        }
+        if (a === "clipnow") { await send(`/api/live/${d.j}/clip`, { seconds: Number(d.s) }); return toast(`Clipping the last ${d.s} seconds…`, "ok"); }
+        if (a === "ms_add") {
+          const inp = $("#ms_url");
+          const val = (inp ? inp.value : "").trim();
+          if (!val) return toast("Paste a YouTube, Twitch, or Kick live stream link.", "bad");
+          b.disabled = true; const was = b.innerHTML; b.innerHTML = "Connecting…";
+          try {
+            await send("/api/live/watch", {
+              url: val,
+              autopost: S.liveAutopost?.autopost,
+              accounts: S.liveAutopost?.accounts
+            });
+            if (inp) inp.value = "";
+            toast("Live stream connected! Watch, auto-clip, and auto-post started.", "ok");
+          } catch (e) {
+            toast(e.message, "bad");
+          } finally {
+            b.disabled = false; b.innerHTML = was;
+          }
+          return tick();
+        }
+        if (a === "ms_autopost_toggle") {
+          const chk = $("#ms_autopost_chk");
+          const on = chk ? chk.checked : !S.liveAutopost?.autopost;
+          if (!S.liveAutopost) S.liveAutopost = { autopost: false, accounts: [], min_score: 70 };
+          S.liveAutopost.autopost = on;
+          if (on && (!S.liveAutopost.accounts || !S.liveAutopost.accounts.length)) {
+            S.liveAutopost.accounts = S.accounts.map(x => x.id);
+          }
+          try {
+            await send("/api/live/autopost", S.liveAutopost);
+            toast(on ? "Auto-post enabled! Real-time clips will be published to your accounts." : "Auto-post turned off.", "ok");
+          } catch (e) {
+            toast(e.message, "bad");
+          }
+          return tick();
+        }
+        if (a === "ms_acct_toggle") {
+          const aid = d.aid;
+          if (!aid) return;
+          if (!S.liveAutopost) S.liveAutopost = { autopost: false, accounts: [], min_score: 70 };
+          const accts = new Set(S.liveAutopost.accounts || []);
+          if (accts.has(aid)) accts.delete(aid);
+          else accts.add(aid);
+          S.liveAutopost.accounts = Array.from(accts);
+          try {
+            await send("/api/live/autopost", S.liveAutopost);
+            toast("Destination accounts updated.", "ok");
+          } catch (e) {
+            toast(e.message, "bad");
+          }
+          return render();
+        }
+        if (a === "ms_post_all") {
+          b.disabled = true; const was = b.innerHTML; b.innerHTML = "Auto-Posting…";
+          try {
+            const res = await send("/api/live/post-all", { accounts: S.liveAutopost?.accounts || [] });
+            toast(`Queued ${res.queued} auto-post action(s) for ${res.clips_count} ready stream clips!`, "ok");
+          } catch (e) {
+            toast(e.message, "bad");
+          } finally {
+            b.disabled = false; b.innerHTML = was;
+          }
+          return tick();
+        }
+        if (a === "ms_post_clip") {
+          e.stopPropagation();
+          const jid = d.j, cid = d.cid;
+          if (!jid || !cid) return;
+          const accts = (S.liveAutopost?.accounts && S.liveAutopost.accounts.length)
+            ? S.liveAutopost.accounts
+            : S.accounts.map(x => x.id);
+          if (!accts.length) return toast("Connect YouTube, Instagram, or TikTok in Settings first.", "bad");
+          b.disabled = true; const was = b.innerHTML; b.innerHTML = "Posting…";
+          try {
+            await send("/api/posts", { job: jid, clip: cid, accounts: accts, now: true });
+            toast("Clip queued for immediate auto-post!", "ok");
+          } catch (e) {
+            toast(e.message, "bad");
+          } finally {
+            b.disabled = false; b.innerHTML = was;
+          }
+          return tick();
+        }
+        if (a === "ms_add_creator" || a === "golive_c") {
+          const cid = d.cid || $("#ms_cid")?.value;
+          if (!cid) return toast("Choose a creator first.", "bad");
+          b.disabled = true; const was = b.innerHTML; b.innerHTML = "Starting…";
+          try {
+            await send(`/api/creators/${cid}/live`, {});
+            toast("Recording started for creator!", "ok");
+          } catch (e) {
+            toast(e.message, "bad");
+          } finally {
+            b.disabled = false; b.innerHTML = was;
+          }
+          return tick();
+        }
+        if (a === "startalllive") {
+          const anyLive = S.creators.filter(c => !c.live_job && liveOn(c).length > 0);
+          if (!anyLive.length) return toast("No other creators are currently live.", "bad");
+          let started = 0;
+          for (const c of anyLive) {
+            if (S.jobs.filter(j => j.status === "live").length >= 6) break;
+            try {
+              await send(`/api/creators/${c.id}/live`, {});
+              started++;
+            } catch { }
+          }
+          toast(`Started ${started} live stream(s)!`, "ok");
+          return tick();
+        }
+        if (a === "stopalllive") {
+          if (!await ask("Stop all live streams?", "All clips already made will be saved. Live recording will stop for all streams.", "Stop all streams", true)) return;
+          try {
+            await send("/api/live/stop-all", {});
+            S.jobs.filter(j => j.status === "live").forEach(j => { j.status = "done"; j.stage = "Stopped by you"; });
+            S.creators.forEach(c => { c.live_job = null; });
+            render();
+            toast("All live stream recordings stopped.", "ok");
+          } catch (e) {
+            toast(e.message, "bad");
+          }
+          return tick();
+        }
+        if (a === "resendverify") {
+          b.disabled = true;
+          try {
+            const r = await send("/api/auth/resend-verification"); if (r.verified) { S.status = await api("/api/status"); drawShell(); return toast("Your email is already confirmed.", "ok"); }
+            toast(r.mail_ready ? `New link sent to ${S.status.user.email}. Check your spam folder too.` : "Email isn't set up on this server yet, so the link was written to the server log.", r.mail_ready ? "ok" : "bad");
+          }
+          catch (e) { toast(e.message, "bad"); }
+          b.disabled = false; return;
+        }
+        if (a === "tour") return startTour();
+        if (a === "settab") { e.preventDefault(); S.stab = d.k; remember("settings", d.k); return drawSettings(); }
+        if (a === "updhow") return updateHow();
+        if (a === "updlater") { try { localStorage.setItem("cutit_update_seen", S.status.update?.latest || ""); } catch { } return drawShell(); }
+        if (a === "storopen") { await send("/api/storage/open"); return; }
+        if (a === "storchange") { S.storOpen = !S.storOpen; S.storNew = ""; return drawSettings(); }
+        if (a === "storpick") {
+          b.disabled = true;
+          try { const r = await send("/api/storage/pick"); if (r.path) { S.storNew = r.path; $("#stor_new").value = r.path; } } finally { b.disabled = false; }
+          return;
+        }
+        if (a === "storsave") {
+          const s = await send("/api/storage", { path: $("#stor_new").value, move: $("#stor_move").checked }, "PUT");
+          S.storOpen = false; toast("Saved. Close Cut it by Ai With Atif and start it again to switch to the new folder.", "ok"); return drawSettings();
+        }
+        if (a === "storcancel") { await send("/api/storage", { cancel: true }, "PUT"); toast("Kept the current folder", "ok"); return drawSettings(); }
+        if (a === "appsetup") { S.setupOpen = d.p && S.setupOpen !== d.p ? d.p : ""; return drawSettings(); }
+        if (a === "copytext") { await navigator.clipboard.writeText(d.t); return toast("Copied", "ok"); }
+        if (a === "appsave") {
+          await send("/api/apps", { platform: d.p, client_id: $("#app_id").value, client_secret: $("#app_secret").value }, "PUT");
+          S.setupOpen = ""; S.status = await api("/api/status"); toast("Saved. People can connect now.", "ok"); return drawSettings();
+        }
+        if (a === "bell") return openBell();
+        if (a === "feedback") return openFeedback("bug");
+        if (a === "report") return openFeedback("bug", d.ctx);
+        if (a === "acctmenu") return openAcct();
+        if (a === "bellread") { await markRead(); return openBell().then(openBell); }
+        if (a === "ntgo") { closePops(); const l = d.link || ""; if (l.startsWith("/app")) { const [v, tab] = fromPath(l); return go(v, tab); } if (l.startsWith("/")) location.href = l; return; }
+        if (a === "csave") return void await saveCreator();
+        if (a === "cdiscard") { drawCreatorForm(); return toast("Changes discarded"); }
+        if (a === "pause") { await send("/api/settings", { paused: !S.overview.paused }, "PUT"); return loadOverview(); }
+        if (a === "pcancel" || a === "pretry") { await api(`/api/posts/${d.id}/${a === "pcancel" ? "cancel" : "retry"}`, { method: "POST" }); return loadOverview(); }
+        if (a === "ssave") { await saveSettings(); toast("Saved", "ok"); return drawSettings(); }
+        if (a === "plansave") {
+          const p = {}; $$("#sform [data-plan]").forEach(i => { (p[i.dataset.plan] ??= {})[i.dataset.f] = Number(i.value); });
+          await send("/api/settings", { plans: p }, "PUT"); S.status = await api("/api/status"); toast("Plans saved", "ok"); return drawSettings();
+        }
+        if (a === "testalert") { await saveSettings(); await api("/api/alerts/test", { method: "POST" }); return toast("Test message sent. Check your phone.", "ok"); }
+        if (a === "accremove") {
+          if (!await ask("Disconnect this account?", "Posts still waiting for it will fail.", "Disconnect", true)) return;
+          await api(`/api/accounts/${d.id}`, { method: "DELETE" }); await tick(); return drawSettings();
+        }
+        if (a === "remake") {
+          const body = {}; $$("#clipdlg [data-f]").forEach(i => body[i.dataset.f] = i.type === "checkbox" ? i.checked : (i.type === "number" ? Number(i.value) : i.value));
+          await send(`/api/jobs/${D.jid}/clips/${D.cid}/render`, body); toast("Re-making the clip…", "ok"); return tick();
+        }
+        if (a === "postnow" || a === "postqueue") {
+          const accs = $$("#clipdlg [data-pacc]:checked").map(i => i.value);
+          if (!accs.length) return toast("Tick at least one account first.", "bad");
+          if (a === "postnow" && !await ask("Post now?", `This clip goes to ${accs.length} account${accs.length > 1 ? "s" : ""} straight away.`, "Post now")) return;
+          await send("/api/posts", { job: D.jid, clip: D.cid, accounts: accs, now: a === "postnow" });
+          toast(a === "postnow" ? "Posting now" : "Added to the queue", "ok"); return tick();
+        }
+      } catch (err) { b.disabled = false; toast(err.message, "bad"); }
+    });
 
     ThemeManager.init();
     $("#collapseBtn").innerHTML = ic("sidebar"); $("#menuBtn").innerHTML = ic("menu");
