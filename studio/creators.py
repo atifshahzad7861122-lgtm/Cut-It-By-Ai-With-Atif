@@ -20,7 +20,7 @@ DEFAULTS = {"name": "", "channel": "", "style": "bounce", "layout": "blur", "cap
             "game": "", "hook_text": "", "description_text": "",
             "trigger_words": "clip that, clip it",
             "autopost": False, "accounts": [], "post_min_score": 75, "post_gap_min": 45, "daily_cap": 6,
-            "privacy": "public", "post_footer": "", "rate_per_1k": 0.0, "channels": {},
+            "privacy": "public", "post_footer": "", "rate_per_1k": 0.0, "total_views": 0, "channels": {},
             "lang": "en"}    # the language this creator speaks: picks the speech model, for live recordings too
 PLATFORMS = ("youtube", "twitch", "kick")
 
@@ -94,6 +94,8 @@ def _clean(data: dict) -> dict:
             v = clean_description(v)
         elif k == "rate_per_1k":
             v = max(0.0, min(1000.0, float(v or 0)))
+        elif k == "total_views":
+            v = max(0, int(float(v or 0)))
         elif k == "plan":
             v = v if v in ("free", "pro", "max") else "free"
         elif k == "decide_mode":

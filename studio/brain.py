@@ -383,13 +383,18 @@ def _one_prompt(intro, text, title, uploader, game=None):
             + _rules(0, 0, _safe(text, 8000)))
 
 
-def describe(text, title="", uploader="", game=None, timeout=None):
-    """Hook, title and post text for a clip the user cut by hand."""
+def describe(text, title="", uploader="", game=None, timeout=None, note=""):
+    """Hook, title and post text for a clip the user cut by hand. `note` is what they wrote next to the times,
+    if anything ("the goalkeeper slips on the ball"): it tells the AI what happens when few words are said."""
     blank = {"score": 0, "category": "other", "hook": "", "title": "", "description": "", "hashtags": [],
              "highlight_words": [], "reason": "Clipped by hand."}
-    if len(text.split()) < 4:
+    if len(text.split()) < 4 and not note:
         return blank
-    prompt = _one_prompt("A streamer's viewer clipped this moment by hand.", text, title, uploader, game)
+    told = f"\nWhat happens, in the viewer's words: {_safe(note, 300)}" if note else ""
+    prompt = (f"A streamer's viewer clipped this moment by hand.\nVideo title: {_safe(title) or 'unknown'}\n"
+              f"Channel: {_safe(uploader) or 'unknown'}{told}\n\nReturn exactly one item describing it. Set start and end to 0."
+              + _game_rules(game)
+              + _rules(0, 0, _safe(text, 8000)))
     try:
         out, _m, _u = ask_ai(prompt, purpose="Hand clip: title and hook", timeout=timeout)
         if not _first(out):

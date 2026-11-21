@@ -25,7 +25,7 @@ from . import admin as admins
 from . import account, load
 from . import (accounts, ai, alerts, auth, brain, brands, config, creators, ctx, curation, db,
                facecam_detect, jobs, layouts, live, media, posting, profiles, render, safe,
-               styling, subtitles, transcribe, usage)
+               styling, subtitles, transcribe, usage, whop)
 
 from . import tools as _tools  # noqa: E402
 
@@ -825,7 +825,9 @@ def create_from_file(file: UploadFile = File(...), options: str = Form("{}"), cr
             with _create_lock:
                 _job_slots()
                 job = jobs.create({"type": "file", "path": str(tmp), "name": name}, opts, enqueue=False, creator=creator or None)
-        except (ValueError, TypeError):
+        except ValueError as e:
+            raise HTTPException(400, str(e) or "Those options aren't valid.")
+        except TypeError:
             raise HTTPException(400, "Those options aren't valid.")
         _disk.pop(ctx.uid(), None)
         dest = jobs.job_dir(job["id"]) / ("source" + ext)
@@ -923,7 +925,9 @@ def upload_start(body: dict = Body(...)):
     opts = body.get("options") if isinstance(body.get("options"), dict) else {}
     try:
         jobs.clean_options(opts)                 # refused now rather than after the whole file has been sent
-    except (ValueError, TypeError):
+    except ValueError as e:
+        raise HTTPException(400, str(e) or "Those options aren't valid.")
+    except TypeError:
         raise HTTPException(400, "Those options aren't valid.")
     _up_sweep()
     mine = 0
@@ -987,7 +991,9 @@ def upload_finish(upid: str):
                 _job_slots()
                 job = jobs.create({"type": "file", "path": "", "name": meta["name"]}, meta["options"], enqueue=False,
                                   creator=meta["creator"] or None)
-        except (ValueError, TypeError):
+        except ValueError as e:
+            raise HTTPException(400, str(e) or "Those options aren't valid.")
+        except TypeError:
             raise HTTPException(400, "Those options aren't valid.")
         dest = jobs.job_dir(job["id"]) / ("source" + meta["ext"])
         try:
@@ -1142,6 +1148,23 @@ def clip_write(jid: str, cid: str):
         raise HTTPException(400, str(e))
     except RuntimeError as e:
         raise HTTPException(503, str(e))
+
+
+@app.post("/api/jobs/{jid}/stop")
+def stop_job(jid: str):
+    job = _job_or_404(jid)
+    if not jobs.stop(jid):
+        raise HTTPException(409, "This video isn't being worked on, so there is nothing to stop.")
+    return jobs.public(job)
+
+
+@app.post("/api/jobs/{jid}/retry")
+def retry_job(jid: str):
+    job = _job_or_404(jid)
+    _throttle("retry:" + ctx.uid(), 20, 600, "That's a lot of retries in a short time. Wait a few minutes.")
+    if not jobs.retry(jid):
+        raise HTTPException(409, "Only a video that stopped or failed can be started again.")
+    return jobs.public(job)
 
 
 @app.delete("/api/jobs/{jid}")
@@ -1525,6 +1548,42 @@ def post_all_live_clips(body: dict = Body(default={})):
 
     ctx.bump()
     return {"ok": True, "queued": queued_total, "clips_count": clips_processed}
+
+
+# ---------------------------------------------------------------- whop campaigns & rewards
+@app.get("/api/whop/campaigns")
+def list_whop_campaigns(category: str = "", q: str = ""):
+    return {
+        "campaigns": whop.list_campaigns(category=category, query=q),
+        "settings": whop.get_settings(),
+    }
+
+
+@app.post("/api/whop/campaigns/{cid}/clip")
+def start_whop_clipping(cid: str):
+    try:
+        res = whop.start_clipping_campaign(cid, user=ctx.uid())
+        ctx.bump()
+        return {"ok": True, **res}
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+
+
+@app.get("/api/whop/earnings")
+def get_whop_earnings():
+    return whop.earnings_summary(user=ctx.uid())
+
+
+@app.post("/api/whop/settings")
+def update_whop_settings(body: dict = Body(...)):
+    if not isinstance(body, dict):
+        raise HTTPException(400, "Invalid settings format.")
+    clean = {}
+    if "api_key" in body:
+        clean["api_key"] = str(body["api_key"]).strip()[:120]
+    whop.save_settings(clean)
+    return {"ok": True, "settings": whop.get_settings()}
+
 
 
 @app.post("/api/live/watch")

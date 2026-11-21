@@ -74,7 +74,11 @@ def main() -> int:
                 ("long logs, the machine monitor, failed recordings, admin day totals", ["tests/test_robustness.py"]),
                 ("speech models for other languages: Arabic, downloads, the second machine", ["tests/test_speech.py"]),
                 ("post text: write again with AI, edit, post without re-making", ["tests/test_post_text.py"]),
-                ("live recording stops and empty stream URLs", ["tests/test_live.py"])]
+                ("live recording stops and empty stream URLs", ["tests/test_live.py"]),
+                ("exact moments, YouTube heatmap and profanity clean", ["tests/test_moments.py"]),
+                ("Whop campaigns integration and earnings", ["tests/test_whop.py"]),
+                ("multi-stream studio watching and clipping", ["tests/test_multistream.py"]),
+                ("neon split-screen layout and branding", ["tests/test_neon_features.py"])]
         for name, args in runs:
             print(f"\n=== {name} ===", flush=True)
             r = subprocess.run([sys.executable, *args], cwd=ROOT, env=env, capture_output=True, text=True, encoding="utf-8", errors="replace")

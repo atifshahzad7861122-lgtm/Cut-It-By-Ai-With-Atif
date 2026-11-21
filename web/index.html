@@ -4131,6 +4131,303 @@
       flex: none
     }
 
+    .ohint {
+      margin: 8px 0 0;
+      font-size: 12px;
+      color: var(--faint);
+      line-height: 1.4;
+    }
+    .moments {
+      width: 100%;
+      box-sizing: border-box;
+      border: 0;
+      border-radius: 10px;
+      background: #fff;
+      padding: 10px 12px;
+      font: inherit;
+      font-size: 14px;
+      color: var(--text);
+      resize: vertical;
+      min-height: 72px;
+    }
+    .moments:focus {
+      outline: 2px solid var(--brand-soft);
+    }
+    .composer.compact .moments {
+      background: var(--muted);
+    }
+    .xchecks {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .xchecks label {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2px 8px;
+      align-items: start;
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      transition: background-color .15s ease;
+    }
+    .xchecks label:hover {
+      background: #EDE3DB;
+    }
+    .xchecks input {
+      accent-color: var(--brand);
+      margin: 3px 0 0;
+    }
+    .xchecks small {
+      grid-column: 2;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--faint);
+    }
+    .composer.compact .xchecks label {
+      background: var(--muted);
+    }
+    @media (max-width:640px) {
+      .xchecks {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Whop Campaigns Hub Styles */
+    .whop-wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .whop-hero {
+      background: linear-gradient(135deg, rgba(255, 139, 51, 0.12) 0%, rgba(20, 20, 24, 0.6) 100%);
+      border: 1px solid rgba(255, 139, 51, 0.25);
+      border-radius: 16px;
+      padding: 24px 28px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .whop-hero-text h2 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+    }
+    .whop-hero-text p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--faint);
+      max-width: 600px;
+      line-height: 1.5;
+    }
+    .whop-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .whop-stat-card {
+      background: var(--card, #1c1d22);
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .whop-stat-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--faint);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .whop-stat-val {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .whop-stat-val.earnings {
+      color: #10B981;
+    }
+    .whop-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .whop-categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .whop-cat-btn {
+      background: var(--card, #1c1d22);
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      color: var(--faint);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .15s ease;
+    }
+    .whop-cat-btn:hover {
+      color: var(--text);
+      border-color: var(--brand);
+    }
+    .whop-cat-btn.active {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+    }
+    .whop-search {
+      min-width: 240px;
+      background: var(--card, #1c1d22);
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+    }
+    .whop-search:focus {
+      border-color: var(--brand);
+    }
+    .whop-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 20px;
+    }
+    .whop-card {
+      background: var(--card, #1c1d22);
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      border-radius: 16px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      transition: transform .15s ease, border-color .15s ease;
+    }
+    .whop-card:hover {
+      border-color: rgba(255, 139, 51, 0.4);
+      transform: translateY(-2px);
+    }
+    .whop-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .whop-creator-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .whop-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand) 0%, #ff5500 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #fff;
+      font-size: 16px;
+      flex: none;
+    }
+    .whop-creator-meta h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .whop-creator-meta .brand {
+      font-size: 12px;
+      color: var(--faint);
+    }
+    .whop-cpm-badge {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #10B981;
+      padding: 6px 10px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 800;
+      text-align: right;
+      flex: none;
+    }
+    .whop-cpm-badge small {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      opacity: 0.85;
+      text-transform: uppercase;
+    }
+    .whop-pool-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .whop-pool-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--faint);
+    }
+    .whop-pool-info b {
+      color: var(--text);
+    }
+    .whop-rules {
+      font-size: 13px;
+      color: var(--faint);
+      line-height: 1.5;
+      background: rgba(0, 0, 0, 0.18);
+      padding: 10px 12px;
+      border-radius: 10px;
+      border-left: 3px solid var(--brand);
+    }
+    .whop-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .whop-tag {
+      font-size: 11px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--faint);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .whop-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      padding-top: 8px;
+      gap: 12px;
+    }
+    @media (max-width: 768px) {
+      .whop-stats { grid-template-columns: 1fr; }
+      .whop-grid { grid-template-columns: 1fr; }
+    }
+
+
     @media (max-width:640px) {
       .og {
         grid-template-columns: 1fr
@@ -9192,6 +9489,156 @@
       });
     }
 
+    /* ============================================================ whop campaigns hub */
+    let S_whop = {
+      campaigns: [],
+      earnings: { active_campaigns: 0, total_views: 0, estimated_earnings: 0 },
+      category: "",
+      query: "",
+      loading: false,
+      loaded: false
+    };
+
+    async function loadWhopCampaigns(force = false) {
+      if (S_whop.loading || (S_whop.loaded && !force)) {
+        drawWhopCampaigns();
+        return;
+      }
+      S_whop.loading = true;
+      drawWhopCampaigns();
+      try {
+        const [cData, eData] = await Promise.all([
+          api(`/api/whop/campaigns?category=${encodeURIComponent(S_whop.category)}&q=${encodeURIComponent(S_whop.query)}`),
+          api("/api/whop/earnings")
+        ]);
+        S_whop.campaigns = cData.campaigns || [];
+        S_whop.earnings = eData || { active_campaigns: 0, total_views: 0, estimated_earnings: 0 };
+        S_whop.loaded = true;
+      } catch (err) {
+        console.error("Failed to load Whop campaigns:", err);
+      } finally {
+        S_whop.loading = false;
+        drawWhopCampaigns();
+      }
+    }
+
+    function drawWhopCampaigns() {
+      const box = $("#whopCampaigns");
+      if (!box) return;
+
+      const e = S_whop.earnings;
+      const cats = ["All", "Gaming & IRL", "Fitness & Gym", "Crypto & Finance", "Business & Tech", "Podcasts"];
+
+      let filtered = S_whop.campaigns;
+      if (S_whop.category && S_whop.category !== "All") {
+        filtered = filtered.filter(c => c.category === S_whop.category);
+      }
+      if (S_whop.query) {
+        const q = S_whop.query.toLowerCase();
+        filtered = filtered.filter(c => (c.name || "").toLowerCase().includes(q) || (c.creator || "").toLowerCase().includes(q) || (c.brand || "").toLowerCase().includes(q));
+      }
+
+      box.innerHTML = `
+        <div class="whop-wrap">
+          <div class="whop-hero">
+            <div class="whop-hero-text">
+              <h2>${ic("bolt")} Whop Clipping Campaigns & Creator Rewards</h2>
+              <p>Clip top streamers & creators to earn real cash rewards. Select high-CPM campaigns, 1-click onboard a creator workspace with auto-attribution tags, and track your views & estimated payouts.</p>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <button class="btn sm" data-act="whop_refresh">${ic("arrowr")} Refresh Directory</button>
+            </div>
+          </div>
+
+          <div class="whop-stats">
+            <div class="whop-stat-card">
+              <span class="whop-stat-label">Estimated Rewards</span>
+              <span class="whop-stat-val earnings">$${(e.estimated_earnings || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+              <span class="sub" style="font-size:12px;">Based on campaign CPM rates & tracked views</span>
+            </div>
+            <div class="whop-stat-card">
+              <span class="whop-stat-label">Active Clipping Campaigns</span>
+              <span class="whop-stat-val">${e.active_campaigns || 0}</span>
+              <span class="sub" style="font-size:12px;">Workspaces with active reward contracts</span>
+            </div>
+            <div class="whop-stat-card">
+              <span class="whop-stat-label">Total Clipping Views</span>
+              <span class="whop-stat-val">${(e.total_views || 0).toLocaleString()}</span>
+              <span class="sub" style="font-size:12px;">Aggregated across your clipped posts</span>
+            </div>
+          </div>
+
+          <div class="whop-filter-bar">
+            <div class="whop-categories">
+              ${cats.map(c => `
+                <button type="button" class="whop-cat-btn ${(!S_whop.category && c === 'All') || S_whop.category === c ? 'active' : ''}" data-act="whop_cat" data-c="${c}">
+                  ${c}
+                </button>
+              `).join("")}
+            </div>
+            <input type="text" class="whop-search" id="whopSearchInput" placeholder="Search creators, games or brands…" value="${esc(S_whop.query)}">
+          </div>
+
+          ${S_whop.loading && !S_whop.loaded ? `
+            <div style="text-align:center;padding:60px 0;color:var(--faint);">
+              <p>Fetching active Whop campaigns directory…</p>
+            </div>
+          ` : !filtered.length ? `
+            <div style="text-align:center;padding:60px 0;background:var(--card,#1c1d22);border-radius:16px;border:1px solid var(--border,rgba(255,255,255,0.08));">
+              <p style="font-size:16px;color:var(--text);margin-bottom:8px;">No campaigns found matching your criteria.</p>
+              <p class="sub">Try selecting "All" or clearing the search query.</p>
+            </div>
+          ` : `
+            <div class="whop-grid">
+              ${filtered.map(c => `
+                <div class="whop-card">
+                  <div class="whop-card-top">
+                    <div class="whop-creator-info">
+                      <div class="whop-avatar">${esc(c.creator.slice(0, 1).toUpperCase())}</div>
+                      <div class="whop-creator-meta">
+                        <h3>${esc(c.creator)}</h3>
+                        <span class="brand">${esc(c.brand)} · <span class="pill" style="font-size:10px;padding:2px 6px;">${esc(c.category)}</span></span>
+                      </div>
+                    </div>
+                    <div class="whop-cpm-badge">
+                      $${c.cpm.toFixed(2)}
+                      <small>Per 1K Views</small>
+                    </div>
+                  </div>
+
+                  <div class="whop-pool-bar">
+                    <div class="whop-pool-info">
+                      <span>Reward Pool: <b>$${c.remaining_pool.toLocaleString()} remaining</b></span>
+                      <span>Total: $${c.total_budget.toLocaleString()}</span>
+                    </div>
+                    <div class="bar" style="margin:0;"><i style="width:${Math.min(100, Math.round((c.remaining_pool / c.total_budget) * 100))}%"></i></div>
+                  </div>
+
+                  <div class="whop-rules">
+                    <b>Guidelines:</b> ${esc(c.rules)}
+                  </div>
+
+                  <div class="whop-tags">
+                    ${(c.platforms || []).map(p => `<span class="whop-tag" style="color:var(--brand);">#${esc(p)}</span>`).join("")}
+                    ${(c.required_tags || []).slice(0, 3).map(t => `<span class="whop-tag">#${esc(t)}</span>`).join("")}
+                  </div>
+
+                  <div class="whop-card-footer">
+                    <div style="font-size:11px;color:var(--faint);">
+                      Length: ${c.min_len || 15}s - ${c.max_len || 60}s
+                    </div>
+                    <button class="btn primary sm" data-act="whop_clip" data-id="${esc(c.id)}">
+                      ${ic("scissors")} Clip this Campaign
+                    </button>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          `}
+        </div>
+      `;
+    }
+
     /* ============================================================ guided tour */
     function startTour() {
       if ($("#tour")) return;
@@ -9731,6 +10178,7 @@
       const multiBadge = liveCount ? `<span class="working" title="${liveCount} live streams recording"><i></i>${liveCount} Live</span>` : "";
       put($("#nav"), nav("overview", navIc("home", "overview"), "Home") +
         nav("multistream", navIc("radio", "multistream"), "Multi-Stream", multiBadge) +
+        nav("campaigns", navIc("bolt", "campaigns"), "Whop Rewards", `<span class="sb-tag" style="background:var(--brand);color:#fff">New</span>`) +
         nav("library", navIc("film", "library"), "All videos", (() => {
           const w = S.jobs.filter(j => ["queued", "running"].includes(j.status)).length;
           return w ? `<span class="working" title="${w} working now"><i></i>${w} working</span>` : S.jobs.length ? `<span class="count">${S.jobs.length}</span>` : "";
@@ -9750,10 +10198,11 @@
       <button class="icon-btn bell" data-act="bell" title="Notifications" aria-label="Notifications${S.status.unread ? `, ${S.status.unread} new` : ""}" aria-haspopup="dialog">${ic("bell")}${S.status.unread ? `<span class="dotn">${S.status.unread > 9 ? "9+" : S.status.unread}</span>` : ""}</button></div>` : ""));
       const c = creator();
       const recording = S.creators.filter(x => x.live_job).length;
-      let title = { overview: "Dashboard Overview", multistream: "Multi-Stream Studio", library: "All videos", settings: "Settings", usage: "AI usage" }[S.view] || "", sub = "", act = "";
+      let title = { overview: "Dashboard Overview", multistream: "Multi-Stream Studio", campaigns: "Whop Clipping Campaigns & Rewards", library: "All videos", settings: "Settings", usage: "AI usage" }[S.view] || "", sub = "", act = "";
       if (S.view === "usage") sub = "What the AI has been used for.";
       if (S.view === "overview") sub = `${greeting()}. ${S.creators.length} creator${S.creators.length === 1 ? "" : "s"}${recording ? `, ${recording} recording now` : ""}.`;
       if (S.view === "multistream") sub = "Watch and record up to 6 streams simultaneously with real-time AI auto-clipping.";
+      if (S.view === "campaigns") sub = "Get paid per 1,000 views. Select high-CPM clipping campaigns, 1-click onboard, and track rewards.";
       if (S.view === "library") sub = "Every video and recording, across all creators.";
       if (S.view === "settings") sub = (S.status.accounts === false ? "Your AI key and connected apps." : "Your profile, security and connected apps.");
       let pic = "", subHtml = null, tabs = "";
@@ -9773,6 +10222,7 @@
         const pills = [
           ["overview", "Overview", ""],
           ["multistream", "Multi-Stream", ""],
+          ["campaigns", "Whop Rewards", ""],
           ["library", "All Videos", "caret"],
           ["creators", "Channels", "caret"],
           ["usage", "AI Analytics", "caret"],
@@ -9817,7 +10267,7 @@
       put($("#title"), `<span>${esc(title)}</span>`); put($("#subtitle"), subHtml ?? esc(sub)); put($("#actions"), act);
     }
 
-    const ROUTES = { overview: "", multistream: "multistream", library: "videos", settings: "settings", usage: "usage" };
+    const ROUTES = { overview: "", multistream: "multistream", campaigns: "campaigns", library: "videos", settings: "settings", usage: "usage" };
     function pathFor(v, tab) {
       if (v.startsWith("c:")) return `/app/creators/${encodeURIComponent(v.slice(2))}${tab && tab !== "clips" ? "/" + tab : ""}`;
       if (v === "settings") return "/app/settings" + (tab ? "/" + tab : "");
@@ -9849,6 +10299,7 @@
       <p>Paste a link or drop in videos. You get captioned shorts back.</p><div id="add"></div></section>` : "";
       if (v === "overview") view.innerHTML = `<div id="ov"></div>`;
       else if (v === "multistream") view.innerHTML = `<div id="mstream"></div>`;
+      else if (v === "campaigns") { view.innerHTML = `<div id="whopCampaigns"></div>`; loadWhopCampaigns(); }
       else if (v === "library") view.innerHTML = `<div id="add"></div><div id="jobs"></div>`;
       else if (v === "settings") view.innerHTML = `<div id="sform"></div>`;
       else if (v === "usage") { view.innerHTML = `<div id="usage"></div>`; loadUsage(); }
@@ -9930,8 +10381,16 @@
         <button type="button" data-seg="o_quality" data-v="720" aria-pressed="true">720p<small>Fast</small></button>
         <button type="button" data-seg="o_quality" data-v="1080" aria-pressed="false">1080p<small>Sharper, about 2x slower</small></button></div></div>
       <div class="ob"><div class="ot">Part of the video</div><div class="range">
-        <label>From<input id="o_from" type="number" min="0" placeholder="start" aria-label="From minute">min</label>${ic("arrowr")}
-        <label>To<input id="o_to" type="number" min="0" placeholder="end" aria-label="Up to minute">min</label></div></div>
+        <label>From<input id="o_from" type="text" inputmode="numeric" placeholder="0:00" aria-label="From (like 1:05:10, or minutes)"></label>${ic("arrowr")}
+        <label>To<input id="o_to" type="text" inputmode="numeric" placeholder="end" aria-label="Up to (like 1:30:00, or minutes)"></label></div>
+        <p class="ohint">Write times like YouTube does (1:05:10), or just minutes. Only this part is downloaded.</p></div>
+      <div class="ob wide"><div class="ot">Exact moments</div>
+        <textarea id="o_moments" class="moments" rows="3" spellcheck="false" aria-label="Exact moments, one per line"
+          placeholder="One per line, the way YouTube writes times:&#10;1:05:10 – 1:06:09 Funny moment&#10;2:30 - 3:15 Opening scene"></textarea>
+        <p class="ohint">Each line becomes one clip, exactly there. Words after the times tell the AI what happens. Only these moments are downloaded.</p></div>
+      <div class="ob wide"><div class="ot">Extras</div><div class="xchecks">
+        <label><input type="checkbox" id="o_replayed">Use YouTube's “Most replayed”<small>Clips come from the parts people rewatched most. Good for videos with little talking.</small></label>
+        <label><input type="checkbox" id="o_clean">Hide swear words<small>Stars them out in captions, hook, title and post text.</small></label></div></div>
       <div class="ob"><div class="ot">Brand Watermark</div><label class="ck" style="cursor:pointer"><input type="checkbox" id="o_watermark"> <span>Cut it by Ai With Atif watermark (40% opacity, bottom-right)</span></label></div>
     </div></div></form>`;
       drawAtt();
@@ -10023,15 +10482,20 @@
     });
     const targetCreator = () => creatorId() || $("#o_creator")?.value || "";
     function jobOptions() {
-      const n = id => { const v = $(id).value; return v === "" ? null : Number(v); };
-      const o = { max_clips: n("#o_max"), min_len: n("#o_min"), max_len: n("#o_maxlen"), style: $("#o_style").value, layout: $("#o_layout").value, quality: n("#o_quality") };
+      const n = id => { const v = $(id)?.value; return !v && v !== 0 ? null : Number(v); };
+      const o = { max_clips: n("#o_max"), min_len: n("#o_min"), max_len: n("#o_maxlen"), style: $("#o_style")?.value, layout: $("#o_layout")?.value, quality: n("#o_quality") };
       o.watermark = document.getElementById("o_watermark")?.checked || false;
       o.hook_text = $("#o_hook")?.value.trim() || "";
       o.description_text = $("#o_desc")?.value.trim() || "";
       o.lang = $("#o_lang") ? $("#o_lang").value : "en";
       o.captions = $("#o_captions") ? $("#o_captions").checked : true;
-      if (n("#o_from") !== null) o.range_start = n("#o_from") * 60;
-      if (n("#o_to") !== null) o.range_end = n("#o_to") * 60;
+      const t = id => { const v = $(id)?.value.trim(); return !v ? null : /^\d+(\.\d+)?$/.test(v) ? Number(v) * 60 : v; };
+      if (t("#o_from") !== null) o.range_start = t("#o_from");
+      if (t("#o_to") !== null) o.range_end = t("#o_to");
+      const m = $("#o_moments")?.value.trim();
+      if (m) o.moments = m;
+      if ($("#o_replayed")?.checked) o.replayed = true;
+      if ($("#o_clean")?.checked) o.clean = true;
       return o;
     }
     /* ---------- attachments: nothing starts until Make clips is pressed.
@@ -10332,12 +10796,14 @@
         j.took ? "made in " + fmt(j.took) : "", j.kind === "live" ? "recording, " + j.stage.toLowerCase() : ""].filter(Boolean).map(esc).join(" · ");
       const pic = j.thumb ? `<img src="/media/${esc(j.id)}/thumb.jpg" alt="" loading="lazy">` : ic(j.source?.type === "file" ? "film" : "link");
       return `<div class="job-head"><div class="jt"><span class="jthumb">${pic}${j.duration ? `<span class="du">${fmt(j.duration)}</span>` : ""}</span><div style="min-width:0"><h3>${esc(j.title || j.source.name)}</h3><p class="sub">${meta}</p></div></div>
-      <div class="row" style="flex-wrap:nowrap;gap:4px">${busy ? "" : `
+      <div class="row" style="flex-wrap:nowrap;gap:4px">${busy ? (j.stage === "Stopping…" ? "" : `<button class="btn sm ghost" data-act="stopjob" data-j="${j.id}" title="Stop working on this video" aria-label="Stop working on this video">${ic("stop")}Stop</button>`) : `
+        ${j.status === "stopped" || j.status === "error" ? `<button class="btn sm ghost" data-act="retryjob" data-j="${j.id}" title="Start this video again, carrying on from what was already downloaded" aria-label="Start this video again">${ic("arrowr")}Retry</button>` : ""}
         ${j.clips.some(c => c.status === "done") ? `<button class="btn sm icon ghost" data-act="dlall" data-j="${j.id}" title="Download all clips of this video" aria-label="Download all clips of this video">${ic("down")}</button>` : ""}
         <button class="btn sm icon ghost" data-act="deljob" data-j="${j.id}" title="Delete" aria-label="Delete this video and its clips">${ic("trash")}</button>
         <label class="selck" title="Select this video and its clips"><input type="checkbox" data-sel="j:${j.id}" ${sel().has("j:" + j.id) ? "checked" : ""} aria-label="Select this video"></label>`}</div></div>
     ${busy ? `<div class="bar"><i style="width:${Math.round(j.progress * 100)}%"></i></div><p class="sub">${esc(j.stage)} · ${Math.round(j.progress * 100)}%</p>` : ""}
-    ${j.status === "done" && !j.clips.length ? `<p class="sub">${esc(j.stage)}</p>` : ""}
+    ${(j.status === "done" && !j.clips.length) || j.status === "stopped" ? `<p class="sub">${esc(j.stage)}${j.status === "stopped" ? ". Press Retry to carry on from what was already downloaded." : ""}</p>` : ""}
+    ${j.notice ? `<p class="sub">${esc(j.notice)}</p>` : ""}
     ${j.error ? `<div class="err">${esc(j.error)}<button class="rep" data-act="report" data-ctx="${esc("Video failed: " + (j.title || j.source.name || "") + " | " + j.error)}">Report this</button></div>` : ""}${j.ai?.note ? `<p class="sub">${esc(j.ai.note)}</p>` : ""}
     ${j.clips.length ? `<div class="grid">${j.clips.map(c => clipHtml(j, c)).join("")}</div>` : ""}`;
     }
@@ -11277,6 +11743,7 @@
       drawShell(); drawJobs(); drawStream(); drawSelBar();
       if (S.view === "overview") drawOverview();
       if (S.view === "multistream") drawMultiStream();
+      if (S.view === "campaigns") drawWhopCampaigns();
       if ($("#clog")) drawLog();
       if (D.jid) drawClipDlg(false);
     }
@@ -11359,6 +11826,10 @@
       if (e.target.id === "ai_model") {
         renderModelChips($("#ai_provider")?.value, e.target.value);
       }
+      if (e.target.id === "whopSearchInput") {
+        S_whop.query = e.target.value.trim();
+        drawWhopCampaigns();
+      }
     });
 
     document.addEventListener("click", async e => {
@@ -11366,6 +11837,30 @@
       const a = b.dataset.act, d = b.dataset;
       if (b.tagName === "A") e.preventDefault();
       try {
+        if (a === "whop_refresh") { return loadWhopCampaigns(true); }
+        if (a === "whop_cat") {
+          S_whop.category = d.c === "All" ? "" : d.c;
+          return drawWhopCampaigns();
+        }
+        if (a === "whop_clip") {
+          const cid = d.id;
+          b.disabled = true;
+          const oldHtml = b.innerHTML;
+          b.innerHTML = "Connecting…";
+          try {
+            const res = await send(`/api/whop/campaigns/${cid}/clip`, {});
+            toast(`Onboarded ${res.campaign.creator}! Workspace ready with $${res.campaign.cpm}/1k CPM.`, "ok");
+            await tick();
+            if (res.creator_id) {
+              go("c:" + res.creator_id, "clips");
+            }
+          } catch (err) {
+            toast(err.message || "Failed to onboard campaign", "bad");
+            b.disabled = false;
+            b.innerHTML = oldHtml;
+          }
+          return;
+        }
         if (a === "themetoggle") {
           closePops();
           ThemeManager.cycle();
@@ -11557,6 +12052,8 @@
           await send("/api/account/delete", { confirm: typed });
           location.href = "/"; return;
         }
+        if (a === "stopjob") { await api(`/api/jobs/${d.j}/stop`, { method: "POST" }); toast("Stopping"); return tick(); }
+        if (a === "retryjob") { await api(`/api/jobs/${d.j}/retry`, { method: "POST" }); toast("Started again"); return tick(); }
         if (a === "deljob") {
           if (!await ask("Delete this video?", "The video and all of its clips are permanently deleted. This cannot be undone.", "Delete", true)) return;
           await api(`/api/jobs/${d.j}`, { method: "DELETE" }); toast("Deleted"); return tick();
